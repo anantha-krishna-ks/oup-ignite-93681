@@ -70,9 +70,9 @@ const ChaptersPage = () => {
           {/* Modern Header */}
           <div className="mb-10">
             <Button
-              variant="ghost"
+              variant="outline"
               onClick={() => navigate(-1)}
-              className="mb-6 -ml-2 hover:bg-muted/50"
+              className="mb-6 -ml-2 border-border hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Subjects
@@ -84,7 +84,7 @@ const ChaptersPage = () => {
                   <BookOpen className="w-7 h-7 md:w-8 md:h-8 text-primary" />
                 </div>
                 <div>
-                  <h1 className="text-3xl md:text-5xl font-bold text-foreground tracking-tight">
+                  <h1 className="text-2xl md:text-3xl font-semibold text-foreground tracking-tight">
                     {subjectTitles[subject]}
                   </h1>
                   <p className="text-muted-foreground text-sm md:text-base mt-1">
