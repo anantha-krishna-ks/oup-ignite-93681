@@ -148,12 +148,6 @@ const ChaptersPage = () => {
 
                   {/* Book Details Card - Fixed Height */}
                   <div className="p-4 space-y-2 bg-card flex-1 flex flex-col">
-                    <div className="flex-1">
-                      <p className="text-xs md:text-sm text-muted-foreground line-clamp-2 leading-relaxed">
-                        {chapter.description}
-                      </p>
-                    </div>
-
                     {/* Meta Information */}
                     <div className="flex items-center justify-between pt-2 border-t border-border/50">
                       <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
