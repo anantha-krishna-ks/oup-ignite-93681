@@ -71,7 +71,7 @@ const ChaptersPage = () => {
           <div className="mb-10">
             <Button
               variant="outline"
-              onClick={() => navigate(-1)}
+              onClick={() => navigate('/teacher-dashboard')}
               className="mb-6 -ml-2 border-border hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
