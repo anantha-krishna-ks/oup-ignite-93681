@@ -112,7 +112,7 @@ const TeacherDashboard = () => {
   };
 
   const handleSubjectClick = (subjectId: string) => {
-    navigate(`/book-reader?subject=${subjectId}`);
+    navigate(`/chapters?subject=${subjectId}`);
   };
 
   return (
