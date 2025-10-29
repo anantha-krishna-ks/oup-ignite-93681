@@ -106,18 +106,20 @@ const ChaptersPage = () => {
                 className="group cursor-pointer animate-fade-in h-full relative"
                 style={{ animationDelay: `${index * 50}ms` }}
               >
-                {/* Stacked Pages Effect - Bottom Layers */}
-                <div className="absolute inset-x-0 bottom-0 h-full">
-                  <div className="absolute inset-x-2 bottom-0 top-2 bg-card border border-border rounded-2xl opacity-30" />
-                  <div className="absolute inset-x-1 bottom-0 top-1 bg-card border border-border rounded-2xl opacity-50" />
-                </div>
-
                 <div
                   onClick={() => handleChapterClick(chapter.id)}
-                  className="relative h-full rounded-2xl overflow-hidden bg-card border border-border shadow-sm hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:-translate-y-2 flex flex-col"
+                  className="relative h-full rounded-2xl overflow-visible bg-card border border-border shadow-sm hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:-translate-y-2 flex flex-col"
                 >
-                  {/* Book Cover with Gradient - Reduced to half height */}
-                  <div className="relative aspect-video overflow-hidden flex-shrink-0">
+                  {/* 3D Book Pages Stack on Right Edge */}
+                  <div className="absolute -right-1 top-4 bottom-4 w-3 pointer-events-none">
+                    {/* Page layers creating depth effect */}
+                    <div className="absolute right-0 top-0 bottom-0 w-[3px] bg-background border-r border-t border-b border-border rounded-r-sm translate-x-[6px] opacity-40" />
+                    <div className="absolute right-0 top-[2px] bottom-[2px] w-[3px] bg-background border-r border-t border-b border-border rounded-r-sm translate-x-[4px] opacity-60" />
+                    <div className="absolute right-0 top-[4px] bottom-[4px] w-[3px] bg-card border-r border-t border-b border-border rounded-r-sm translate-x-[2px] opacity-80" />
+                  </div>
+
+                  {/* Book Cover with Gradient */}
+                  <div className="relative aspect-video overflow-hidden flex-shrink-0 rounded-t-2xl">
                     <div className={`absolute inset-0 bg-gradient-to-br ${chapter.gradient} opacity-90`}>
                       {/* Decorative Pattern Overlay */}
                       <div className="absolute inset-0 opacity-10">
@@ -143,8 +145,8 @@ const ChaptersPage = () => {
                     <div className="absolute top-0 right-0 w-0 h-0 border-l-[20px] border-l-transparent border-t-[20px] border-t-white/30" />
                   </div>
 
-                  {/* Book Details Card - Fixed Height */}
-                  <div className="p-4 space-y-2 bg-card flex-1 flex flex-col">
+                  {/* Book Details Card */}
+                  <div className="p-4 space-y-2 bg-card flex-1 flex flex-col rounded-b-2xl">
                     {/* Chapter Title */}
                     <h3 className="font-bold text-sm md:text-base text-foreground line-clamp-2 group-hover:text-primary transition-colors">
                       {chapter.title}
