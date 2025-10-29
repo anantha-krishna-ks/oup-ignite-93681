@@ -223,228 +223,91 @@ const ChaptersPage = () => {
             </div>
           </div>
 
-          {/* Elegant 3D Bookshelf */}
-          <div className="space-y-8">
-            {Array.from({ length: Math.ceil(chapters.length / 4) }).map((_, shelfIndex) => {
-              const shelfBooks = chapters.slice(shelfIndex * 4, (shelfIndex + 1) * 4);
-              return (
-                <motion.div
-                  key={shelfIndex}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: shelfIndex * 0.15 }}
-                  className="relative"
+          {/* Premium Chapters Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-6">
+            {chapters.map((chapter, index) => (
+              <motion.div
+                key={chapter.id}
+                className="group cursor-pointer h-full relative"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.05 }}
+                whileHover={{ y: -8, transition: { duration: 0.3 } }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <div
+                  onClick={() => handleChapterClick(chapter.id)}
+                  className="relative h-full rounded-2xl overflow-visible bg-card border border-border shadow-sm hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 flex flex-col"
                 >
-                  {/* Shelf Container */}
-                  <div className="relative pb-6">
-                    {/* Books Row */}
-                    <div className="flex gap-2 md:gap-3 px-4 pb-4 relative z-10">
-                      {shelfBooks.map((chapter, bookIndex) => (
-                        <motion.div
-                          key={chapter.id}
-                          className="group cursor-pointer relative flex-1"
-                          initial={{ opacity: 0, rotateY: -20 }}
-                          animate={{ opacity: 1, rotateY: 0 }}
-                          transition={{ delay: shelfIndex * 0.15 + bookIndex * 0.08 }}
-                          whileHover={{ 
-                            y: -16,
-                            rotateY: 8,
-                            scale: 1.02,
-                            transition: { duration: 0.3, ease: "easeOut" }
-                          }}
-                          whileTap={{ scale: 0.98 }}
-                          style={{ transformStyle: "preserve-3d", perspective: "1200px" }}
-                          onClick={() => handleChapterClick(chapter.id)}
-                        >
-                          {/* Book Structure */}
-                          <div className="relative h-64 md:h-72" style={{ transformStyle: "preserve-3d" }}>
-                            {/* Book Spine (Left Edge) */}
-                            <div 
-                              className={`absolute left-0 top-0 w-11 md:w-14 h-full bg-gradient-to-r ${chapter.gradient} rounded-l-lg shadow-xl flex items-center justify-center overflow-hidden`}
-                              style={{ 
-                                transform: "translateZ(12px)",
-                                boxShadow: "inset -3px 0 6px rgba(0,0,0,0.4), inset 2px 0 3px rgba(255,255,255,0.1), 3px 0 12px rgba(0,0,0,0.3), 0 4px 8px rgba(0,0,0,0.2)"
-                              }}
-                            >
-                              {/* Spine Texture Pattern */}
-                              <div className="absolute inset-0 opacity-20" style={{
-                                backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.1) 2px, rgba(255,255,255,0.1) 4px)`
-                              }} />
-                              
-                              {/* Spine Text */}
-                              <div 
-                                className="text-white font-bold text-xs md:text-sm px-2 text-center relative z-10"
-                                style={{ 
-                                  writingMode: "vertical-rl",
-                                  textOrientation: "mixed",
-                                  textShadow: "0 2px 4px rgba(0,0,0,0.5), 0 1px 2px rgba(0,0,0,0.3)"
-                                }}
-                              >
-                                {chapter.title}
-                              </div>
-                              
-                              {/* Spine Light Reflection */}
-                              <div className="absolute left-1 top-0 bottom-0 w-2 bg-gradient-to-r from-white/30 to-transparent" />
-                              <div className="absolute right-0 top-0 bottom-0 w-1 bg-gradient-to-r from-transparent to-black/20" />
-                              
-                              {/* Spine Top & Bottom Caps */}
-                              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-b from-black/30 to-transparent" />
-                              <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-t from-black/30 to-transparent" />
-                            </div>
-
-                            {/* Book Cover (Main Face) */}
-                            <div 
-                              className="absolute left-9 md:left-12 top-0 right-0 h-full bg-card border-2 border-border rounded-r-lg shadow-2xl overflow-hidden"
-                              style={{ 
-                                transform: "translateZ(6px)",
-                                boxShadow: "6px 6px 18px rgba(0,0,0,0.25), -3px 0 12px rgba(0,0,0,0.15), inset 0 0 60px rgba(0,0,0,0.05)"
-                              }}
-                            >
-                              {/* Cover Paper Texture */}
-                              <div className="absolute inset-0 opacity-[0.03]" style={{
-                                backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.4'/%3E%3C/svg%3E")`,
-                                backgroundSize: "100px 100px"
-                              }} />
-                              
-                              {/* Cover Gradient Accent */}
-                              <div className={`absolute inset-0 bg-gradient-to-br ${chapter.gradient} opacity-15`} />
-                              <div className={`absolute inset-0 bg-gradient-to-tr ${chapter.gradient} opacity-10`} />
-                              
-                              {/* Cover Content */}
-                              <div className="relative h-full p-4 flex flex-col">
-                                {/* Book Icon with Embossed Effect */}
-                                <div className="flex-1 flex items-center justify-center">
-                                  <div 
-                                    className={`p-5 bg-gradient-to-br ${chapter.gradient} rounded-2xl relative`}
-                                    style={{
-                                      boxShadow: "0 8px 16px rgba(0,0,0,0.2), inset 0 -2px 4px rgba(0,0,0,0.3), inset 0 2px 4px rgba(255,255,255,0.2)"
-                                    }}
-                                  >
-                                    <BookOpen className="w-10 h-10 md:w-12 md:h-12 text-white drop-shadow-lg" />
-                                  </div>
-                                </div>
-                                
-                                {/* Title & Info */}
-                                <div className="space-y-3 bg-gradient-to-t from-background/80 to-transparent backdrop-blur-sm p-3 rounded-lg -mx-1 -mb-1">
-                                  <h3 className="font-bold text-sm md:text-base text-foreground line-clamp-2 group-hover:text-primary transition-colors drop-shadow-sm">
-                                    {chapter.title}
-                                  </h3>
-                                  
-                                  <div className="flex items-center justify-between text-xs text-muted-foreground border-t border-border/50 pt-2">
-                                    <div className="flex items-center gap-1.5">
-                                      <Clock className="w-3.5 h-3.5" />
-                                      <span className="font-medium">{chapter.duration}</span>
-                                    </div>
-                                    <div className="flex items-center gap-1.5">
-                                      <BookOpen className="w-3.5 h-3.5" />
-                                      <span className="font-medium">{chapter.pages}p</span>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-
-                              {/* Realistic Page Edges (Right Side) */}
-                              <div className="absolute right-0 top-3 bottom-3 w-3 pointer-events-none">
-                                {[...Array(8)].map((_, i) => (
-                                  <div 
-                                    key={i}
-                                    className="absolute right-0 bg-gradient-to-r from-muted/90 to-muted/70 border-r border-border/50" 
-                                    style={{
-                                      top: `${i * 0.5}px`,
-                                      bottom: `${i * 0.5}px`,
-                                      width: "2px",
-                                      transform: `translateX(${i * 0.5}px)`,
-                                      boxShadow: "1px 0 1px rgba(0,0,0,0.1)"
-                                    }}
-                                  />
-                                ))}
-                              </div>
-
-                              {/* Cover Shine Effect */}
-                              <div 
-                                className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                                style={{ transform: "translateZ(1px)" }}
-                              />
-                              
-                              {/* Edge Wear Effect */}
-                              <div className="absolute inset-0 border-2 border-white/5 rounded-r-lg pointer-events-none" />
-                            </div>
-
-                            {/* Book Shadow on Shelf (More Realistic) */}
-                            <div 
-                              className="absolute left-4 -bottom-2 right-4 h-3 bg-gradient-radial from-black/30 via-black/15 to-transparent blur-md rounded-full"
-                              style={{ transform: "translateZ(0)" }}
-                            />
-                          </div>
-                        </motion.div>
-                      ))}
-                    </div>
-
-                    {/* Realistic Wooden Shelf */}
-                    <div className="relative px-2">
-                      {/* Shelf Back Support */}
-                      <div 
-                        className="absolute -top-8 left-0 right-0 h-12 bg-gradient-to-b from-amber-800/40 via-amber-900/30 to-transparent dark:from-amber-950/40 dark:via-black/30"
-                        style={{
-                          boxShadow: "inset 0 -4px 8px rgba(0,0,0,0.2)"
-                        }}
-                      />
-                      
-                      {/* Shelf Surface (Top) */}
-                      <div 
-                        className="h-4 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-800 dark:from-amber-800 dark:via-amber-900 dark:to-amber-950 rounded-t-sm relative overflow-hidden"
-                        style={{
-                          boxShadow: "0 -2px 4px rgba(0,0,0,0.15), inset 0 2px 4px rgba(255,255,255,0.15), inset 0 -1px 2px rgba(0,0,0,0.2)"
-                        }}
-                      >
-                        {/* Wood Grain Texture */}
-                        <div className="absolute inset-0 opacity-30" style={{
-                          backgroundImage: `repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(139, 69, 19, 0.2) 3px, rgba(139, 69, 19, 0.2) 6px)`,
-                        }} />
-                        <div className="absolute inset-0 opacity-20" style={{
-                          backgroundImage: `repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(101, 67, 33, 0.3) 40px, rgba(101, 67, 33, 0.3) 80px)`,
-                        }} />
-                        
-                        {/* Natural Light Variation */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-amber-500/20 to-transparent" />
-                        
-                        {/* Top Edge Highlight */}
-                        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-amber-400/40 to-transparent" />
-                      </div>
-                      
-                      {/* Shelf Front Edge */}
-                      <div 
-                        className="h-6 bg-gradient-to-b from-amber-700 via-amber-800 to-amber-900 dark:from-amber-900 dark:via-amber-950 dark:to-black rounded-b-sm relative overflow-hidden"
-                        style={{
-                          boxShadow: "0 6px 16px rgba(0,0,0,0.35), inset 0 2px 4px rgba(255,255,255,0.1), inset 0 -2px 4px rgba(0,0,0,0.3)"
-                        }}
-                      >
-                        {/* Wood Grain on Front */}
-                        <div className="absolute inset-0 opacity-25" style={{
-                          backgroundImage: `repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(139, 69, 19, 0.3) 2px, rgba(139, 69, 19, 0.3) 4px)`,
-                        }} />
-                        
-                        {/* Wood Knots */}
-                        <div className="absolute top-1/2 left-1/4 w-4 h-2 bg-amber-900/40 dark:bg-black/40 rounded-full blur-[1px]" />
-                        <div className="absolute top-1/3 right-1/3 w-3 h-2 bg-amber-900/30 dark:bg-black/30 rounded-full blur-[1px]" />
-                        
-                        {/* Bottom Shadow */}
-                        <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-b from-transparent to-black/30" />
-                        
-                        {/* Subtle Shine */}
-                        <div className="absolute inset-0 bg-gradient-to-b from-white/5 via-transparent to-transparent" />
-                      </div>
-                      
-                      {/* Shelf Under-Shadow */}
-                      <div 
-                        className="absolute top-full left-4 right-4 h-8 bg-gradient-to-b from-black/20 to-transparent blur-sm pointer-events-none"
-                        style={{ transform: "translateY(0)" }}
-                      />
-                    </div>
+                  {/* 3D Book Pages Stack on Right Edge */}
+                  <div className="absolute -right-1 top-4 bottom-4 w-3 pointer-events-none">
+                    {/* Page layers creating depth effect */}
+                    <div className="absolute right-0 top-0 bottom-0 w-[3px] bg-muted border-r border-t border-b border-border rounded-r-sm translate-x-[6px] opacity-70" />
+                    <div className="absolute right-0 top-[2px] bottom-[2px] w-[3px] bg-muted border-r border-t border-b border-border rounded-r-sm translate-x-[4px] opacity-85" />
+                    <div className="absolute right-0 top-[4px] bottom-[4px] w-[3px] bg-card border-r border-t border-b border-border/80 rounded-r-sm translate-x-[2px]" />
                   </div>
-                </motion.div>
-              );
-            })}
+
+                  {/* Book Cover with Gradient */}
+                  <div className="relative aspect-video overflow-hidden flex-shrink-0 rounded-t-2xl">
+                    <div className={`absolute inset-0 bg-gradient-to-br ${chapter.gradient} opacity-90`}>
+                      {/* Decorative Pattern Overlay */}
+                      <div className="absolute inset-0 opacity-10">
+                        <div className="absolute top-2 right-2 w-12 h-12 border-2 border-white rounded-full" />
+                        <div className="absolute bottom-2 left-2 w-10 h-10 border-2 border-white rotate-45" />
+                      </div>
+                      
+                      {/* Content */}
+                      <div className="relative h-full flex items-center justify-center text-white">
+                        <div className="p-3 bg-white/20 backdrop-blur-sm rounded-xl">
+                          <BookOpen className="w-10 h-10 md:w-12 md:h-12" />
+                        </div>
+                      </div>
+
+                      {/* Hover Overlay */}
+                      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    </div>
+
+                    {/* 3D Book Spine Effect */}
+                    <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-black/40 via-black/20 to-black/40" />
+                    
+                    {/* Corner Fold Effect */}
+                    <div className="absolute top-0 right-0 w-0 h-0 border-l-[20px] border-l-transparent border-t-[20px] border-t-white/30" />
+                  </div>
+
+                  {/* Book Details Card */}
+                  <div className="p-4 space-y-2 bg-card flex-1 flex flex-col rounded-b-2xl">
+                    {/* Chapter Title */}
+                    <h3 className="font-bold text-sm md:text-base text-foreground line-clamp-2 group-hover:text-primary transition-colors">
+                      {chapter.title}
+                    </h3>
+                    {/* Meta Information */}
+                    <div className="flex items-center justify-between pt-2 border-t border-border/50">
+                      <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                        <Clock className="w-3.5 h-3.5" />
+                        <span>{chapter.duration}</span>
+                      </div>
+                      <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                        <BookOpen className="w-3.5 h-3.5" />
+                        <span>{chapter.pages} pages</span>
+                      </div>
+                      <div className="flex items-center gap-0.5">
+                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                        <span className="text-xs font-medium text-foreground">New</span>
+                      </div>
+                    </div>
+
+                    {/* Read Button */}
+                    <Button 
+                      className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-sm group-hover:shadow-md transition-all"
+                      size="sm"
+                    >
+                      Start Reading
+                      <ArrowLeft className="w-4 h-4 ml-2 rotate-180 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </main>
