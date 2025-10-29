@@ -105,30 +105,34 @@ const ChaptersPage = () => {
               <div
                 key={chapter.id}
                 onClick={() => handleChapterClick(chapter.id)}
-                className="group cursor-pointer animate-fade-in"
+                className="group cursor-pointer animate-fade-in h-full"
                 style={{ animationDelay: `${index * 50}ms` }}
               >
-                <div className="relative rounded-2xl overflow-hidden bg-card border border-border shadow-sm hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:-translate-y-2">
-                  {/* Book Cover with Gradient */}
-                  <div className="relative aspect-[4/5] overflow-hidden">
+                <div className="relative h-full rounded-2xl overflow-hidden bg-card border border-border shadow-sm hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:-translate-y-2 flex flex-col">
+                  {/* Book Cover with Gradient - Reduced to half height */}
+                  <div className="relative aspect-video overflow-hidden flex-shrink-0">
                     <div className={`absolute inset-0 bg-gradient-to-br ${chapter.gradient} opacity-90`}>
                       {/* Decorative Pattern Overlay */}
                       <div className="absolute inset-0 opacity-10">
-                        <div className="absolute top-4 right-4 w-20 h-20 border-4 border-white rounded-full" />
-                        <div className="absolute bottom-8 left-6 w-16 h-16 border-4 border-white rotate-45" />
+                        <div className="absolute top-2 right-2 w-12 h-12 border-2 border-white rounded-full" />
+                        <div className="absolute bottom-2 left-2 w-10 h-10 border-2 border-white rotate-45" />
                       </div>
                       
                       {/* Content */}
-                      <div className="relative h-full flex flex-col items-center justify-center p-6 text-white">
-                        <div className="mb-4 p-4 bg-white/20 backdrop-blur-sm rounded-full">
-                          <BookOpen className="w-10 h-10 md:w-12 md:h-12" />
+                      <div className="relative h-full flex items-center justify-between px-4 text-white">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 bg-white/20 backdrop-blur-sm rounded-lg flex-shrink-0">
+                            <BookOpen className="w-6 h-6" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h3 className="font-bold text-sm md:text-base leading-tight mb-1 drop-shadow-lg line-clamp-2">
+                              {chapter.title}
+                            </h3>
+                            <Badge variant="secondary" className="bg-white/90 text-foreground backdrop-blur-sm text-xs">
+                              Chapter {index + 1}
+                            </Badge>
+                          </div>
                         </div>
-                        <h3 className="font-bold text-lg md:text-xl text-center leading-tight mb-2 drop-shadow-lg">
-                          {chapter.title}
-                        </h3>
-                        <Badge variant="secondary" className="bg-white/90 text-foreground backdrop-blur-sm">
-                          Chapter {index + 1}
-                        </Badge>
                       </div>
 
                       {/* Hover Overlay */}
@@ -136,25 +140,22 @@ const ChaptersPage = () => {
                     </div>
 
                     {/* 3D Book Spine Effect */}
-                    <div className="absolute left-0 top-0 bottom-0 w-2 bg-gradient-to-b from-black/40 via-black/20 to-black/40" />
+                    <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-black/40 via-black/20 to-black/40" />
                     
                     {/* Corner Fold Effect */}
-                    <div className="absolute top-0 right-0 w-0 h-0 border-l-[30px] border-l-transparent border-t-[30px] border-t-white/30" />
+                    <div className="absolute top-0 right-0 w-0 h-0 border-l-[20px] border-l-transparent border-t-[20px] border-t-white/30" />
                   </div>
 
-                  {/* Book Details Card */}
-                  <div className="p-5 space-y-3 bg-card">
-                    <div>
-                      <h4 className="font-bold text-base md:text-lg text-foreground line-clamp-2 group-hover:text-primary transition-colors mb-1.5">
-                        {chapter.title}
-                      </h4>
+                  {/* Book Details Card - Fixed Height */}
+                  <div className="p-4 space-y-2 bg-card flex-1 flex flex-col">
+                    <div className="flex-1">
                       <p className="text-xs md:text-sm text-muted-foreground line-clamp-2 leading-relaxed">
                         {chapter.description}
                       </p>
                     </div>
 
                     {/* Meta Information */}
-                    <div className="flex items-center justify-between pt-3 border-t border-border/50">
+                    <div className="flex items-center justify-between pt-2 border-t border-border/50">
                       <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                         <Clock className="w-3.5 h-3.5" />
                         <span>{chapter.duration}</span>
@@ -171,7 +172,7 @@ const ChaptersPage = () => {
 
                     {/* Read Button */}
                     <Button 
-                      className="w-full mt-2 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-sm group-hover:shadow-md transition-all"
+                      className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-sm group-hover:shadow-md transition-all"
                       size="sm"
                     >
                       Start Reading
