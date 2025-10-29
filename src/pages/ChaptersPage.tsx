@@ -1,7 +1,6 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowLeft, BookOpen, Clock, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import Header from "@/components/Header";
 
 // Mock chapter data with enhanced metadata
@@ -119,19 +118,9 @@ const ChaptersPage = () => {
                       </div>
                       
                       {/* Content */}
-                      <div className="relative h-full flex items-center justify-between px-4 text-white">
-                        <div className="flex items-center gap-3">
-                          <div className="p-2 bg-white/20 backdrop-blur-sm rounded-lg flex-shrink-0">
-                            <BookOpen className="w-6 h-6" />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <h3 className="font-bold text-sm md:text-base leading-tight mb-1 drop-shadow-lg line-clamp-2">
-                              {chapter.title}
-                            </h3>
-                            <Badge variant="secondary" className="bg-white/90 text-foreground backdrop-blur-sm text-xs">
-                              Chapter {index + 1}
-                            </Badge>
-                          </div>
+                      <div className="relative h-full flex items-center justify-center text-white">
+                        <div className="p-3 bg-white/20 backdrop-blur-sm rounded-xl">
+                          <BookOpen className="w-10 h-10 md:w-12 md:h-12" />
                         </div>
                       </div>
 
@@ -148,6 +137,10 @@ const ChaptersPage = () => {
 
                   {/* Book Details Card - Fixed Height */}
                   <div className="p-4 space-y-2 bg-card flex-1 flex flex-col">
+                    {/* Chapter Title */}
+                    <h3 className="font-bold text-sm md:text-base text-foreground line-clamp-2 group-hover:text-primary transition-colors">
+                      {chapter.title}
+                    </h3>
                     {/* Meta Information */}
                     <div className="flex items-center justify-between pt-2 border-t border-border/50">
                       <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
