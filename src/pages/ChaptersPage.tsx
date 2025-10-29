@@ -103,28 +103,20 @@ const ChaptersPage = () => {
             {chapters.map((chapter, index) => (
               <div
                 key={chapter.id}
-                className="group cursor-pointer animate-fade-in h-full relative perspective-1000"
+                className="group cursor-pointer animate-fade-in h-full relative"
                 style={{ animationDelay: `${index * 50}ms` }}
               >
-                {/* Book Pages Stack Effect - Visible from Right Edge */}
-                <div className="absolute right-0 top-3 bottom-3 w-2 flex flex-col justify-center gap-[1px] pr-[2px]">
-                  <div className="h-full bg-white dark:bg-gray-100 border-r border-gray-300 shadow-sm" />
-                </div>
-                <div className="absolute right-[2px] top-3.5 bottom-3.5 w-2 flex flex-col justify-center gap-[1px] pr-[2px]">
-                  <div className="h-full bg-white dark:bg-gray-200 border-r border-gray-300 shadow-sm" />
-                </div>
-                <div className="absolute right-[4px] top-4 bottom-4 w-2 flex flex-col justify-center gap-[1px] pr-[2px]">
-                  <div className="h-full bg-white dark:bg-gray-300 border-r border-gray-300 shadow-sm" />
+                {/* Stacked Pages Effect - Bottom Layers */}
+                <div className="absolute inset-x-0 bottom-0 h-full">
+                  <div className="absolute inset-x-2 bottom-0 top-2 bg-card border border-border rounded-2xl opacity-30" />
+                  <div className="absolute inset-x-1 bottom-0 top-1 bg-card border border-border rounded-2xl opacity-50" />
                 </div>
 
                 <div
                   onClick={() => handleChapterClick(chapter.id)}
-                  className="relative h-full rounded-l-2xl rounded-r-md overflow-hidden bg-card border-2 border-border shadow-lg hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 hover:-translate-y-3 hover:scale-[1.02] flex flex-col"
-                  style={{ 
-                    boxShadow: '4px 0 8px rgba(0,0,0,0.1), 8px 0 12px rgba(0,0,0,0.05)'
-                  }}
+                  className="relative h-full rounded-2xl overflow-hidden bg-card border border-border shadow-sm hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:-translate-y-2 flex flex-col"
                 >
-                  {/* Book Cover with Gradient */}
+                  {/* Book Cover with Gradient - Reduced to half height */}
                   <div className="relative aspect-video overflow-hidden flex-shrink-0">
                     <div className={`absolute inset-0 bg-gradient-to-br ${chapter.gradient} opacity-90`}>
                       {/* Decorative Pattern Overlay */}
@@ -135,7 +127,7 @@ const ChaptersPage = () => {
                       
                       {/* Content */}
                       <div className="relative h-full flex items-center justify-center text-white">
-                        <div className="p-3 bg-white/20 backdrop-blur-sm rounded-xl group-hover:scale-110 transition-transform duration-300">
+                        <div className="p-3 bg-white/20 backdrop-blur-sm rounded-xl">
                           <BookOpen className="w-10 h-10 md:w-12 md:h-12" />
                         </div>
                       </div>
@@ -144,25 +136,21 @@ const ChaptersPage = () => {
                       <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     </div>
 
-                    {/* Enhanced 3D Book Spine Effect - Left Edge */}
-                    <div className="absolute left-0 top-0 bottom-0 w-2 bg-gradient-to-r from-black/60 via-black/30 to-transparent" />
-                    <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-gradient-to-b from-white/20 via-transparent to-white/20" />
+                    {/* 3D Book Spine Effect */}
+                    <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-black/40 via-black/20 to-black/40" />
                     
                     {/* Corner Fold Effect */}
                     <div className="absolute top-0 right-0 w-0 h-0 border-l-[20px] border-l-transparent border-t-[20px] border-t-white/30" />
                   </div>
 
                   {/* Book Details Card - Fixed Height */}
-                  <div className="p-4 space-y-2 bg-card flex-1 flex flex-col relative">
-                    {/* Subtle page texture */}
-                    <div className="absolute inset-0 opacity-[0.02] bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,currentColor_2px,currentColor_3px)]" />
-                    
+                  <div className="p-4 space-y-2 bg-card flex-1 flex flex-col">
                     {/* Chapter Title */}
-                    <h3 className="font-bold text-sm md:text-base text-foreground line-clamp-2 group-hover:text-primary transition-colors relative z-10">
+                    <h3 className="font-bold text-sm md:text-base text-foreground line-clamp-2 group-hover:text-primary transition-colors">
                       {chapter.title}
                     </h3>
                     {/* Meta Information */}
-                    <div className="flex items-center justify-between pt-2 border-t border-border/50 relative z-10">
+                    <div className="flex items-center justify-between pt-2 border-t border-border/50">
                       <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                         <Clock className="w-3.5 h-3.5" />
                         <span>{chapter.duration}</span>
@@ -179,7 +167,7 @@ const ChaptersPage = () => {
 
                     {/* Read Button */}
                     <Button 
-                      className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-sm group-hover:shadow-md transition-all relative z-10"
+                      className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-sm group-hover:shadow-md transition-all"
                       size="sm"
                     >
                       Start Reading
