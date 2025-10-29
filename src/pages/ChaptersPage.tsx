@@ -65,75 +65,127 @@ const ChaptersPage = () => {
     setSelectedChapter(chapterId);
     setIsOpening(true);
     
-    // Wait for animation to complete before navigating
+    // Wait for realistic book opening animation
     setTimeout(() => {
       navigate(`/book-reader?subject=${subject}&chapter=${chapterId}`);
-    }, 1200);
+    }, 1600);
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-background relative overflow-hidden">
+    <div className="min-h-screen flex flex-col bg-background relative">
       <Header onLogout={handleLogout} />
       
-      {/* Book Opening Transition Overlay */}
+      {/* Realistic Book Opening Transition */}
       <AnimatePresence>
-        {isOpening && (
+        {isOpening && selectedChapter && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-background/95 backdrop-blur-sm"
+            className="fixed inset-0 z-50 bg-background"
           >
-            <motion.div
-              className="relative w-[600px] h-[400px] perspective-1000"
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.3 }}
-            >
-              {/* Book Cover - Left Side */}
+            <div className="absolute inset-0 flex items-center justify-center overflow-hidden" style={{ perspective: "2000px" }}>
+              {/* Left Page (Cover) */}
               <motion.div
-                className="absolute left-0 top-0 w-1/2 h-full bg-gradient-to-br from-primary to-primary/70 rounded-l-2xl shadow-2xl border-r-4 border-primary-foreground/20"
-                initial={{ rotateY: 0, transformOrigin: "right" }}
-                animate={{ rotateY: -160, transformOrigin: "right" }}
-                transition={{ duration: 1, ease: "easeInOut", delay: 0.2 }}
-                style={{ 
-                  transformStyle: "preserve-3d",
-                  backfaceVisibility: "hidden"
+                className="absolute w-[45vw] h-[70vh] origin-right"
+                style={{ transformStyle: "preserve-3d" }}
+                initial={{ rotateY: 0 }}
+                animate={{ rotateY: -180 }}
+                transition={{ 
+                  duration: 1.4, 
+                  ease: [0.45, 0, 0.15, 1],
+                  delay: 0.1
                 }}
               >
-                <div className="p-8 h-full flex flex-col items-center justify-center text-primary-foreground">
-                  <BookOpen className="w-20 h-20 mb-4" />
-                  <div className="text-xl font-bold text-center">Opening Chapter...</div>
+                {/* Front of left page (book cover) */}
+                <div 
+                  className="absolute inset-0 backface-hidden rounded-l-lg shadow-2xl overflow-hidden"
+                  style={{ backfaceVisibility: "hidden" }}
+                >
+                  <div className={`w-full h-full bg-gradient-to-br ${chapters.find(c => c.id === selectedChapter)?.gradient} p-12 flex flex-col items-center justify-center text-white`}>
+                    <BookOpen className="w-32 h-32 mb-6 drop-shadow-lg" />
+                    <h2 className="text-4xl font-bold text-center mb-3 drop-shadow-md">
+                      {chapters.find(c => c.id === selectedChapter)?.title}
+                    </h2>
+                    <p className="text-xl opacity-90 drop-shadow-sm">
+                      {subjectTitles[subject]}
+                    </p>
+                  </div>
+                  {/* Book spine shadow */}
+                  <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-r from-black/40 to-transparent" />
                 </div>
-              </motion.div>
-
-              {/* Book Pages - Right Side */}
-              <motion.div
-                className="absolute right-0 top-0 w-1/2 h-full bg-card rounded-r-2xl shadow-2xl"
-                initial={{ rotateY: 0, transformOrigin: "left" }}
-                animate={{ rotateY: 160, transformOrigin: "left" }}
-                transition={{ duration: 1, ease: "easeInOut", delay: 0.2 }}
-                style={{ 
-                  transformStyle: "preserve-3d",
-                  backfaceVisibility: "hidden"
-                }}
-              >
-                <div className="p-8 h-full bg-gradient-to-br from-muted to-background rounded-r-2xl">
-                  <div className="space-y-2">
-                    {[...Array(8)].map((_, i) => (
-                      <div
+                
+                {/* Back of left page */}
+                <div 
+                  className="absolute inset-0 backface-hidden bg-gradient-to-br from-card to-muted rounded-l-lg shadow-inner p-12"
+                  style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
+                >
+                  <div className="space-y-4">
+                    {[...Array(12)].map((_, i) => (
+                      <motion.div
                         key={i}
-                        className="h-4 bg-muted-foreground/20 rounded"
-                        style={{ width: `${Math.random() * 30 + 70}%` }}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 0.3, x: 0 }}
+                        transition={{ delay: 0.8 + i * 0.05 }}
+                        className="h-4 bg-foreground/10 rounded"
+                        style={{ width: `${Math.random() * 25 + 75}%` }}
                       />
                     ))}
                   </div>
                 </div>
               </motion.div>
 
-              {/* Book Spine */}
-              <div className="absolute left-1/2 top-0 w-2 h-full bg-gradient-to-b from-primary-foreground/40 to-primary-foreground/20 -translate-x-1/2 shadow-lg z-10" />
-            </motion.div>
+              {/* Right Page (Content) */}
+              <motion.div
+                className="absolute w-[45vw] h-[70vh] origin-left"
+                style={{ transformStyle: "preserve-3d" }}
+                initial={{ rotateY: 0 }}
+                animate={{ rotateY: 0 }}
+              >
+                {/* Front of right page */}
+                <div 
+                  className="absolute inset-0 bg-gradient-to-br from-card via-background to-muted/50 rounded-r-lg shadow-2xl p-12"
+                  style={{ backfaceVisibility: "hidden" }}
+                >
+                  <motion.div 
+                    className="space-y-4"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.6 }}
+                  >
+                    {[...Array(15)].map((_, i) => (
+                      <motion.div
+                        key={i}
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 0.3, x: 0 }}
+                        transition={{ delay: 0.5 + i * 0.04 }}
+                        className="h-4 bg-foreground/10 rounded"
+                        style={{ width: `${Math.random() * 30 + 70}%` }}
+                      />
+                    ))}
+                  </motion.div>
+                  {/* Page shadow on left edge */}
+                  <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-l from-transparent to-black/10" />
+                </div>
+              </motion.div>
+
+              {/* Center spine/binding */}
+              <div className="absolute w-3 h-[70vh] bg-gradient-to-r from-muted-foreground/30 via-muted-foreground/50 to-muted-foreground/30 shadow-lg" 
+                style={{ 
+                  left: "50%", 
+                  transform: "translateX(-50%)",
+                  boxShadow: "0 0 20px rgba(0,0,0,0.3), inset 0 0 10px rgba(0,0,0,0.2)"
+                }} 
+              />
+
+              {/* Ambient shadow under book */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 0.3, scale: 1 }}
+                transition={{ duration: 0.5 }}
+                className="absolute w-[92vw] h-8 bg-black/40 blur-3xl"
+                style={{ top: "calc(50% + 36vh)" }}
+              />
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
