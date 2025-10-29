@@ -103,11 +103,19 @@ const ChaptersPage = () => {
             {chapters.map((chapter, index) => (
               <div
                 key={chapter.id}
-                onClick={() => handleChapterClick(chapter.id)}
-                className="group cursor-pointer animate-fade-in h-full"
+                className="group cursor-pointer animate-fade-in h-full relative"
                 style={{ animationDelay: `${index * 50}ms` }}
               >
-                <div className="relative h-full rounded-2xl overflow-hidden bg-card border border-border shadow-sm hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:-translate-y-2 flex flex-col">
+                {/* Stacked Pages Effect - Bottom Layers */}
+                <div className="absolute inset-x-0 bottom-0 h-full">
+                  <div className="absolute inset-x-2 bottom-0 top-2 bg-card border border-border rounded-2xl opacity-30" />
+                  <div className="absolute inset-x-1 bottom-0 top-1 bg-card border border-border rounded-2xl opacity-50" />
+                </div>
+
+                <div
+                  onClick={() => handleChapterClick(chapter.id)}
+                  className="relative h-full rounded-2xl overflow-hidden bg-card border border-border shadow-sm hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:-translate-y-2 flex flex-col"
+                >
                   {/* Book Cover with Gradient - Reduced to half height */}
                   <div className="relative aspect-video overflow-hidden flex-shrink-0">
                     <div className={`absolute inset-0 bg-gradient-to-br ${chapter.gradient} opacity-90`}>
