@@ -2,8 +2,8 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowLeft, BookOpen, Clock, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Header from "@/components/Header";
-import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
+import { useState, useRef } from "react";
 
 // Mock chapter data with enhanced metadata
 const chapterData: Record<string, { 
@@ -225,20 +225,79 @@ const ChaptersPage = () => {
 
           {/* Premium Chapters Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-6">
-            {chapters.map((chapter, index) => (
-              <motion.div
-                key={chapter.id}
-                className="group cursor-pointer h-full relative"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05 }}
-                whileHover={{ y: -8, transition: { duration: 0.3 } }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <div
-                  onClick={() => handleChapterClick(chapter.id)}
-                  className="relative h-full rounded-2xl overflow-visible bg-card border border-border shadow-sm hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 flex flex-col"
-                >
+            {chapters.map((chapter, index) => {
+              const ChapterCard = () => {
+                const cardRef = useRef<HTMLDivElement>(null);
+                const [isHovered, setIsHovered] = useState(false);
+                const mouseX = useMotionValue(0);
+                const mouseY = useMotionValue(0);
+
+                const rotateX = useTransform(mouseY, [-100, 100], [5, -5]);
+                const rotateY = useTransform(mouseX, [-100, 100], [-5, 5]);
+
+                const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+                  if (!cardRef.current) return;
+                  const rect = cardRef.current.getBoundingClientRect();
+                  const centerX = rect.left + rect.width / 2;
+                  const centerY = rect.top + rect.height / 2;
+                  mouseX.set(e.clientX - centerX);
+                  mouseY.set(e.clientY - centerY);
+                };
+
+                const handleMouseLeave = () => {
+                  mouseX.set(0);
+                  mouseY.set(0);
+                  setIsHovered(false);
+                };
+
+                return (
+                  <motion.div
+                    ref={cardRef}
+                    className="group cursor-pointer h-full relative"
+                    initial={{ opacity: 0, y: 20, rotateX: 0 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ 
+                      delay: index * 0.08,
+                      duration: 0.5,
+                      ease: [0.25, 0.46, 0.45, 0.94]
+                    }}
+                    whileHover={{ 
+                      y: -12,
+                      scale: 1.02,
+                      transition: { duration: 0.3, ease: "easeOut" }
+                    }}
+                    whileTap={{ 
+                      scale: 0.97,
+                      transition: { duration: 0.1 }
+                    }}
+                    style={{
+                      rotateX,
+                      rotateY,
+                      transformStyle: "preserve-3d",
+                      perspective: 1000,
+                    }}
+                    onMouseMove={handleMouseMove}
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={handleMouseLeave}
+                  >
+                    {/* Magnetic Glow Effect */}
+                    <motion.div
+                      className="absolute -inset-1 rounded-2xl opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500"
+                      style={{
+                        background: `linear-gradient(135deg, ${chapter.gradient.replace('from-', '').replace(' to-', ', ')})`,
+                      }}
+                      animate={{
+                        opacity: isHovered ? 0.3 : 0,
+                      }}
+                    />
+
+                    <motion.div
+                      onClick={() => handleChapterClick(chapter.id)}
+                      className="relative h-full rounded-2xl overflow-visible bg-card border border-border shadow-lg hover:shadow-2xl hover:border-primary/30 transition-all duration-500 flex flex-col"
+                      style={{
+                        transformStyle: "preserve-3d",
+                      }}
+                    >
                   {/* 3D Book Pages Stack on Right Edge */}
                   <div className="absolute -right-1 top-4 bottom-4 w-3 pointer-events-none">
                     {/* Page layers creating depth effect */}
@@ -247,67 +306,189 @@ const ChaptersPage = () => {
                     <div className="absolute right-0 top-[4px] bottom-[4px] w-[3px] bg-card border-r border-t border-b border-border/80 rounded-r-sm translate-x-[2px]" />
                   </div>
 
-                  {/* Book Cover with Gradient */}
-                  <div className="relative aspect-video overflow-hidden flex-shrink-0 rounded-t-2xl">
-                    <div className={`absolute inset-0 bg-gradient-to-br ${chapter.gradient} opacity-90`}>
-                      {/* Decorative Pattern Overlay */}
-                      <div className="absolute inset-0 opacity-10">
-                        <div className="absolute top-2 right-2 w-12 h-12 border-2 border-white rounded-full" />
-                        <div className="absolute bottom-2 left-2 w-10 h-10 border-2 border-white rotate-45" />
-                      </div>
-                      
-                      {/* Content */}
-                      <div className="relative h-full flex items-center justify-center text-white">
-                        <div className="p-3 bg-white/20 backdrop-blur-sm rounded-xl">
-                          <BookOpen className="w-10 h-10 md:w-12 md:h-12" />
+                      {/* Book Cover with Gradient */}
+                      <motion.div 
+                        className="relative aspect-video overflow-hidden flex-shrink-0 rounded-t-2xl"
+                        style={{ transformStyle: "preserve-3d" }}
+                      >
+                        <motion.div 
+                          className={`absolute inset-0 bg-gradient-to-br ${chapter.gradient} opacity-90`}
+                          animate={{
+                            scale: isHovered ? 1.05 : 1,
+                          }}
+                          transition={{ duration: 0.4 }}
+                        >
+                          {/* Shimmer Effect */}
+                          <motion.div
+                            className="absolute inset-0 opacity-0 group-hover:opacity-100"
+                            style={{
+                              background: "linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.4) 50%, transparent 70%)",
+                            }}
+                            animate={isHovered ? {
+                              x: ["-100%", "200%"],
+                            } : {}}
+                            transition={{
+                              duration: 1.5,
+                              ease: "easeInOut",
+                            }}
+                          />
+
+                          {/* Decorative Pattern Overlay */}
+                          <motion.div 
+                            className="absolute inset-0 opacity-10"
+                            animate={{
+                              rotate: isHovered ? [0, 5, 0] : 0,
+                            }}
+                            transition={{ duration: 0.6 }}
+                          >
+                            <div className="absolute top-2 right-2 w-12 h-12 border-2 border-white rounded-full" />
+                            <div className="absolute bottom-2 left-2 w-10 h-10 border-2 border-white rotate-45" />
+                          </motion.div>
+                          
+                          {/* Content */}
+                          <div className="relative h-full flex items-center justify-center text-white">
+                            <motion.div 
+                              className="p-3 bg-white/20 backdrop-blur-sm rounded-xl"
+                              whileHover={{ 
+                                scale: 1.1,
+                                rotate: [0, -5, 5, 0],
+                                transition: { duration: 0.5 }
+                              }}
+                            >
+                              <BookOpen className="w-10 h-10 md:w-12 md:h-12" />
+                            </motion.div>
+                          </div>
+
+                          {/* Hover Overlay */}
+                          <motion.div 
+                            className="absolute inset-0 bg-black/20"
+                            animate={{
+                              opacity: isHovered ? 1 : 0,
+                            }}
+                            transition={{ duration: 0.3 }}
+                          />
+                        </motion.div>
+
+                        {/* 3D Book Spine Effect */}
+                        <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-black/40 via-black/20 to-black/40" />
+                        
+                        {/* Corner Fold Effect with Animation */}
+                        <motion.div 
+                          className="absolute top-0 right-0 w-0 h-0 border-l-[20px] border-l-transparent border-t-[20px] border-t-white/30"
+                          whileHover={{
+                            borderLeftWidth: 25,
+                            borderTopWidth: 25,
+                            transition: { duration: 0.3 }
+                          }}
+                        />
+                      </motion.div>
+
+                      {/* Book Details Card */}
+                      <motion.div 
+                        className="p-4 space-y-2 bg-card flex-1 flex flex-col rounded-b-2xl"
+                        style={{ transformStyle: "preserve-3d", transform: "translateZ(20px)" }}
+                      >
+                        {/* Chapter Title */}
+                        <motion.h3 
+                          className="font-bold text-sm md:text-base text-foreground line-clamp-2 group-hover:text-primary transition-colors"
+                          animate={{
+                            scale: isHovered ? 1.02 : 1,
+                          }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          {chapter.title}
+                        </motion.h3>
+                        
+                        {/* Meta Information */}
+                        <div className="flex items-center justify-between pt-2 border-t border-border/50">
+                          <motion.div 
+                            className="flex items-center gap-1.5 text-xs text-muted-foreground"
+                            whileHover={{ scale: 1.05, color: "hsl(var(--primary))" }}
+                          >
+                            <Clock className="w-3.5 h-3.5" />
+                            <span>{chapter.duration}</span>
+                          </motion.div>
+                          <motion.div 
+                            className="flex items-center gap-1.5 text-xs text-muted-foreground"
+                            whileHover={{ scale: 1.05, color: "hsl(var(--primary))" }}
+                          >
+                            <BookOpen className="w-3.5 h-3.5" />
+                            <span>{chapter.pages} pages</span>
+                          </motion.div>
+                          <motion.div 
+                            className="flex items-center gap-0.5"
+                            animate={isHovered ? {
+                              rotate: [0, -10, 10, -10, 0],
+                            } : {}}
+                            transition={{ duration: 0.5 }}
+                          >
+                            <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                            <span className="text-xs font-medium text-foreground">New</span>
+                          </motion.div>
                         </div>
-                      </div>
 
-                      {/* Hover Overlay */}
-                      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    </div>
+                        {/* Read Button */}
+                        <motion.div
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                        >
+                          <Button 
+                            className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-sm group-hover:shadow-lg transition-all overflow-hidden relative"
+                            size="sm"
+                          >
+                            {/* Button Shine Effect */}
+                            <motion.div
+                              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                              animate={isHovered ? {
+                                x: ["-100%", "200%"],
+                              } : {}}
+                              transition={{
+                                duration: 0.8,
+                                ease: "easeInOut",
+                              }}
+                            />
+                            <span className="relative z-10">Start Reading</span>
+                            <ArrowLeft className="w-4 h-4 ml-2 rotate-180 group-hover:translate-x-1 transition-transform relative z-10" />
+                          </Button>
+                        </motion.div>
+                      </motion.div>
+                    </motion.div>
 
-                    {/* 3D Book Spine Effect */}
-                    <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-black/40 via-black/20 to-black/40" />
-                    
-                    {/* Corner Fold Effect */}
-                    <div className="absolute top-0 right-0 w-0 h-0 border-l-[20px] border-l-transparent border-t-[20px] border-t-white/30" />
-                  </div>
+                    {/* Floating particles on hover */}
+                    {isHovered && (
+                      <>
+                        {[...Array(3)].map((_, i) => (
+                          <motion.div
+                            key={i}
+                            className="absolute w-1 h-1 rounded-full bg-primary/40 pointer-events-none"
+                            initial={{ 
+                              x: Math.random() * 100 - 50,
+                              y: 20,
+                              opacity: 0,
+                            }}
+                            animate={{ 
+                              y: -100,
+                              opacity: [0, 1, 0],
+                            }}
+                            transition={{
+                              duration: 2,
+                              delay: i * 0.2,
+                              repeat: Infinity,
+                            }}
+                            style={{
+                              left: `${20 + i * 30}%`,
+                              bottom: 0,
+                            }}
+                          />
+                        ))}
+                      </>
+                    )}
+                  </motion.div>
+                );
+              };
 
-                  {/* Book Details Card */}
-                  <div className="p-4 space-y-2 bg-card flex-1 flex flex-col rounded-b-2xl">
-                    {/* Chapter Title */}
-                    <h3 className="font-bold text-sm md:text-base text-foreground line-clamp-2 group-hover:text-primary transition-colors">
-                      {chapter.title}
-                    </h3>
-                    {/* Meta Information */}
-                    <div className="flex items-center justify-between pt-2 border-t border-border/50">
-                      <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                        <Clock className="w-3.5 h-3.5" />
-                        <span>{chapter.duration}</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                        <BookOpen className="w-3.5 h-3.5" />
-                        <span>{chapter.pages} pages</span>
-                      </div>
-                      <div className="flex items-center gap-0.5">
-                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                        <span className="text-xs font-medium text-foreground">New</span>
-                      </div>
-                    </div>
-
-                    {/* Read Button */}
-                    <Button 
-                      className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-sm group-hover:shadow-md transition-all"
-                      size="sm"
-                    >
-                      Start Reading
-                      <ArrowLeft className="w-4 h-4 ml-2 rotate-180 group-hover:translate-x-1 transition-transform" />
-                    </Button>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+              return <ChapterCard key={chapter.id} />;
+            })}
           </div>
         </div>
       </main>
