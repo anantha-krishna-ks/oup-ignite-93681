@@ -2,6 +2,8 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowLeft, BookOpen, Clock, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Header from "@/components/Header";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
 
 // Mock chapter data with enhanced metadata
 const chapterData: Record<string, { 
@@ -44,6 +46,8 @@ const ChaptersPage = () => {
   const [searchParams] = useSearchParams();
   const subject = searchParams.get("subject") || "english";
   const chapters = chapterData[subject] || chapterData.english;
+  const [isOpening, setIsOpening] = useState(false);
+  const [selectedChapter, setSelectedChapter] = useState<string | null>(null);
 
   const subjectTitles: Record<string, string> = {
     english: "English",
@@ -58,12 +62,81 @@ const ChaptersPage = () => {
   };
 
   const handleChapterClick = (chapterId: string) => {
-    navigate(`/book-reader?subject=${subject}&chapter=${chapterId}`);
+    setSelectedChapter(chapterId);
+    setIsOpening(true);
+    
+    // Wait for animation to complete before navigating
+    setTimeout(() => {
+      navigate(`/book-reader?subject=${subject}&chapter=${chapterId}`);
+    }, 1200);
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
+    <div className="min-h-screen flex flex-col bg-background relative overflow-hidden">
       <Header onLogout={handleLogout} />
+      
+      {/* Book Opening Transition Overlay */}
+      <AnimatePresence>
+        {isOpening && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-background/95 backdrop-blur-sm"
+          >
+            <motion.div
+              className="relative w-[600px] h-[400px] perspective-1000"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.3 }}
+            >
+              {/* Book Cover - Left Side */}
+              <motion.div
+                className="absolute left-0 top-0 w-1/2 h-full bg-gradient-to-br from-primary to-primary/70 rounded-l-2xl shadow-2xl border-r-4 border-primary-foreground/20"
+                initial={{ rotateY: 0, transformOrigin: "right" }}
+                animate={{ rotateY: -160, transformOrigin: "right" }}
+                transition={{ duration: 1, ease: "easeInOut", delay: 0.2 }}
+                style={{ 
+                  transformStyle: "preserve-3d",
+                  backfaceVisibility: "hidden"
+                }}
+              >
+                <div className="p-8 h-full flex flex-col items-center justify-center text-primary-foreground">
+                  <BookOpen className="w-20 h-20 mb-4" />
+                  <div className="text-xl font-bold text-center">Opening Chapter...</div>
+                </div>
+              </motion.div>
+
+              {/* Book Pages - Right Side */}
+              <motion.div
+                className="absolute right-0 top-0 w-1/2 h-full bg-card rounded-r-2xl shadow-2xl"
+                initial={{ rotateY: 0, transformOrigin: "left" }}
+                animate={{ rotateY: 160, transformOrigin: "left" }}
+                transition={{ duration: 1, ease: "easeInOut", delay: 0.2 }}
+                style={{ 
+                  transformStyle: "preserve-3d",
+                  backfaceVisibility: "hidden"
+                }}
+              >
+                <div className="p-8 h-full bg-gradient-to-br from-muted to-background rounded-r-2xl">
+                  <div className="space-y-2">
+                    {[...Array(8)].map((_, i) => (
+                      <div
+                        key={i}
+                        className="h-4 bg-muted-foreground/20 rounded"
+                        style={{ width: `${Math.random() * 30 + 70}%` }}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Book Spine */}
+              <div className="absolute left-1/2 top-0 w-2 h-full bg-gradient-to-b from-primary-foreground/40 to-primary-foreground/20 -translate-x-1/2 shadow-lg z-10" />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       
       <main className="flex-1 overflow-y-auto bg-gradient-to-b from-background via-background to-muted/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
@@ -101,14 +174,18 @@ const ChaptersPage = () => {
           {/* Premium Chapters Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-6">
             {chapters.map((chapter, index) => (
-              <div
+              <motion.div
                 key={chapter.id}
-                className="group cursor-pointer animate-fade-in h-full relative"
-                style={{ animationDelay: `${index * 50}ms` }}
+                className="group cursor-pointer h-full relative"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.05 }}
+                whileHover={{ y: -8, transition: { duration: 0.3 } }}
+                whileTap={{ scale: 0.98 }}
               >
                 <div
                   onClick={() => handleChapterClick(chapter.id)}
-                  className="relative h-full rounded-2xl overflow-visible bg-card border border-border shadow-sm hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:-translate-y-2 flex flex-col"
+                  className="relative h-full rounded-2xl overflow-visible bg-card border border-border shadow-sm hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 flex flex-col"
                 >
                   {/* 3D Book Pages Stack on Right Edge */}
                   <div className="absolute -right-1 top-4 bottom-4 w-3 pointer-events-none">
@@ -177,7 +254,7 @@ const ChaptersPage = () => {
                     </Button>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
