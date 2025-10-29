@@ -112,10 +112,10 @@ const ChaptersPage = () => {
                 >
                   {/* 3D Book Pages Stack on Right Edge */}
                   <div className="absolute -right-1 top-4 bottom-4 w-3 pointer-events-none">
-                    {/* Page layers creating depth effect */}
-                    <div className="absolute right-0 top-0 bottom-0 w-[3px] bg-muted border-r border-t border-b border-border rounded-r-sm translate-x-[6px] opacity-70" />
-                    <div className="absolute right-0 top-[2px] bottom-[2px] w-[3px] bg-muted border-r border-t border-b border-border rounded-r-sm translate-x-[4px] opacity-85" />
-                    <div className="absolute right-0 top-[4px] bottom-[4px] w-[3px] bg-card border-r border-t border-b border-border/80 rounded-r-sm translate-x-[2px]" />
+                    {/* Page layers creating depth effect with shadows */}
+                    <div className="absolute right-0 top-0 bottom-0 w-[4px] bg-muted/90 border-r border-t border-b border-muted-foreground/30 rounded-r-sm translate-x-[7px] shadow-sm" />
+                    <div className="absolute right-0 top-[2px] bottom-[2px] w-[4px] bg-muted border-r border-t border-b border-muted-foreground/40 rounded-r-sm translate-x-[4px] shadow-md" />
+                    <div className="absolute right-0 top-[4px] bottom-[4px] w-[4px] bg-card border-r border-t border-b border-muted-foreground/50 rounded-r-sm translate-x-[1px] shadow-lg" />
                   </div>
 
                   {/* Book Cover with Gradient */}
