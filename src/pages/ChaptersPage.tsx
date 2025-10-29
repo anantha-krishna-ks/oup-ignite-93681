@@ -81,7 +81,7 @@ const ChaptersPage = () => {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md"
+            className="fixed inset-0 z-50 bg-background"
           >
             <div className="absolute inset-0 flex items-center justify-center overflow-hidden" style={{ perspective: "2000px" }}>
               {/* Left Page (Cover) */}
@@ -98,10 +98,10 @@ const ChaptersPage = () => {
               >
                 {/* Front of left page (book cover) */}
                 <div 
-                  className="absolute inset-0 backface-hidden rounded-l-lg shadow-2xl overflow-hidden bg-card"
+                  className="absolute inset-0 backface-hidden rounded-l-lg shadow-2xl overflow-hidden"
                   style={{ backfaceVisibility: "hidden" }}
                 >
-                  <div className={`w-full h-full bg-gradient-to-br ${chapters.find(c => c.id === selectedChapter)?.gradient} p-12 flex flex-col items-center justify-center text-white opacity-100`}>
+                  <div className={`w-full h-full bg-gradient-to-br ${chapters.find(c => c.id === selectedChapter)?.gradient} p-12 flex flex-col items-center justify-center text-white`}>
                     <BookOpen className="w-32 h-32 mb-6 drop-shadow-lg" />
                     <h2 className="text-4xl font-bold text-center mb-3 drop-shadow-md">
                       {chapters.find(c => c.id === selectedChapter)?.title}
@@ -116,7 +116,7 @@ const ChaptersPage = () => {
                 
                 {/* Back of left page */}
                 <div 
-                  className="absolute inset-0 backface-hidden bg-white dark:bg-gray-900 rounded-l-lg shadow-inner p-12 opacity-100"
+                  className="absolute inset-0 backface-hidden bg-gradient-to-br from-card to-muted rounded-l-lg shadow-inner p-12"
                   style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
                 >
                   <div className="space-y-4">
@@ -143,7 +143,7 @@ const ChaptersPage = () => {
               >
                 {/* Front of right page */}
                 <div 
-                  className="absolute inset-0 bg-white dark:bg-gray-900 rounded-r-lg shadow-2xl p-12 opacity-100"
+                  className="absolute inset-0 bg-gradient-to-br from-card via-background to-muted/50 rounded-r-lg shadow-2xl p-12"
                   style={{ backfaceVisibility: "hidden" }}
                 >
                   <motion.div 
