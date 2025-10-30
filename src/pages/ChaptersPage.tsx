@@ -16,10 +16,13 @@ const chapterData: Record<string, {
   gradient: string;
 }[]> = {
   english: [
-    { id: "chapter-1", title: "The Magic Garden", cover: "/english-grade1-chapter.pdf", description: "A delightful story about a magical garden", duration: "12 min", pages: 24, gradient: "from-emerald-500 to-teal-600" },
-    { id: "chapter-2", title: "Happy Child", cover: "/english-grade1-chapter.pdf", description: "Learn about emotions and expressions", duration: "10 min", pages: 20, gradient: "from-amber-500 to-orange-600" },
-    { id: "chapter-3", title: "Three Little Pigs", cover: "/english-grade1-chapter.pdf", description: "Classic fairy tale with important lessons", duration: "15 min", pages: 28, gradient: "from-pink-500 to-rose-600" },
-    { id: "chapter-4", title: "The Tortoise and the Hare", cover: "/english-grade1-chapter.pdf", description: "A tale about patience and perseverance", duration: "13 min", pages: 22, gradient: "from-blue-500 to-indigo-600" },
+    { id: "chapter-1", title: "Jo Jo Laali (A jogula)", cover: "/english-grade1-chapter.pdf", description: "A delightful story about Jo Jo Laali", duration: "12 min", pages: 24, gradient: "from-emerald-500 to-teal-600" },
+    { id: "chapter-2", title: "Kamala's First Day at School", cover: "/english-grade1-chapter.pdf", description: "Join Kamala on her exciting first day", duration: "10 min", pages: 20, gradient: "from-amber-500 to-orange-600" },
+    { id: "chapter-3", title: "Friends", cover: "/english-grade1-chapter.pdf", description: "Learn about friendship and caring", duration: "15 min", pages: 28, gradient: "from-pink-500 to-rose-600" },
+    { id: "chapter-4", title: "A Little Clock", cover: "/english-grade1-chapter.pdf", description: "Discover how to tell time", duration: "13 min", pages: 22, gradient: "from-blue-500 to-indigo-600" },
+    { id: "chapter-5", title: "Let's Play Hide-and-Seek!", cover: "/english-grade1-chapter.pdf", description: "A fun game adventure", duration: "11 min", pages: 20, gradient: "from-purple-500 to-violet-600" },
+    { id: "chapter-6", title: "Healthy Habits", cover: "/english-grade1-chapter.pdf", description: "Learn about staying healthy", duration: "14 min", pages: 26, gradient: "from-cyan-500 to-blue-600" },
+    { id: "chapter-7", title: "Four Seasons", cover: "/english-grade1-chapter.pdf", description: "Explore the seasons of the year", duration: "12 min", pages: 24, gradient: "from-lime-500 to-green-600" },
   ],
   mathematics: [
     { id: "chapter-1", title: "Numbers 1-10", cover: "/english-grade1-chapter.pdf", description: "Introduction to counting and numbers", duration: "11 min", pages: 18, gradient: "from-purple-500 to-violet-600" },
