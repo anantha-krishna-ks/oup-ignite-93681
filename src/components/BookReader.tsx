@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight, ArrowLeft, FileText, Video, BookOpen, ZoomIn, ZoomOut, Search, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowLeft, FileText, Video, BookOpen, ZoomIn, ZoomOut, Search, X, List } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -243,7 +243,10 @@ const BookReader = ({ subject, onClose }: BookReaderProps) => {
           {/* Chapter Dropdown */}
           <Select value={selectedChapter} onValueChange={setSelectedChapter}>
             <SelectTrigger className="w-full sm:w-[200px] md:w-[280px]">
-              <SelectValue placeholder="Select chapter" />
+              <div className="flex items-center gap-2">
+                <List className="w-4 h-4" />
+                <SelectValue placeholder="Select chapter" />
+              </div>
             </SelectTrigger>
             <SelectContent>
               {chapters.map((chapter) => (
