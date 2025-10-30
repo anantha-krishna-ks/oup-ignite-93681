@@ -284,25 +284,16 @@ const ChaptersPage = () => {
                     <h3 className="font-bold text-sm md:text-base text-foreground line-clamp-2 group-hover:text-primary transition-colors">
                       {chapter.title}
                     </h3>
-                    {/* Meta Information */}
-                    <div className="flex items-center justify-between pt-2 border-t border-border/50">
-                      <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                        <Clock className="w-3.5 h-3.5" />
-                        <span>{chapter.duration}</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                        <BookOpen className="w-3.5 h-3.5" />
-                        <span>{chapter.pages} pages</span>
-                      </div>
-                      <div className="flex items-center gap-0.5">
-                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                        <span className="text-xs font-medium text-foreground">New</span>
-                      </div>
+                    
+                    {/* Pages Count */}
+                    <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                      <BookOpen className="w-3.5 h-3.5" />
+                      <span>{chapter.pages} pages</span>
                     </div>
 
                     {/* Read Button */}
                     <Button 
-                      className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-sm group-hover:shadow-md transition-all"
+                      className="w-full mt-auto bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-sm group-hover:shadow-md transition-all"
                       size="sm"
                     >
                       Start Reading
