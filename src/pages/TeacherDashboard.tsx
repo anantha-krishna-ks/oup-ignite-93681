@@ -81,9 +81,13 @@ const TeacherDashboard = () => {
   const [selectedClass, setSelectedClass] = useState("class-1");
   const [assessmentClass, setAssessmentClass] = useState("class-1");
   const [assessmentSubject, setAssessmentSubject] = useState("english");
+  const [assessmentChapter, setAssessmentChapter] = useState("chapter-1");
   const [resourceClass, setResourceClass] = useState("class-1");
   const [resourceSubject, setResourceSubject] = useState("english");
   const [resourceChapter, setResourceChapter] = useState("chapter-1");
+  const [lessonPlanClass, setLessonPlanClass] = useState("class-1");
+  const [lessonPlanSubject, setLessonPlanSubject] = useState("english");
+  const [lessonPlanChapter, setLessonPlanChapter] = useState("chapter-1");
   const [lessonPlanDialog, setLessonPlanDialog] = useState(false);
   const [selectedLessonPlan, setSelectedLessonPlan] = useState<{ subject: string; number: string } | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -450,6 +454,24 @@ const TeacherDashboard = () => {
                     </SelectContent>
                   </Select>
                 </div>
+
+                <div className="w-full sm:w-48">
+                  <label className="text-sm font-medium text-foreground mb-2 block">
+                    Chapter
+                  </label>
+                  <Select value={assessmentChapter} onValueChange={setAssessmentChapter}>
+                    <SelectTrigger className="bg-white dark:bg-white text-foreground">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white dark:bg-white">
+                      {chapters.map((chapter) => (
+                        <SelectItem key={chapter.id} value={chapter.id}>
+                          {chapter.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
                 
                 <div className="flex-1">
                   <label className="text-sm font-medium text-foreground mb-2 block">
@@ -545,7 +567,7 @@ const TeacherDashboard = () => {
                   <label className="text-sm font-medium text-foreground mb-2 block">
                     Class
                   </label>
-                  <Select value={selectedClass} onValueChange={setSelectedClass}>
+                  <Select value={lessonPlanClass} onValueChange={setLessonPlanClass}>
                     <SelectTrigger className="bg-card border-border">
                       <SelectValue />
                     </SelectTrigger>
@@ -563,7 +585,7 @@ const TeacherDashboard = () => {
                   <label className="text-sm font-medium text-foreground mb-2 block">
                     Subject
                   </label>
-                  <Select value={assessmentSubject} onValueChange={setAssessmentSubject}>
+                  <Select value={lessonPlanSubject} onValueChange={setLessonPlanSubject}>
                     <SelectTrigger className="bg-card border-border">
                       <SelectValue />
                     </SelectTrigger>
@@ -571,6 +593,24 @@ const TeacherDashboard = () => {
                       {subjects.map((subject) => (
                         <SelectItem key={subject.id} value={subject.id}>
                           {subject.title}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="w-full sm:w-48">
+                  <label className="text-sm font-medium text-foreground mb-2 block">
+                    Chapter
+                  </label>
+                  <Select value={lessonPlanChapter} onValueChange={setLessonPlanChapter}>
+                    <SelectTrigger className="bg-card border-border">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="bg-popover border-border">
+                      {chapters.map((chapter) => (
+                        <SelectItem key={chapter.id} value={chapter.id}>
+                          {chapter.name}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -602,7 +642,7 @@ const TeacherDashboard = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">16</div>
-                  <p className="text-xs text-muted-foreground">Available for {classes.find((c) => c.id === selectedClass)?.name}</p>
+                  <p className="text-xs text-muted-foreground">Available for {classes.find((c) => c.id === lessonPlanClass)?.name}</p>
                 </CardContent>
               </Card>
 
