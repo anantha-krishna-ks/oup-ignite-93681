@@ -70,10 +70,14 @@ const activities = [
 ];
 
 const chapters = [
-  { id: "chapter-1", name: "Chapter 1" },
-  { id: "chapter-2", name: "Chapter 2" },
-  { id: "chapter-3", name: "Chapter 3" },
-  { id: "chapter-4", name: "Chapter 4" },
+  { id: "chapter-1", name: "Fun with Words" },
+  { id: "chapter-2", name: "Jo Jo Laali (A jogula)" },
+  { id: "chapter-3", name: "Kamala's First Day at School" },
+  { id: "chapter-4", name: "Friends" },
+  { id: "chapter-5", name: "A Little Clock" },
+  { id: "chapter-6", name: "Let's Play Hide-and-Seek!" },
+  { id: "chapter-7", name: "Healthy Habits" },
+  { id: "chapter-8", name: "Four Seasons" },
 ];
 
 const learningResources = [
