@@ -50,11 +50,23 @@ const assessmentClasses = [
 ];
 
 const activities = [
-  { id: 1, name: "Activity on Prepositions" },
-  { id: 2, name: "Activity on Verbs" },
-  { id: 3, name: "Activity on Adjectives" },
-  { id: 4, name: "Activity on Nouns" },
-  { id: 5, name: "Activity on Sentence Formation" },
+  { id: 1, name: "Activity on Prepositions", type: "activity" },
+  { id: 2, name: "Activity on Verbs", type: "activity" },
+  { id: 3, name: "Activity on Adjectives", type: "activity" },
+  { id: 4, name: "Activity on Nouns", type: "activity" },
+  { id: 5, name: "Activity on Sentence Formation", type: "activity" },
+  { id: 6, name: "Grammar Worksheet - Part A", type: "worksheet" },
+  { id: 7, name: "Reading Comprehension Worksheet", type: "worksheet" },
+  { id: 8, name: "Vocabulary Building Worksheet", type: "worksheet" },
+  { id: 9, name: "Writing Practice Sheet", type: "worksheet" },
+  { id: 10, name: "Spelling Assessment Worksheet", type: "worksheet" },
+  { id: 11, name: "Phonics Worksheet - Level 1", type: "worksheet" },
+  { id: 12, name: "Sentence Formation Worksheet", type: "worksheet" },
+  { id: 13, name: "Grammar Rules Worksheet", type: "worksheet" },
+  { id: 14, name: "Creative Writing Worksheet", type: "worksheet" },
+  { id: 15, name: "Poetry Analysis Worksheet", type: "worksheet" },
+  { id: 16, name: "Punctuation Practice Worksheet", type: "worksheet" },
+  { id: 17, name: "Story Sequencing Worksheet", type: "worksheet" },
 ];
 
 const chapters = [
@@ -94,6 +106,7 @@ const TeacherDashboard = () => {
   const [resourceSearch, setResourceSearch] = useState("");
   const [assessmentSearch, setAssessmentSearch] = useState("");
   const [lessonPlanSearch, setLessonPlanSearch] = useState("");
+  const [assessmentFilter, setAssessmentFilter] = useState<"all" | "worksheet" | "activity">("all");
 
   useEffect(() => {
     const userRole = localStorage.getItem("userRole");
@@ -492,36 +505,69 @@ const TeacherDashboard = () => {
 
               {/* Widgets */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
-                <Card>
+                <Card 
+                  className={cn(
+                    "cursor-pointer transition-all duration-300 hover:shadow-lg",
+                    assessmentFilter === "worksheet" && "ring-2 ring-primary shadow-lg bg-primary/5"
+                  )}
+                  onClick={() => setAssessmentFilter("worksheet")}
+                >
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">Work Sheets</CardTitle>
-                    <FileText className="h-4 w-4 text-muted-foreground" />
+                    <FileText className={cn(
+                      "h-4 w-4 transition-colors",
+                      assessmentFilter === "worksheet" ? "text-primary" : "text-muted-foreground"
+                    )} />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">12</div>
-                    <p className="text-xs text-muted-foreground">Available resources</p>
+                    <div className="text-2xl font-bold">{activities.filter(a => a.type === "worksheet").length}</div>
+                    <p className="text-xs text-muted-foreground">
+                      {assessmentFilter === "worksheet" ? "Showing worksheets" : "Click to filter"}
+                    </p>
                   </CardContent>
                 </Card>
 
-                <Card>
+                <Card 
+                  className={cn(
+                    "cursor-pointer transition-all duration-300 hover:shadow-lg",
+                    assessmentFilter === "activity" && "ring-2 ring-primary shadow-lg bg-primary/5"
+                  )}
+                  onClick={() => setAssessmentFilter("activity")}
+                >
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">Activities</CardTitle>
-                    <Activity className="h-4 w-4 text-muted-foreground" />
+                    <Activity className={cn(
+                      "h-4 w-4 transition-colors",
+                      assessmentFilter === "activity" ? "text-primary" : "text-muted-foreground"
+                    )} />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">{activities.filter(a => a.type === "activity").length}</div>
+                    <p className="text-xs text-muted-foreground">
+                      {assessmentFilter === "activity" ? "Showing activities" : "Click to filter"}
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card 
+                  className={cn(
+                    "cursor-pointer transition-all duration-300 hover:shadow-lg sm:col-span-2 lg:col-span-1",
+                    assessmentFilter === "all" && "ring-2 ring-primary shadow-lg bg-primary/5"
+                  )}
+                  onClick={() => setAssessmentFilter("all")}
+                >
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Total</CardTitle>
+                    <Calculator className={cn(
+                      "h-4 w-4 transition-colors",
+                      assessmentFilter === "all" ? "text-primary" : "text-muted-foreground"
+                    )} />
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">{activities.length}</div>
-                    <p className="text-xs text-muted-foreground">Interactive exercises</p>
-                  </CardContent>
-                </Card>
-
-                <Card className="sm:col-span-2 lg:col-span-1">
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Total</CardTitle>
-                    <Calculator className="h-4 w-4 text-muted-foreground" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">{12 + activities.length}</div>
-                    <p className="text-xs text-muted-foreground">Total resources</p>
+                    <p className="text-xs text-muted-foreground">
+                      {assessmentFilter === "all" ? "Showing all" : "Click to show all"}
+                    </p>
                   </CardContent>
                 </Card>
               </div>
@@ -534,15 +580,22 @@ const TeacherDashboard = () => {
                  <CardContent>
                    <div className="space-y-3">
                      {activities
-                       .filter((activity) =>
-                         activity.name.toLowerCase().includes(assessmentSearch.toLowerCase())
-                       )
+                       .filter((activity) => {
+                         const matchesSearch = activity.name.toLowerCase().includes(assessmentSearch.toLowerCase());
+                         const matchesFilter = assessmentFilter === "all" || activity.type === assessmentFilter;
+                         return matchesSearch && matchesFilter;
+                       })
                        .map((activity) => (
                        <div
                         key={activity.id}
                         className="group flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 md:p-5 rounded-xl bg-gradient-to-r from-background via-background to-muted/20 border border-border shadow-sm hover:shadow-md hover:shadow-primary/5 transition-all duration-300 hover:scale-[1.02] hover:border-primary/50"
                       >
-                        <span className="font-medium text-foreground group-hover:text-primary transition-colors text-sm md:text-base">{activity.name}</span>
+                        <div className="flex items-center gap-3">
+                          <span className="font-medium text-foreground group-hover:text-primary transition-colors text-sm md:text-base">{activity.name}</span>
+                          <span className="text-xs px-2 py-1 rounded-full bg-primary/10 text-primary capitalize">
+                            {activity.type}
+                          </span>
+                        </div>
                         <Button size="sm" variant="outline" className="shadow-sm hover:shadow transition-shadow w-full sm:w-auto">
                           <Download className="h-4 w-4 mr-2" />
                           Download
