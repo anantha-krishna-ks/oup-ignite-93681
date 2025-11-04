@@ -507,8 +507,10 @@ const TeacherDashboard = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
                 <Card 
                   className={cn(
-                    "cursor-pointer transition-all duration-300 hover:shadow-lg",
-                    assessmentFilter === "worksheet" && "ring-2 ring-primary shadow-lg bg-primary/5"
+                    "cursor-pointer transition-all duration-300 hover:shadow-lg border-t-4",
+                    assessmentFilter === "worksheet" 
+                      ? "border-t-primary shadow-lg bg-primary/5" 
+                      : "border-t-transparent hover:border-t-primary/30"
                   )}
                   onClick={() => setAssessmentFilter("worksheet")}
                 >
@@ -529,8 +531,10 @@ const TeacherDashboard = () => {
 
                 <Card 
                   className={cn(
-                    "cursor-pointer transition-all duration-300 hover:shadow-lg",
-                    assessmentFilter === "activity" && "ring-2 ring-primary shadow-lg bg-primary/5"
+                    "cursor-pointer transition-all duration-300 hover:shadow-lg border-t-4",
+                    assessmentFilter === "activity" 
+                      ? "border-t-primary shadow-lg bg-primary/5" 
+                      : "border-t-transparent hover:border-t-primary/30"
                   )}
                   onClick={() => setAssessmentFilter("activity")}
                 >
@@ -551,8 +555,10 @@ const TeacherDashboard = () => {
 
                 <Card 
                   className={cn(
-                    "cursor-pointer transition-all duration-300 hover:shadow-lg sm:col-span-2 lg:col-span-1",
-                    assessmentFilter === "all" && "ring-2 ring-primary shadow-lg bg-primary/5"
+                    "cursor-pointer transition-all duration-300 hover:shadow-lg sm:col-span-2 lg:col-span-1 border-t-4",
+                    assessmentFilter === "all" 
+                      ? "border-t-primary shadow-lg bg-primary/5" 
+                      : "border-t-transparent hover:border-t-primary/30"
                   )}
                   onClick={() => setAssessmentFilter("all")}
                 >
