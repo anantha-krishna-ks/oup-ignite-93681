@@ -2,6 +2,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowLeft, BookOpen, Clock, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Header from "@/components/Header";
+import Sidebar from "@/components/Sidebar";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 
@@ -52,6 +53,7 @@ const ChaptersPage = () => {
   const chapters = chapterData[subject] || chapterData.english;
   const [isOpening, setIsOpening] = useState(false);
   const [selectedChapter, setSelectedChapter] = useState<string | null>(null);
+  const [activeMenu, setActiveMenu] = useState("learning-resources");
 
   const subjectTitles: Record<string, string> = {
     english: "English",
@@ -65,6 +67,13 @@ const ChaptersPage = () => {
     navigate("/");
   };
 
+  const handleMenuChange = (menu: string) => {
+    setActiveMenu(menu);
+    if (menu === "dashboard") {
+      navigate("/teacher-dashboard");
+    }
+  };
+
   const handleChapterClick = (chapterId: string) => {
     setSelectedChapter(chapterId);
     setIsOpening(true);
@@ -76,8 +85,14 @@ const ChaptersPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-background relative">
+    <div className="dashboard-layout">
       <Header onLogout={handleLogout} />
+      <div className="dashboard-container">
+        <Sidebar
+          activeMenu={activeMenu}
+          onMenuChange={handleMenuChange}
+          role="teacher"
+        />
       
       {/* Realistic Book Opening Transition */}
       <AnimatePresence>
@@ -194,7 +209,7 @@ const ChaptersPage = () => {
         )}
       </AnimatePresence>
       
-      <main className="flex-1 overflow-y-auto bg-gradient-to-b from-background via-background to-muted/20">
+        <main className="dashboard-main">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
           {/* Modern Header */}
           <div className="mb-10">
@@ -305,7 +320,8 @@ const ChaptersPage = () => {
             ))}
           </div>
         </div>
-      </main>
+        </main>
+      </div>
     </div>
   );
 };
