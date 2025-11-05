@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Camera, Mail, Phone, MapPin } from "lucide-react";
 import Layout from "@/components/Layout";
@@ -15,6 +15,8 @@ import { toast } from "@/hooks/use-toast";
 const ProfileSettings = () => {
   const navigate = useNavigate();
   const userRole = localStorage.getItem("userRole");
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [profileImage, setProfileImage] = useState<string>("https://api.dicebear.com/7.x/avataaars/svg?seed=teacher");
 
   useEffect(() => {
     if (!userRole) {
@@ -41,6 +43,30 @@ const ProfileSettings = () => {
     });
   };
 
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 2 * 1024 * 1024) {
+        toast({
+          title: "File too large",
+          description: "Please select an image smaller than 2MB.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfileImage(reader.result as string);
+        toast({
+          title: "Image Updated",
+          description: "Your profile picture has been updated.",
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSave = () => {
     toast({
       title: "Profile Updated",
@@ -64,15 +90,24 @@ const ProfileSettings = () => {
           <CardContent className="flex items-center gap-6">
             <div className="relative">
               <Avatar className="w-24 h-24">
-                <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=teacher" />
+                <AvatarImage src={profileImage} />
                 <AvatarFallback className="bg-primary text-primary-foreground text-2xl">
                   {formData.firstName[0]}{formData.lastName[0]}
                 </AvatarFallback>
               </Avatar>
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleImageUpload}
+                accept="image/jpeg,image/png,image/gif"
+                className="hidden"
+              />
               <Button
                 size="icon"
+                type="button"
                 className="absolute -bottom-2 -right-2 rounded-full h-8 w-8"
                 variant="secondary"
+                onClick={() => fileInputRef.current?.click()}
               >
                 <Camera className="h-4 w-4" />
               </Button>
