@@ -1,5 +1,6 @@
 import { FileText, ClipboardList, BookOpen, LayoutDashboard, BookMarked } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useLocation } from "react-router-dom";
 
 interface SidebarProps {
   activeMenu: string;
@@ -16,6 +17,10 @@ const menuItems = [
 ];
 
 const Sidebar = ({ activeMenu, onMenuChange, role = "student" }: SidebarProps) => {
+  const location = useLocation();
+  const currentPath = location.pathname;
+  const isChaptersOrBookReader = currentPath === "/chapters" || currentPath === "/book-reader";
+  
   const filteredMenuItems = role === "teacher" 
     ? menuItems 
     : menuItems.filter(item => item.id !== "lesson-plans");
@@ -25,7 +30,10 @@ const Sidebar = ({ activeMenu, onMenuChange, role = "student" }: SidebarProps) =
       <nav className="sidebar-nav">
         {filteredMenuItems.map((item) => {
           const Icon = item.icon;
-          const isActive = activeMenu === item.id;
+          // Don't show Learning Resources as active on /chapters or /book-reader pages
+          const isActive = item.id === "learning-resources" && isChaptersOrBookReader 
+            ? false 
+            : activeMenu === item.id;
 
           return (
             <button
