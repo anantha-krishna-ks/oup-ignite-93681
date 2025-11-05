@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Camera, Mail, Phone, MapPin, Calendar } from "lucide-react";
+import { Camera, Mail, Phone, MapPin } from "lucide-react";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -26,7 +26,7 @@ const ProfileSettings = () => {
     email: userRole === "teacher" ? "sarah.johnson@school.edu" : "student@school.edu",
     phone: "+1 (555) 123-4567",
     address: "123 Education Street, Learning City, LC 12345",
-    dateOfBirth: "1985-06-15",
+    
     employeeId: userRole === "teacher" ? "TCH-2024-001" : undefined,
     department: userRole === "teacher" ? "Primary Education" : undefined,
     class: userRole === "student" ? "Class 1" : undefined,
@@ -139,20 +139,6 @@ const ProfileSettings = () => {
                 name="phone"
                 type="tel"
                 value={formData.phone}
-                onChange={handleInputChange}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="dateOfBirth" className="flex items-center gap-2">
-                <Calendar className="h-4 w-4" />
-                Date of Birth
-              </Label>
-              <Input
-                id="dateOfBirth"
-                name="dateOfBirth"
-                type="date"
-                value={formData.dateOfBirth}
                 onChange={handleInputChange}
               />
             </div>
