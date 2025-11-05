@@ -468,40 +468,34 @@ const BookReader = ({ subject, onClose }: BookReaderProps) => {
                       className="search-input"
                     />
                   </div>
-                  <Accordion type="single" collapsible className="w-full">
-                    {chapters.map((chapter) => {
-                      const chapterWorksheets = mockWorksheets.filter(
-                        (w) => w.chapterId === chapter.id && w.title.toLowerCase().includes(worksheetSearch.toLowerCase())
-                      );
-                      return (
-                        <AccordionItem key={chapter.id} value={`chapter-${chapter.id}`}>
-                          <AccordionTrigger className="text-sm hover:no-underline">
-                            Ch{chapter.id}: {chapter.name}
-                          </AccordionTrigger>
-                          <AccordionContent>
-                            <div className="space-y-2 pl-4">
-                              {chapterWorksheets.map((worksheet) => (
-                                <div
-                                  key={worksheet.id}
-                                  onClick={() =>
-                                    setSelectedResource({ ...worksheet, type: "pdf" })
-                                  }
-                                  className="p-3 rounded-lg hover:bg-muted cursor-pointer transition-colors border border-border"
-                                >
-                                  <div className="flex items-center gap-2">
-                                    <FileText className="w-4 h-4 text-primary" />
-                                    <p className="text-sm text-foreground">
-                                      {worksheet.title}
-                                    </p>
-                                  </div>
-                                </div>
-                              ))}
+                  <div className="space-y-2">
+                    {mockWorksheets
+                      .filter((w) => w.title.toLowerCase().includes(worksheetSearch.toLowerCase()))
+                      .map((worksheet) => {
+                        const chapter = chapters.find(ch => ch.id === worksheet.chapterId);
+                        return (
+                          <div
+                            key={worksheet.id}
+                            onClick={() =>
+                              setSelectedResource({ ...worksheet, type: "pdf" })
+                            }
+                            className="p-3 rounded-lg hover:bg-muted cursor-pointer transition-colors border border-border"
+                          >
+                            <div className="flex items-center gap-2">
+                              <FileText className="w-4 h-4 text-primary" />
+                              <div className="flex-1">
+                                <p className="text-sm text-foreground font-medium">
+                                  {worksheet.title}
+                                </p>
+                                <p className="text-xs text-muted-foreground">
+                                  Ch{chapter?.id}: {chapter?.name}
+                                </p>
+                              </div>
                             </div>
-                          </AccordionContent>
-                        </AccordionItem>
-                      );
-                    })}
-                  </Accordion>
+                          </div>
+                        );
+                      })}
+                  </div>
                 </TabsContent>
 
                 <TabsContent value="answer-keys" className="mt-4">
@@ -515,40 +509,34 @@ const BookReader = ({ subject, onClose }: BookReaderProps) => {
                       className="search-input"
                     />
                   </div>
-                  <Accordion type="single" collapsible className="w-full">
-                    {chapters.map((chapter) => {
-                      const chapterAnswerKeys = mockAnswerKeys.filter(
-                        (a) => a.chapterId === chapter.id && a.title.toLowerCase().includes(answerKeySearch.toLowerCase())
-                      );
-                      return (
-                        <AccordionItem key={chapter.id} value={`chapter-${chapter.id}`}>
-                          <AccordionTrigger className="text-sm hover:no-underline">
-                            Ch{chapter.id}: {chapter.name}
-                          </AccordionTrigger>
-                          <AccordionContent>
-                            <div className="space-y-2 pl-4">
-                              {chapterAnswerKeys.map((answerKey) => (
-                                <div
-                                  key={answerKey.id}
-                                  onClick={() =>
-                                    setSelectedResource({ ...answerKey, type: "pdf" })
-                                  }
-                                  className="p-3 rounded-lg hover:bg-muted cursor-pointer transition-colors border border-border"
-                                >
-                                  <div className="flex items-center gap-2">
-                                    <FileText className="w-4 h-4 text-secondary" />
-                                    <p className="text-sm text-foreground">
-                                      {answerKey.title}
-                                    </p>
-                                  </div>
-                                </div>
-                              ))}
+                  <div className="space-y-2">
+                    {mockAnswerKeys
+                      .filter((a) => a.title.toLowerCase().includes(answerKeySearch.toLowerCase()))
+                      .map((answerKey) => {
+                        const chapter = chapters.find(ch => ch.id === answerKey.chapterId);
+                        return (
+                          <div
+                            key={answerKey.id}
+                            onClick={() =>
+                              setSelectedResource({ ...answerKey, type: "pdf" })
+                            }
+                            className="p-3 rounded-lg hover:bg-muted cursor-pointer transition-colors border border-border"
+                          >
+                            <div className="flex items-center gap-2">
+                              <FileText className="w-4 h-4 text-secondary" />
+                              <div className="flex-1">
+                                <p className="text-sm text-foreground font-medium">
+                                  {answerKey.title}
+                                </p>
+                                <p className="text-xs text-muted-foreground">
+                                  Ch{chapter?.id}: {chapter?.name}
+                                </p>
+                              </div>
                             </div>
-                          </AccordionContent>
-                        </AccordionItem>
-                      );
-                    })}
-                  </Accordion>
+                          </div>
+                        );
+                      })}
+                  </div>
                 </TabsContent>
               </Tabs>
             </div>
