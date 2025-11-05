@@ -283,9 +283,6 @@ const BookReader = ({ subject, onClose }: BookReaderProps) => {
             <FileText className="w-4 h-4" />
             <span className="hidden lg:inline">Assessments</span>
           </Button>
-          <span className="text-xs md:text-sm text-muted-foreground shrink-0">
-            {currentPage} of {numPages}
-          </span>
         </div>
       </div>
 
