@@ -8,6 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "@/hooks/use-toast";
 
 const ProfileSettings = () => {
@@ -26,12 +28,12 @@ const ProfileSettings = () => {
     email: userRole === "teacher" ? "sarah.johnson@school.edu" : "student@school.edu",
     phone: "+1 (555) 123-4567",
     address: "123 Education Street, Learning City, LC 12345",
-    
-    employeeId: userRole === "teacher" ? "TCH-2024-001" : undefined,
-    department: userRole === "teacher" ? "Primary Education" : undefined,
-    class: userRole === "student" ? "Class 1" : undefined,
-    rollNumber: userRole === "student" ? "001" : undefined,
+    preferredLanguage: "English",
+    securityQuestion: "What is your library card number?",
+    securityAnswer: "1234",
   });
+
+  const [enableFeedback, setEnableFeedback] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -158,65 +160,95 @@ const ProfileSettings = () => {
           </CardContent>
         </Card>
 
-        {/* Role-specific Information */}
+        {/* Preferences & Security */}
         <Card>
           <CardHeader>
-            <CardTitle>
-              {userRole === "teacher" ? "Professional" : "Academic"} Information
-            </CardTitle>
-            <CardDescription>
-              {userRole === "teacher"
-                ? "Your professional details"
-                : "Your academic details"}
-            </CardDescription>
+            <CardTitle>Preferences & Security</CardTitle>
+            <CardDescription>Manage your preferences and security settings</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            {userRole === "teacher" ? (
-              <>
-                <div className="space-y-2">
-                  <Label htmlFor="employeeId">Employee ID</Label>
-                  <Input
-                    id="employeeId"
-                    name="employeeId"
-                    value={formData.employeeId}
-                    onChange={handleInputChange}
-                    disabled
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="department">Department</Label>
-                  <Input
-                    id="department"
-                    name="department"
-                    value={formData.department}
-                    onChange={handleInputChange}
-                  />
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="space-y-2">
-                  <Label htmlFor="class">Class</Label>
-                  <Input
-                    id="class"
-                    name="class"
-                    value={formData.class}
-                    onChange={handleInputChange}
-                    disabled
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="rollNumber">Roll Number</Label>
-                  <Input
-                    id="rollNumber"
-                    name="rollNumber"
-                    value={formData.rollNumber}
-                    onChange={handleInputChange}
-                    disabled
-                  />
-                </div>
-              </>
-            )}
+            <div className="space-y-2">
+              <Label htmlFor="preferredLanguage">Default Preferred Language</Label>
+              <Select
+                value={formData.preferredLanguage}
+                onValueChange={(value) =>
+                  setFormData({ ...formData, preferredLanguage: value })
+                }
+              >
+                <SelectTrigger id="preferredLanguage">
+                  <SelectValue placeholder="Select language" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="English">English</SelectItem>
+                  <SelectItem value="Hindi">Hindi</SelectItem>
+                  <SelectItem value="Spanish">Spanish</SelectItem>
+                  <SelectItem value="French">French</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="securityQuestion">
+                  Select Security Question <span className="text-destructive">*</span>
+                </Label>
+                <Select
+                  value={formData.securityQuestion}
+                  onValueChange={(value) =>
+                    setFormData({ ...formData, securityQuestion: value })
+                  }
+                >
+                  <SelectTrigger id="securityQuestion">
+                    <SelectValue placeholder="Select a question" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="What is your library card number?">
+                      What is your library card number?
+                    </SelectItem>
+                    <SelectItem value="What is your mother's maiden name?">
+                      What is your mother's maiden name?
+                    </SelectItem>
+                    <SelectItem value="What was the name of your first pet?">
+                      What was the name of your first pet?
+                    </SelectItem>
+                    <SelectItem value="What city were you born in?">
+                      What city were you born in?
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="securityAnswer">
+                  Security Answer <span className="text-destructive">*</span>
+                </Label>
+                <Input
+                  id="securityAnswer"
+                  name="securityAnswer"
+                  value={formData.securityAnswer}
+                  onChange={handleInputChange}
+                  placeholder="Enter your answer"
+                />
+              </div>
+            </div>
+
+            <p className="text-sm text-muted-foreground">
+              Fields marked with '<span className="text-destructive">*</span>' are mandatory
+            </p>
+
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="enableFeedback"
+                checked={enableFeedback}
+                onCheckedChange={(checked) => setEnableFeedback(checked as boolean)}
+              />
+              <Label
+                htmlFor="enableFeedback"
+                className="text-sm font-normal cursor-pointer"
+              >
+                Enable Post Session Feedback
+              </Label>
+            </div>
           </CardContent>
         </Card>
 
