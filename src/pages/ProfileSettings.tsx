@@ -28,7 +28,6 @@ const ProfileSettings = () => {
     email: userRole === "teacher" ? "sarah.johnson@school.edu" : "student@school.edu",
     phone: "+1 (555) 123-4567",
     address: "123 Education Street, Learning City, LC 12345",
-    preferredLanguage: "English",
     securityQuestion: "What is your library card number?",
     securityAnswer: "1234",
   });
@@ -160,33 +159,13 @@ const ProfileSettings = () => {
           </CardContent>
         </Card>
 
-        {/* Preferences & Security */}
+        {/* Security Settings */}
         <Card>
           <CardHeader>
-            <CardTitle>Preferences & Security</CardTitle>
-            <CardDescription>Manage your preferences and security settings</CardDescription>
+            <CardTitle>Security Settings</CardTitle>
+            <CardDescription>Manage your security settings</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="preferredLanguage">Default Preferred Language</Label>
-              <Select
-                value={formData.preferredLanguage}
-                onValueChange={(value) =>
-                  setFormData({ ...formData, preferredLanguage: value })
-                }
-              >
-                <SelectTrigger id="preferredLanguage">
-                  <SelectValue placeholder="Select language" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="English">English</SelectItem>
-                  <SelectItem value="Hindi">Hindi</SelectItem>
-                  <SelectItem value="Spanish">Spanish</SelectItem>
-                  <SelectItem value="French">French</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="securityQuestion">
