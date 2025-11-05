@@ -284,7 +284,7 @@ const BookReader = ({ subject, onClose }: BookReaderProps) => {
             <span className="hidden lg:inline">Assessments</span>
           </Button>
           <span className="text-xs md:text-sm text-muted-foreground shrink-0">
-            {currentPage} / {numPages}
+            {currentPage} of {numPages}
           </span>
         </div>
       </div>
