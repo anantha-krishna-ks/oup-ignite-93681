@@ -1,7 +1,8 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { ArrowLeft, BookOpen, Clock, Star } from "lucide-react";
+import { BookOpen, Clock, Star, List, GraduationCap, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Header from "@/components/Header";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import Sidebar from "@/components/Sidebar";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
@@ -46,14 +47,31 @@ const chapterData: Record<string, {
   ],
 };
 
+const classes = [
+  { id: "6", name: "Class 6" },
+  { id: "7", name: "Class 7" },
+  { id: "8", name: "Class 8" },
+  { id: "9", name: "Class 9" },
+  { id: "10", name: "Class 10" },
+];
+
+const subjects = [
+  { id: "english", name: "English" },
+  { id: "mathematics", name: "Mathematics" },
+  { id: "science", name: "Science" },
+  { id: "hindi", name: "Hindi" },
+];
+
 const ChaptersPage = () => {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const subject = searchParams.get("subject") || "english";
   const chapters = chapterData[subject] || chapterData.english;
   const [isOpening, setIsOpening] = useState(false);
   const [selectedChapter, setSelectedChapter] = useState<string | null>(null);
   const [activeMenu, setActiveMenu] = useState("learning-resources");
+  const [selectedClass, setSelectedClass] = useState<string>("6");
+  const [selectedSubject, setSelectedSubject] = useState<string>(subject);
 
   const subjectTitles: Record<string, string> = {
     english: "English",
@@ -72,6 +90,11 @@ const ChaptersPage = () => {
     if (menu === "dashboard") {
       navigate("/teacher-dashboard");
     }
+  };
+
+  const handleSubjectChange = (newSubject: string) => {
+    setSelectedSubject(newSubject);
+    setSearchParams({ subject: newSubject });
   };
 
   const handleChapterClick = (chapterId: string) => {
@@ -213,14 +236,43 @@ const ChaptersPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
           {/* Modern Header */}
           <div className="mb-10">
-            <Button
-              variant="outline"
-              onClick={() => navigate('/teacher-dashboard')}
-              className="mb-6 -ml-2 border-border hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all"
-            >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Subjects
-            </Button>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+              <div className="flex items-center gap-3 md:gap-4 flex-wrap">
+                {/* Class Dropdown */}
+                <Select value={selectedClass} onValueChange={setSelectedClass}>
+                  <SelectTrigger className="w-[160px]">
+                    <div className="flex items-center gap-2">
+                      <GraduationCap className="w-4 h-4" />
+                      <SelectValue placeholder="Select class" />
+                    </div>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {classes.map((cls) => (
+                      <SelectItem key={cls.id} value={cls.id}>
+                        {cls.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                {/* Subject Dropdown */}
+                <Select value={selectedSubject} onValueChange={handleSubjectChange}>
+                  <SelectTrigger className="w-[180px]">
+                    <div className="flex items-center gap-2">
+                      <BookOpen className="w-4 h-4" />
+                      <SelectValue placeholder="Select subject" />
+                    </div>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {subjects.map((subj) => (
+                      <SelectItem key={subj.id} value={subj.id}>
+                        {subj.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
             
             <div className="space-y-3">
               <div className="flex items-center gap-4">
@@ -312,7 +364,7 @@ const ChaptersPage = () => {
                       size="sm"
                     >
                       Start Reading
-                      <ArrowLeft className="w-4 h-4 ml-2 rotate-180 group-hover:translate-x-1 transition-transform" />
+                      <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                     </Button>
                   </div>
                 </div>
