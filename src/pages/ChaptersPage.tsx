@@ -239,7 +239,7 @@ const ChaptersPage = () => {
               <div className="flex items-center gap-3 md:gap-4 flex-wrap">
                 {/* Class Dropdown */}
                 <Select value={selectedClass} onValueChange={setSelectedClass}>
-                  <SelectTrigger className="w-[160px]">
+                  <SelectTrigger className="w-[160px] bg-white dark:bg-white dark:text-black">
                     <div className="flex items-center gap-2">
                       <GraduationCap className="w-4 h-4" />
                       <SelectValue placeholder="Select class" />
@@ -256,7 +256,7 @@ const ChaptersPage = () => {
 
                 {/* Subject Dropdown */}
                 <Select value={selectedSubject} onValueChange={handleSubjectChange}>
-                  <SelectTrigger className="w-[180px]">
+                  <SelectTrigger className="w-[180px] bg-white dark:bg-white dark:text-black">
                     <div className="flex items-center gap-2">
                       <BookOpen className="w-4 h-4" />
                       <SelectValue placeholder="Select subject" />
