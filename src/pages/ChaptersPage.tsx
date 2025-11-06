@@ -61,6 +61,15 @@ const subjects = [
   { id: "hindi", name: "Hindi" },
 ];
 
+const combinedOptions = classes.flatMap((cls) =>
+  subjects.map((subj) => ({
+    id: `${cls.id}-${subj.id}`,
+    classId: cls.id,
+    subjectId: subj.id,
+    label: `${cls.name} - ${subj.name}`,
+  }))
+);
+
 const ChaptersPage = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -71,6 +80,7 @@ const ChaptersPage = () => {
   const [activeMenu, setActiveMenu] = useState("learning-resources");
   const [selectedClass, setSelectedClass] = useState<string>("1");
   const [selectedSubject, setSelectedSubject] = useState<string>(subject);
+  const [combinedSelection, setCombinedSelection] = useState<string>(`1-${subject}`);
 
   const subjectTitles: Record<string, string> = {
     english: "English",
@@ -91,9 +101,14 @@ const ChaptersPage = () => {
     }
   };
 
-  const handleSubjectChange = (newSubject: string) => {
-    setSelectedSubject(newSubject);
-    setSearchParams({ subject: newSubject });
+  const handleCombinedChange = (value: string) => {
+    setCombinedSelection(value);
+    const selected = combinedOptions.find((opt) => opt.id === value);
+    if (selected) {
+      setSelectedClass(selected.classId);
+      setSelectedSubject(selected.subjectId);
+      setSearchParams({ subject: selected.subjectId });
+    }
   };
 
   const handleChapterClick = (chapterId: string) => {
@@ -237,35 +252,18 @@ const ChaptersPage = () => {
           <div className="mb-10">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
               <div className="flex items-center gap-3 md:gap-4 flex-wrap">
-                {/* Class Dropdown */}
-                <Select value={selectedClass} onValueChange={setSelectedClass}>
-                  <SelectTrigger className="w-[160px] bg-white dark:bg-white dark:text-black">
-                    <div className="flex items-center gap-2">
-                      <GraduationCap className="w-4 h-4" />
-                      <SelectValue placeholder="Select class" />
-                    </div>
-                  </SelectTrigger>
-                  <SelectContent>
-                    {classes.map((cls) => (
-                      <SelectItem key={cls.id} value={cls.id}>
-                        {cls.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-
-                {/* Subject Dropdown */}
-                <Select value={selectedSubject} onValueChange={handleSubjectChange}>
-                  <SelectTrigger className="w-[180px] bg-white dark:bg-white dark:text-black">
+                {/* Combined Class & Subject Dropdown */}
+                <Select value={combinedSelection} onValueChange={handleCombinedChange}>
+                  <SelectTrigger className="w-[240px] bg-white dark:bg-white dark:text-black">
                     <div className="flex items-center gap-2">
                       <BookOpen className="w-4 h-4" />
-                      <SelectValue placeholder="Select subject" />
+                      <SelectValue placeholder="Select class and subject" />
                     </div>
                   </SelectTrigger>
                   <SelectContent>
-                    {subjects.map((subj) => (
-                      <SelectItem key={subj.id} value={subj.id}>
-                        {subj.name}
+                    {combinedOptions.map((option) => (
+                      <SelectItem key={option.id} value={option.id}>
+                        {option.label}
                       </SelectItem>
                     ))}
                   </SelectContent>
