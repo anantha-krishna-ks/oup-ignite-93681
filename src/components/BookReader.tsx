@@ -259,7 +259,7 @@ const BookReader = ({ subject, onClose }: BookReaderProps) => {
           </Select>
           
           <Button
-            variant="outline"
+            variant={showResources ? "default" : "outline"}
             size="icon"
             onClick={() => {
               setShowResources(!showResources);
@@ -271,7 +271,7 @@ const BookReader = ({ subject, onClose }: BookReaderProps) => {
             <Video className="w-4 h-4" />
           </Button>
           <Button
-            variant="outline"
+            variant={showAssessments ? "default" : "outline"}
             size="icon"
             onClick={() => {
               setShowAssessments(!showAssessments);
@@ -283,7 +283,7 @@ const BookReader = ({ subject, onClose }: BookReaderProps) => {
             <FileText className="w-4 h-4" />
           </Button>
           <Button
-            variant="outline"
+            variant={showLessonPlans ? "default" : "outline"}
             size="icon"
             onClick={() => {
               setShowLessonPlans(!showLessonPlans);
