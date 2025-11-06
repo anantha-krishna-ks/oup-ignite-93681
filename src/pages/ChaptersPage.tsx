@@ -273,23 +273,13 @@ const ChaptersPage = () => {
               </div>
             </div>
             
-            <div className="space-y-3">
-              <div className="flex items-center gap-4">
-                <div className="p-3 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/10">
-                  <BookOpen className="w-7 h-7 md:w-8 md:h-8 text-primary" />
-                </div>
-                <div>
-                  <h1 className="text-2xl md:text-3xl font-semibold text-foreground tracking-tight">
-                    {subjectTitles[subject]}
-                  </h1>
-                  <p className="text-muted-foreground text-sm md:text-base mt-1">
-                    {chapters.length} chapters available
-                  </p>
-                </div>
-              </div>
-              <p className="text-muted-foreground max-w-2xl text-base md:text-lg">
-                Choose a chapter below to begin your learning journey
-              </p>
+            <div className="flex items-center justify-between mb-6">
+              <h1 className="text-xl md:text-2xl font-semibold text-foreground">
+                {subjectTitles[subject]}
+                <span className="text-sm md:text-base text-muted-foreground font-normal ml-3">
+                  ({chapters.length} chapters)
+                </span>
+              </h1>
             </div>
           </div>
 
