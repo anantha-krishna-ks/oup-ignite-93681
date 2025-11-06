@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight, ArrowLeft, FileText, Video, BookOpen, ZoomIn, ZoomOut, Search, X, List } from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowLeft, FileText, Video, BookOpen, ZoomIn, ZoomOut, Search, X, List, BookMarked } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -134,6 +134,7 @@ const BookReader = ({ subject, onClose }: BookReaderProps) => {
   const [scale, setScale] = useState(1.2);
   const [selectedResource, setSelectedResource] = useState<any>(null);
   const [showResources, setShowResources] = useState(false);
+  const [showAssessments, setShowAssessments] = useState(false);
   const [showLessonPlans, setShowLessonPlans] = useState(false);
   const [selectedChapter, setSelectedChapter] = useState<string>("1");
   const [selectedClass, setSelectedClass] = useState<string>("6");
@@ -259,29 +260,39 @@ const BookReader = ({ subject, onClose }: BookReaderProps) => {
           
           <Button
             variant="outline"
-            size="sm"
+            size="icon"
             onClick={() => {
               setShowResources(!showResources);
+              setShowAssessments(false);
               setShowLessonPlans(false);
             }}
-            className="flex items-center gap-2 shrink-0"
             title="Learning Resources"
           >
             <Video className="w-4 h-4" />
-            <span className="hidden lg:inline">Learning Resources</span>
           </Button>
           <Button
             variant="outline"
-            size="sm"
+            size="icon"
             onClick={() => {
-              setShowLessonPlans(!showLessonPlans);
+              setShowAssessments(!showAssessments);
               setShowResources(false);
+              setShowLessonPlans(false);
             }}
-            className="flex items-center gap-2 shrink-0"
             title="Assessments"
           >
             <FileText className="w-4 h-4" />
-            <span className="hidden lg:inline">Assessments</span>
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => {
+              setShowLessonPlans(!showLessonPlans);
+              setShowResources(false);
+              setShowAssessments(false);
+            }}
+            title="Lesson Plan"
+          >
+            <BookMarked className="w-4 h-4" />
           </Button>
         </div>
       </div>
@@ -435,16 +446,16 @@ const BookReader = ({ subject, onClose }: BookReaderProps) => {
           </div>
         )}
 
-        {/* Right Panel - Lesson Plans & Assessments */}
-        {showLessonPlans && (
+        {/* Right Panel - Assessments */}
+        {showAssessments && (
           <div className="fixed md:relative inset-0 md:inset-auto z-40 md:z-0 w-full md:w-96 bg-card md:border-l border-border overflow-y-auto">
             <div className="p-4 sm:p-6">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-lg font-bold text-foreground">Resources</h3>
+                <h3 className="text-lg font-bold text-foreground">Assessments</h3>
                 <Button
                   variant="ghost"
                   size="icon"
-                  onClick={() => setShowLessonPlans(false)}
+                  onClick={() => setShowAssessments(false)}
                 >
                   <X className="w-4 h-4" />
                 </Button>
@@ -539,6 +550,63 @@ const BookReader = ({ subject, onClose }: BookReaderProps) => {
                   </div>
                 </TabsContent>
               </Tabs>
+            </div>
+          </div>
+        )}
+
+        {/* Right Panel - Lesson Plans */}
+        {showLessonPlans && (
+          <div className="fixed md:relative inset-0 md:inset-auto z-40 md:z-0 w-full md:w-96 bg-card md:border-l border-border overflow-y-auto">
+            <div className="p-4 sm:p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-lg font-bold text-foreground">Lesson Plans</h3>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setShowLessonPlans(false)}
+                >
+                  <X className="w-4 h-4" />
+                </Button>
+              </div>
+
+              <div className="search-container mb-4">
+                <Search className="search-icon w-4 h-4" />
+                <Input
+                  type="text"
+                  placeholder="Search lesson plans..."
+                  value={lessonPlanSearch}
+                  onChange={(e) => setLessonPlanSearch(e.target.value)}
+                  className="search-input"
+                />
+              </div>
+              <div className="space-y-2">
+                {filteredLessonPlans
+                  .filter((plan) => plan.title.toLowerCase().includes(lessonPlanSearch.toLowerCase()))
+                  .map((plan) => {
+                    const chapter = chapters.find(ch => ch.id === plan.chapterId);
+                    return (
+                      <div
+                        key={plan.id}
+                        onClick={() =>
+                          setSelectedResource({ ...plan, type: "pdf" })
+                        }
+                        className="p-3 rounded-lg hover:bg-muted cursor-pointer transition-colors border border-border"
+                      >
+                        <div className="flex items-center gap-2">
+                          <BookMarked className="w-4 h-4 text-primary" />
+                          <div className="flex-1">
+                            <p className="text-sm text-foreground font-medium">
+                              {plan.title}
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              Ch{chapter?.id}: {chapter?.name}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+              </div>
             </div>
           </div>
         )}
