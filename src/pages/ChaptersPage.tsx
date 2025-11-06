@@ -48,11 +48,10 @@ const chapterData: Record<string, {
 };
 
 const classes = [
-  { id: "6", name: "Class 6" },
-  { id: "7", name: "Class 7" },
-  { id: "8", name: "Class 8" },
-  { id: "9", name: "Class 9" },
-  { id: "10", name: "Class 10" },
+  { id: "1", name: "Class 1" },
+  { id: "2", name: "Class 2" },
+  { id: "3", name: "Class 3" },
+  { id: "4", name: "Class 4" },
 ];
 
 const subjects = [
@@ -70,7 +69,7 @@ const ChaptersPage = () => {
   const [isOpening, setIsOpening] = useState(false);
   const [selectedChapter, setSelectedChapter] = useState<string | null>(null);
   const [activeMenu, setActiveMenu] = useState("learning-resources");
-  const [selectedClass, setSelectedClass] = useState<string>("6");
+  const [selectedClass, setSelectedClass] = useState<string>("1");
   const [selectedSubject, setSelectedSubject] = useState<string>(subject);
 
   const subjectTitles: Record<string, string> = {
