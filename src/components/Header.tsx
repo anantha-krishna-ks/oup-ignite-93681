@@ -56,7 +56,7 @@ const Header = ({ onLogout, role = "teacher", combinedSelection, onCombinedChang
               <Button
                 variant="outline"
                 size="icon"
-                onClick={() => navigate("/learner-dashboard")}
+                onClick={() => navigate("/chapters")}
                 className="h-9 w-9 rounded-lg border-2"
               >
                 <Home className="h-4 w-4" />

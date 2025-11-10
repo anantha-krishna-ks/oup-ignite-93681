@@ -12,11 +12,11 @@ const ReportsComingSoon = () => {
         <Button
           variant="outline"
           size="sm"
-          onClick={() => navigate(-1)}
+          onClick={() => navigate("/chapters")}
           className="gap-2"
         >
           <ArrowLeft className="h-4 w-4" />
-          Back
+          Back to Home
         </Button>
       </div>
 
