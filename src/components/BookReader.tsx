@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight, ArrowLeft, FileText, Video, BookOpen, ZoomIn, ZoomOut, Search, X, List, BookMarked } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -144,9 +144,44 @@ const BookReader = ({ subject, onClose }: BookReaderProps) => {
   const [lessonPlanSearch, setLessonPlanSearch] = useState("");
   const [assessmentSearch, setAssessmentSearch] = useState("");
 
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [pageViewport, setPageViewport] = useState<{ width: number; height: number }>({ width: 0, height: 0 });
+
   const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
     setNumPages(numPages);
   };
+
+  // Fit PDF to available viewport (no scroll)
+  useEffect(() => {
+    const fitToContainer = () => {
+      const el = containerRef.current;
+      if (!el || pageViewport.width === 0 || pageViewport.height === 0) return;
+      const availableWidth = el.clientWidth - 8;  // account for padding
+      const availableHeight = el.clientHeight - 8; // account for padding
+      const nextScale = Math.min(
+        availableWidth / pageViewport.width,
+        availableHeight / pageViewport.height
+      );
+      if (Number.isFinite(nextScale)) {
+        setScale(Math.max(0.3, Math.min(2, nextScale)));
+      }
+    };
+
+    // Initial fit and on resize
+    fitToContainer();
+    const onResize = () => fitToContainer();
+    window.addEventListener("resize", onResize);
+
+    // Observe container size changes
+    const el = containerRef.current;
+    const ro = el ? new ResizeObserver(() => fitToContainer()) : null;
+    if (el && ro) ro.observe(el);
+
+    return () => {
+      window.removeEventListener("resize", onResize);
+      if (ro && el) ro.unobserve(el);
+    };
+  }, [pageViewport.width, pageViewport.height]);
 
   // Get the page data, using modulo to cycle through mock pages safely
   const pageIndex = ((currentPage - 1) % mockPages.length);
@@ -354,17 +389,17 @@ const BookReader = ({ subject, onClose }: BookReaderProps) => {
               </div>
               
               {/* PDF Viewer - Centered and Fitted */}
-              <div className="w-full h-full flex items-center justify-center overflow-auto p-4">
+              <div ref={containerRef} className="w-full h-full flex items-center justify-center overflow-hidden p-2 sm:p-4">
               <Document
                 file="/english-grade1-chapter.pdf"
                 onLoadSuccess={onDocumentLoadSuccess}
                 loading={
-                  <div className="flex items-center justify-center min-h-[600px]">
+                  <div className="flex items-center justify-center min-h-[200px]">
                     <div className="text-muted-foreground">Loading PDF...</div>
                   </div>
                 }
                 error={
-                  <div className="flex items-center justify-center min-h-[600px]">
+                  <div className="flex items-center justify-center min-h-[200px]">
                     <div className="text-destructive">Error loading PDF. Please try again.</div>
                   </div>
                 }
@@ -372,6 +407,12 @@ const BookReader = ({ subject, onClose }: BookReaderProps) => {
                 <Page 
                   pageNumber={currentPage} 
                   scale={scale}
+                  onLoadSuccess={(page: any) => {
+                    try {
+                      const viewport = page.getViewport({ scale: 1 });
+                      setPageViewport({ width: viewport.width, height: viewport.height });
+                    } catch (e) { /* noop */ }
+                  }}
                   renderTextLayer={true}
                   renderAnnotationLayer={true}
                 />
