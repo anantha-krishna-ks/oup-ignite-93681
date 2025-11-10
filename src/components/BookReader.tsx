@@ -156,8 +156,8 @@ const BookReader = ({ subject, onClose }: BookReaderProps) => {
     const fitToContainer = () => {
       const el = containerRef.current;
       if (!el || pageViewport.width === 0 || pageViewport.height === 0) return;
-      const availableWidth = el.clientWidth - 8;  // account for padding
-      const availableHeight = el.clientHeight - 8; // account for padding
+      const availableWidth = el.clientWidth;
+      const availableHeight = el.clientHeight;
       const nextScale = Math.min(
         availableWidth / pageViewport.width,
         availableHeight / pageViewport.height
@@ -389,7 +389,7 @@ const BookReader = ({ subject, onClose }: BookReaderProps) => {
               </div>
               
               {/* PDF Viewer - Centered and Fitted */}
-              <div ref={containerRef} className="w-full h-full flex items-center justify-center overflow-hidden p-2 sm:p-4">
+              <div ref={containerRef} className="w-full h-full flex items-center justify-center overflow-hidden p-0">
               <Document
                 file="/english-grade1-chapter.pdf"
                 onLoadSuccess={onDocumentLoadSuccess}

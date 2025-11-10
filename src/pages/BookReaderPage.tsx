@@ -54,7 +54,7 @@ const BookReaderPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col w-full">
+    <div className="h-screen overflow-hidden flex flex-col w-full">
       <Header 
         onLogout={handleLogout} 
         role={userRole || "student"}
