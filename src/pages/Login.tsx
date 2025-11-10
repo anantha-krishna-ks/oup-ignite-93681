@@ -32,14 +32,14 @@ const Login = () => {
       ) {
         localStorage.setItem("userRole", "teacher");
         toast.success("Welcome, Teacher!");
-        navigate("/teacher-dashboard");
+        navigate("/chapters");
       } else if (
         username === CREDENTIALS.student.username &&
         password === CREDENTIALS.student.password
       ) {
         localStorage.setItem("userRole", "student");
         toast.success("Welcome, Student!");
-        navigate("/student-dashboard");
+        navigate("/chapters");
       } else if (
         username === CREDENTIALS.parent.username &&
         password === CREDENTIALS.parent.password
