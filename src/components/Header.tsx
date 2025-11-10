@@ -30,43 +30,6 @@ const Header = ({ onLogout, role = "teacher", combinedSelection, onCombinedChang
         </div>
       </div>
 
-      {/* Navigation Icons */}
-      <div className="flex items-center gap-2 md:gap-3 ml-auto">
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => navigate("/learner-dashboard")}
-              className="gap-2"
-            >
-              <Home className="h-4 w-4" />
-              <span className="hidden sm:inline">Home</span>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent className="sm:hidden">
-            <p>Home</p>
-          </TooltipContent>
-        </Tooltip>
-
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => navigate("/student-dashboard?view=reports")}
-              className="gap-2"
-            >
-              <BarChart3 className="h-4 w-4" />
-              <span className="hidden sm:inline">Reports</span>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent className="sm:hidden">
-            <p>Reports</p>
-          </TooltipContent>
-        </Tooltip>
-      </div>
-
       <div className="flex items-center gap-3 md:gap-4">
         {showClassSubjectSelector && combinedSelection && onCombinedChange && combinedOptions && (
           <Select value={combinedSelection} onValueChange={onCombinedChange}>
@@ -85,6 +48,41 @@ const Header = ({ onLogout, role = "teacher", combinedSelection, onCombinedChang
             </SelectContent>
           </Select>
         )}
+
+        {/* Navigation Icons - Icon only with borders */}
+        <div className="flex items-center gap-2">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => navigate("/learner-dashboard")}
+                className="h-9 w-9 rounded-lg border-2"
+              >
+                <Home className="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Home</p>
+            </TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => navigate("/student-dashboard?view=reports")}
+                className="h-9 w-9 rounded-lg border-2"
+              >
+                <BarChart3 className="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Reports</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
 
         <DropdownMenu>
         <DropdownMenuTrigger className="header-user-trigger">
