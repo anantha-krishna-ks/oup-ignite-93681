@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import oxfordIgniteCover from "@/assets/oxford-ignite-cover.jpg";
 
 // Mock chapter data with enhanced metadata
 const chapterData: Record<string, { 
@@ -276,25 +277,16 @@ const ChaptersPage = () => {
                     <div className="absolute right-0 top-[4px] bottom-[4px] w-[3px] bg-card border-r border-t border-b border-border/80 rounded-r-sm translate-x-[2px]" />
                   </div>
 
-                  {/* Book Cover with Gradient */}
-                  <div className="relative aspect-video overflow-hidden flex-shrink-0 rounded-t-2xl">
-                    <div className={`absolute inset-0 bg-gradient-to-br ${chapter.gradient} opacity-90`}>
-                      {/* Decorative Pattern Overlay */}
-                      <div className="absolute inset-0 opacity-10">
-                        <div className="absolute top-2 right-2 w-12 h-12 border-2 border-white rounded-full" />
-                        <div className="absolute bottom-2 left-2 w-10 h-10 border-2 border-white rotate-45" />
-                      </div>
-                      
-                      {/* Content */}
-                      <div className="relative h-full flex items-center justify-center text-white">
-                        <div className="p-3 bg-white/20 backdrop-blur-sm rounded-xl">
-                          <BookOpen className="w-10 h-10 md:w-12 md:h-12" />
-                        </div>
-                      </div>
-
-                      {/* Hover Overlay */}
-                      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    </div>
+                  {/* Book Cover with Image */}
+                  <div className="relative aspect-[3/4] overflow-hidden flex-shrink-0 rounded-t-2xl">
+                    <img 
+                      src={oxfordIgniteCover} 
+                      alt={chapter.title}
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                    
+                    {/* Hover Overlay */}
+                    <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                     {/* 3D Book Spine Effect */}
                     <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-black/40 via-black/20 to-black/40" />
