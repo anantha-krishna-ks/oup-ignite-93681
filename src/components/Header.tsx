@@ -1,8 +1,10 @@
-import { BookOpen, ChevronDown } from "lucide-react";
+import { BookOpen, ChevronDown, Home, BarChart3 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface HeaderProps {
   onLogout?: () => void;
@@ -28,10 +30,47 @@ const Header = ({ onLogout, role = "teacher", combinedSelection, onCombinedChang
         </div>
       </div>
 
-      <div className="flex items-center gap-4">
+      {/* Navigation Icons */}
+      <div className="flex items-center gap-2 md:gap-3 ml-auto">
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate("/learner-dashboard")}
+              className="gap-2"
+            >
+              <Home className="h-4 w-4" />
+              <span className="hidden sm:inline">Home</span>
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent className="sm:hidden">
+            <p>Home</p>
+          </TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate("/student-dashboard?view=reports")}
+              className="gap-2"
+            >
+              <BarChart3 className="h-4 w-4" />
+              <span className="hidden sm:inline">Reports</span>
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent className="sm:hidden">
+            <p>Reports</p>
+          </TooltipContent>
+        </Tooltip>
+      </div>
+
+      <div className="flex items-center gap-3 md:gap-4">
         {showClassSubjectSelector && combinedSelection && onCombinedChange && combinedOptions && (
           <Select value={combinedSelection} onValueChange={onCombinedChange}>
-            <SelectTrigger className="w-[240px] bg-white dark:bg-white dark:text-black">
+            <SelectTrigger className="w-[200px] md:w-[240px] bg-white dark:bg-white dark:text-black">
               <div className="flex items-center gap-2">
                 <BookOpen className="w-4 h-4" />
                 <SelectValue placeholder="Select class and subject" />
