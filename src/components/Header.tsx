@@ -5,6 +5,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import MobileSidebar from "./MobileSidebar";
 
 interface HeaderProps {
   onLogout?: () => void;
@@ -20,22 +21,34 @@ const Header = ({ onLogout, role = "teacher", combinedSelection, onCombinedChang
   
   return (
     <header className="app-header">
-      <div className="header-brand">
-        <div className="header-logo">
-          <BookOpen className="header-logo-icon" />
-        </div>
-        <div>
-          <h1 className="header-title">Ignite</h1>
-          <p className="header-subtitle">{role === "teacher" ? "Teacher" : "Student"} Portal</p>
+      <div className="flex items-center gap-3">
+        {/* Mobile Sidebar Menu */}
+        <MobileSidebar
+          onLogout={onLogout}
+          role={role}
+          combinedSelection={combinedSelection}
+          onCombinedChange={onCombinedChange}
+          combinedOptions={combinedOptions}
+          showClassSubjectSelector={showClassSubjectSelector}
+        />
+        
+        <div className="header-brand">
+          <div className="header-logo">
+            <BookOpen className="header-logo-icon" />
+          </div>
+          <div>
+            <h1 className="header-title">Ignite</h1>
+            <p className="header-subtitle">{role === "teacher" ? "Teacher" : "Student"} Portal</p>
+          </div>
         </div>
       </div>
 
       <div className="flex items-center gap-2 md:gap-4">
         {showClassSubjectSelector && combinedSelection && onCombinedChange && combinedOptions && (
           <Select value={combinedSelection} onValueChange={onCombinedChange}>
-            <SelectTrigger className="w-[140px] sm:w-[180px] md:w-[240px] bg-white dark:bg-white dark:text-black rounded-lg border-2">
+            <SelectTrigger className="hidden md:flex w-[240px] bg-white dark:bg-white dark:text-black rounded-lg border-2">
               <div className="flex items-center gap-2">
-                <BookOpen className="w-4 h-4 hidden sm:block" />
+                <BookOpen className="w-4 h-4" />
                 <SelectValue placeholder="Select class and subject" />
               </div>
             </SelectTrigger>
@@ -49,8 +62,8 @@ const Header = ({ onLogout, role = "teacher", combinedSelection, onCombinedChang
           </Select>
         )}
 
-        {/* Navigation Icons - Icon only with borders */}
-        <div className="flex items-center gap-1.5 sm:gap-2">
+        {/* Navigation Icons - Desktop only */}
+        <div className="hidden md:flex items-center gap-2">
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
@@ -84,17 +97,18 @@ const Header = ({ onLogout, role = "teacher", combinedSelection, onCombinedChang
           </Tooltip>
         </div>
 
+        {/* Desktop User Dropdown - Hidden on Mobile */}
         <DropdownMenu>
-        <DropdownMenuTrigger className="header-user-trigger">
+        <DropdownMenuTrigger className="header-user-trigger hidden md:flex">
           <Avatar className="w-9 h-9">
             <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=teacher" />
             <AvatarFallback className="bg-primary text-primary-foreground">TC</AvatarFallback>
           </Avatar>
-          <div className="header-user-info hidden md:block">
+          <div className="header-user-info">
             <p className="header-user-name">Ms. Sarah Johnson</p>
             <p className="header-user-role">{role === "teacher" ? "Teacher" : "Class 6"}</p>
           </div>
-          <ChevronDown className="w-4 h-4 text-muted-foreground hidden sm:block" />
+          <ChevronDown className="w-4 h-4 text-muted-foreground" />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-56 bg-popover border-border">
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
