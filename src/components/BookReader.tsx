@@ -354,7 +354,7 @@ const BookReader = ({ subject, onClose }: BookReaderProps) => {
               </div>
               
               {/* PDF Viewer - Centered and Fitted */}
-              <div className="w-full h-full flex items-center justify-center overflow-auto p-4">
+              <div className="w-full h-[60%] flex items-center justify-center overflow-auto p-4">
               <Document
                 file="/english-grade1-chapter.pdf"
                 onLoadSuccess={onDocumentLoadSuccess}
