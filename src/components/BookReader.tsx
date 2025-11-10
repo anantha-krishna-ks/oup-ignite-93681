@@ -303,7 +303,7 @@ const BookReader = ({ subject, onClose }: BookReaderProps) => {
         <div className="flex-1 flex flex-col overflow-hidden bg-muted/30 relative">
           <div className="flex-1 flex flex-col items-center justify-center p-2 sm:p-4 overflow-hidden">
             {/* PDF Document Container */}
-            <div className="bg-card shadow-2xl rounded-lg border border-border w-full h-full flex items-center justify-center overflow-hidden relative">
+            <div className="bg-card shadow-2xl rounded-lg border border-border w-full h-full flex items-stretch justify-start overflow-hidden relative">
               {/* PDF Controls - Embedded at bottom */}
               <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-4 bg-card/95 backdrop-blur-sm p-2 sm:p-3 rounded-lg border border-border shadow-lg">
                 <div className="flex items-center gap-2 sm:gap-3">
@@ -354,7 +354,7 @@ const BookReader = ({ subject, onClose }: BookReaderProps) => {
               </div>
               
               {/* PDF Viewer - Centered and Fitted */}
-              <div className="w-full h-[60%] flex items-center justify-center overflow-auto p-4">
+              <div className="w-full h-[60%] flex items-center justify-center overflow-hidden p-2">
               <Document
                 file="/english-grade1-chapter.pdf"
                 onLoadSuccess={onDocumentLoadSuccess}
