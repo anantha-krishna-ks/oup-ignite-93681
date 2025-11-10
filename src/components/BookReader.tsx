@@ -300,59 +300,58 @@ const BookReader = ({ subject, onClose }: BookReaderProps) => {
       {/* Body */}
       <div className="flex-1 flex overflow-hidden">
         {/* Main Content - PDF View */}
-        <div className="flex-1 overflow-y-auto bg-muted/30">
+        <div className="flex-1 overflow-y-auto bg-muted/30 relative">
           <div className="w-full p-2 sm:p-4 md:p-8">
-            {/* PDF Controls */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6 bg-card p-3 sm:p-4 rounded-lg border border-border">
-              <div className="flex items-center gap-2 sm:gap-4 w-full sm:w-auto">
-                <Button
-                  onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-                  disabled={currentPage === 1}
-                  size="sm"
-                  variant="outline"
-                  className="flex items-center gap-1 sm:gap-2"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                  <span className="hidden sm:inline">Previous</span>
-                </Button>
-                <span className="text-xs sm:text-sm text-foreground font-medium">
-                  {currentPage} / {numPages}
-                </span>
-                <Button
-                  onClick={() => setCurrentPage(Math.min(numPages, currentPage + 1))}
-                  disabled={currentPage === numPages}
-                  size="sm"
-                  variant="outline"
-                  className="flex items-center gap-1 sm:gap-2"
-                >
-                  <span className="hidden sm:inline">Next</span>
-                  <ChevronRight className="w-4 h-4" />
-                </Button>
-              </div>
-              
-              <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
-                <Button
-                  onClick={() => setScale(Math.max(0.5, scale - 0.2))}
-                  size="sm"
-                  variant="outline"
-                >
-                  <ZoomOut className="w-4 h-4" />
-                </Button>
-                <span className="text-xs sm:text-sm text-muted-foreground min-w-[50px] sm:min-w-[60px] text-center">
-                  {Math.round(scale * 100)}%
-                </span>
-                <Button
-                  onClick={() => setScale(Math.min(2, scale + 0.2))}
-                  size="sm"
-                  variant="outline"
-                >
-                  <ZoomIn className="w-4 h-4" />
-                </Button>
-              </div>
-            </div>
-
             {/* PDF Document */}
-            <div className="bg-card shadow-2xl rounded-lg border border-border p-2 sm:p-4 md:p-8 flex justify-center overflow-x-auto">
+            <div className="bg-card shadow-2xl rounded-lg border border-border p-2 sm:p-4 md:p-8 flex justify-center overflow-x-auto relative">
+              {/* PDF Controls - Embedded at bottom */}
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-4 bg-card/95 backdrop-blur-sm p-2 sm:p-3 rounded-lg border border-border shadow-lg">
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <Button
+                    onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                    disabled={currentPage === 1}
+                    size="sm"
+                    variant="outline"
+                    className="flex items-center gap-1"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                    <span className="hidden sm:inline">Previous</span>
+                  </Button>
+                  <span className="text-xs sm:text-sm text-foreground font-medium px-2">
+                    {currentPage} / {numPages}
+                  </span>
+                  <Button
+                    onClick={() => setCurrentPage(Math.min(numPages, currentPage + 1))}
+                    disabled={currentPage === numPages}
+                    size="sm"
+                    variant="outline"
+                    className="flex items-center gap-1"
+                  >
+                    <span className="hidden sm:inline">Next</span>
+                    <ChevronRight className="w-4 h-4" />
+                  </Button>
+                </div>
+                
+                <div className="flex items-center gap-2">
+                  <Button
+                    onClick={() => setScale(Math.max(0.5, scale - 0.2))}
+                    size="sm"
+                    variant="outline"
+                  >
+                    <ZoomOut className="w-4 h-4" />
+                  </Button>
+                  <span className="text-xs sm:text-sm text-muted-foreground min-w-[50px] text-center">
+                    {Math.round(scale * 100)}%
+                  </span>
+                  <Button
+                    onClick={() => setScale(Math.min(2, scale + 0.2))}
+                    size="sm"
+                    variant="outline"
+                  >
+                    <ZoomIn className="w-4 h-4" />
+                  </Button>
+                </div>
+              </div>
               <Document
                 file="/english-grade1-chapter.pdf"
                 onLoadSuccess={onDocumentLoadSuccess}
