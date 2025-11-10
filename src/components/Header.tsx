@@ -30,12 +30,12 @@ const Header = ({ onLogout, role = "teacher", combinedSelection, onCombinedChang
         </div>
       </div>
 
-      <div className="flex items-center gap-3 md:gap-4">
+      <div className="flex items-center gap-2 md:gap-4">
         {showClassSubjectSelector && combinedSelection && onCombinedChange && combinedOptions && (
           <Select value={combinedSelection} onValueChange={onCombinedChange}>
-            <SelectTrigger className="w-[200px] md:w-[240px] bg-white dark:bg-white dark:text-black rounded-lg border-2">
+            <SelectTrigger className="w-[140px] sm:w-[180px] md:w-[240px] bg-white dark:bg-white dark:text-black rounded-lg border-2">
               <div className="flex items-center gap-2">
-                <BookOpen className="w-4 h-4" />
+                <BookOpen className="w-4 h-4 hidden sm:block" />
                 <SelectValue placeholder="Select class and subject" />
               </div>
             </SelectTrigger>
@@ -50,7 +50,7 @@ const Header = ({ onLogout, role = "teacher", combinedSelection, onCombinedChang
         )}
 
         {/* Navigation Icons - Icon only with borders */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2">
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
@@ -94,7 +94,7 @@ const Header = ({ onLogout, role = "teacher", combinedSelection, onCombinedChang
             <p className="header-user-name">Ms. Sarah Johnson</p>
             <p className="header-user-role">{role === "teacher" ? "Teacher" : "Class 6"}</p>
           </div>
-          <ChevronDown className="w-4 h-4 text-muted-foreground" />
+          <ChevronDown className="w-4 h-4 text-muted-foreground hidden sm:block" />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-56 bg-popover border-border">
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
