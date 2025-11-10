@@ -15,12 +15,29 @@ const subjects = [
   { id: "hindi", title: "Hindi" },
 ];
 
+const classes = [
+  { id: "1", name: "Class 1" },
+  { id: "2", name: "Class 2" },
+  { id: "3", name: "Class 3" },
+  { id: "4", name: "Class 4" },
+];
+
+const combinedOptions = classes.flatMap((cls) =>
+  subjects.map((subj) => ({
+    id: `${cls.id}-${subj.id}`,
+    classId: cls.id,
+    subjectId: subj.id,
+    label: `${cls.name} - ${subj.title}`,
+  }))
+);
+
 const BookReaderPage = () => {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const subjectId = searchParams.get("subject");
   const userRole = localStorage.getItem("userRole") as "student" | "teacher" | null;
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [combinedSelection, setCombinedSelection] = useState<string>(`1-${subjectId || "english"}`);
 
   const subject = subjects.find((s) => s.id === subjectId);
 
@@ -44,6 +61,14 @@ const BookReaderPage = () => {
     navigate("/");
   };
 
+  const handleCombinedChange = (value: string) => {
+    setCombinedSelection(value);
+    const selected = combinedOptions.find((opt) => opt.id === value);
+    if (selected) {
+      setSearchParams({ subject: selected.subjectId });
+    }
+  };
+
   const menuItems = [
     { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
     { id: "learning-resources", label: "Learning Resources", icon: BookOpen },
@@ -54,7 +79,14 @@ const BookReaderPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col w-full">
-      <Header onLogout={handleLogout} role={userRole || "student"} />
+      <Header 
+        onLogout={handleLogout} 
+        role={userRole || "student"}
+        showClassSubjectSelector={true}
+        combinedSelection={combinedSelection}
+        onCombinedChange={handleCombinedChange}
+        combinedOptions={combinedOptions}
+      />
       <div className="flex flex-1 overflow-hidden">
         {/* Mobile Menu */}
         <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
