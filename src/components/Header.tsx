@@ -2,13 +2,18 @@ import { BookOpen, ChevronDown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface HeaderProps {
   onLogout?: () => void;
   role?: "teacher" | "student";
+  combinedSelection?: string;
+  onCombinedChange?: (value: string) => void;
+  combinedOptions?: Array<{ id: string; label: string }>;
+  showClassSubjectSelector?: boolean;
 }
 
-const Header = ({ onLogout, role = "teacher" }: HeaderProps) => {
+const Header = ({ onLogout, role = "teacher", combinedSelection, onCombinedChange, combinedOptions, showClassSubjectSelector = false }: HeaderProps) => {
   const navigate = useNavigate();
   
   return (
@@ -23,7 +28,26 @@ const Header = ({ onLogout, role = "teacher" }: HeaderProps) => {
         </div>
       </div>
 
-      <DropdownMenu>
+      <div className="flex items-center gap-4">
+        {showClassSubjectSelector && combinedSelection && onCombinedChange && combinedOptions && (
+          <Select value={combinedSelection} onValueChange={onCombinedChange}>
+            <SelectTrigger className="w-[240px] bg-white dark:bg-white dark:text-black">
+              <div className="flex items-center gap-2">
+                <BookOpen className="w-4 h-4" />
+                <SelectValue placeholder="Select class and subject" />
+              </div>
+            </SelectTrigger>
+            <SelectContent className="bg-white dark:bg-white z-50">
+              {combinedOptions.map((option) => (
+                <SelectItem key={option.id} value={option.id} className="dark:text-black">
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
+
+        <DropdownMenu>
         <DropdownMenuTrigger className="header-user-trigger">
           <Avatar className="w-9 h-9">
             <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=teacher" />
@@ -53,6 +77,7 @@ const Header = ({ onLogout, role = "teacher" }: HeaderProps) => {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+      </div>
     </header>
   );
 };

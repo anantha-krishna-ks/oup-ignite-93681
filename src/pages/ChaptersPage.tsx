@@ -123,7 +123,14 @@ const ChaptersPage = () => {
 
   return (
     <div className="dashboard-layout">
-      <Header onLogout={handleLogout} />
+      <Header
+        role="student"
+        onLogout={handleLogout}
+        showClassSubjectSelector={true}
+        combinedSelection={combinedSelection}
+        onCombinedChange={handleCombinedChange}
+        combinedOptions={combinedOptions}
+      />
       <div className="dashboard-container">
         <Sidebar
           activeMenu={activeMenu}
@@ -250,26 +257,6 @@ const ChaptersPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
           {/* Modern Header */}
           <div className="mb-10">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-              <div className="flex items-center gap-3 md:gap-4 flex-wrap">
-                {/* Combined Class & Subject Dropdown */}
-                <Select value={combinedSelection} onValueChange={handleCombinedChange}>
-                  <SelectTrigger className="w-[240px] bg-white dark:bg-white dark:text-black">
-                    <div className="flex items-center gap-2">
-                      <BookOpen className="w-4 h-4" />
-                      <SelectValue placeholder="Select class and subject" />
-                    </div>
-                  </SelectTrigger>
-                  <SelectContent>
-                    {combinedOptions.map((option) => (
-                      <SelectItem key={option.id} value={option.id}>
-                        {option.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
             
             <div className="flex items-center justify-between mb-6">
               <h1 className="text-xl md:text-2xl font-semibold text-foreground">
