@@ -33,7 +33,7 @@ const Header = ({ onLogout, role = "teacher", combinedSelection, onCombinedChang
       <div className="flex items-center gap-3 md:gap-4">
         {showClassSubjectSelector && combinedSelection && onCombinedChange && combinedOptions && (
           <Select value={combinedSelection} onValueChange={onCombinedChange}>
-            <SelectTrigger className="w-[200px] md:w-[240px] bg-white dark:bg-white dark:text-black">
+            <SelectTrigger className="w-[200px] md:w-[240px] bg-white dark:bg-white dark:text-black rounded-lg border-2">
               <div className="flex items-center gap-2">
                 <BookOpen className="w-4 h-4" />
                 <SelectValue placeholder="Select class and subject" />
