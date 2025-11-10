@@ -72,7 +72,7 @@ const Header = ({ onLogout, role = "teacher", combinedSelection, onCombinedChang
               <Button
                 variant="outline"
                 size="icon"
-                onClick={() => navigate("/student-dashboard?view=reports")}
+                onClick={() => navigate("/reports-coming-soon")}
                 className="h-9 w-9 rounded-lg border-2"
               >
                 <BarChart3 className="h-4 w-4" />
