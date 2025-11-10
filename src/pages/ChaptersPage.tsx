@@ -306,7 +306,7 @@ const ChaptersPage = () => {
                   {/* Book Details Card */}
                   <div className="p-4 space-y-2 bg-card flex-1 flex flex-col rounded-b-2xl">
                     {/* Chapter Title */}
-                    <h3 className="font-bold text-sm md:text-base text-foreground line-clamp-2 group-hover:text-primary transition-colors">
+                    <h3 className="font-semibold text-sm md:text-base text-foreground line-clamp-2 group-hover:text-primary transition-colors">
                       {chapter.title}
                     </h3>
                     
