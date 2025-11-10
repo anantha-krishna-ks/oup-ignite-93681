@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight, ArrowLeft, FileText, Video, BookOpen, ZoomIn, ZoomOut, Search, X, List, BookMarked } from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowLeft, FileText, Video, BookOpen, ZoomIn, ZoomOut, Search, X, List, BookMarked, Maximize } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import ResourceViewer from "./ResourceViewer";
 import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
@@ -143,6 +144,7 @@ const BookReader = ({ subject, onClose }: BookReaderProps) => {
   const [answerKeySearch, setAnswerKeySearch] = useState("");
   const [lessonPlanSearch, setLessonPlanSearch] = useState("");
   const [assessmentSearch, setAssessmentSearch] = useState("");
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
     setNumPages(numPages);
@@ -304,6 +306,17 @@ const BookReader = ({ subject, onClose }: BookReaderProps) => {
           <div className="flex-1 flex flex-col items-center justify-center p-2 sm:p-4 overflow-hidden">
             {/* PDF Document Container */}
             <div className="bg-card shadow-2xl rounded-lg border border-border w-full h-full flex items-stretch justify-start overflow-hidden relative">
+              {/* Fullscreen Button */}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setIsFullscreen(true)}
+                className="absolute top-2 right-2 z-10 bg-card/80 backdrop-blur-sm hover:bg-accent"
+                title="Fullscreen"
+              >
+                <Maximize className="w-4 h-4" />
+              </Button>
+              
               {/* PDF Controls - Embedded at bottom */}
               <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-4 bg-card/95 backdrop-blur-sm p-2 sm:p-3 rounded-lg border border-border shadow-lg">
                 <div className="flex items-center gap-2 sm:gap-3">
@@ -626,6 +639,87 @@ const BookReader = ({ subject, onClose }: BookReaderProps) => {
           </div>
         </div>
       )}
+
+      {/* Fullscreen PDF Dialog */}
+      <Dialog open={isFullscreen} onOpenChange={setIsFullscreen}>
+        <DialogContent className="max-w-[95vw] max-h-[95vh] w-full h-full p-2">
+          <DialogTitle className="sr-only">PDF Fullscreen View</DialogTitle>
+          <div className="w-full h-full flex flex-col">
+            <div className="flex-1 flex items-center justify-center overflow-auto">
+              <Document
+                file="/english-grade1-chapter.pdf"
+                onLoadSuccess={onDocumentLoadSuccess}
+                loading={
+                  <div className="flex items-center justify-center min-h-[200px]">
+                    <div className="text-muted-foreground">Loading PDF...</div>
+                  </div>
+                }
+                error={
+                  <div className="flex items-center justify-center min-h-[200px]">
+                    <div className="text-destructive">Error loading PDF. Please try again.</div>
+                  </div>
+                }
+              >
+                <Page 
+                  pageNumber={currentPage} 
+                  scale={scale}
+                  renderTextLayer={true}
+                  renderAnnotationLayer={true}
+                />
+              </Document>
+            </div>
+            
+            {/* Controls at bottom */}
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-4 bg-card/95 backdrop-blur-sm p-2 sm:p-3 rounded-lg border-t">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <Button
+                  onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                  disabled={currentPage === 1}
+                  size="sm"
+                  variant="outline"
+                  className="flex items-center gap-1"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                  <span className="hidden sm:inline">Previous</span>
+                </Button>
+                <span className="text-xs sm:text-sm text-foreground font-medium px-2">
+                  {currentPage} / {numPages}
+                </span>
+                <Button
+                  onClick={() => setCurrentPage(Math.min(numPages, currentPage + 1))}
+                  disabled={currentPage === numPages}
+                  size="sm"
+                  variant="outline"
+                  className="flex items-center gap-1"
+                >
+                  <span className="hidden sm:inline">Next</span>
+                  <ChevronRight className="w-4 h-4" />
+                </Button>
+              </div>
+              
+              <div className="flex items-center gap-2">
+                <Button
+                  onClick={() => setScale(Math.max(0.5, scale - 0.2))}
+                  size="sm"
+                  variant="outline"
+                >
+                  <ZoomOut className="w-4 h-4" />
+                </Button>
+                <span className="text-xs sm:text-sm text-muted-foreground min-w-[50px] text-center">
+                  {Math.round(scale * 100)}%
+                </span>
+                <Button
+                  onClick={() => setScale(Math.min(2, scale + 0.2))}
+                  size="sm"
+                  variant="outline"
+                >
+                  <ZoomIn className="w-4 h-4" />
+                </Button>
+              </div>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
