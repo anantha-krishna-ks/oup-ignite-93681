@@ -3,7 +3,6 @@ import { BookOpen, Clock, Star, List, GraduationCap, ArrowRight } from "lucide-r
 import { Button } from "@/components/ui/button";
 import Header from "@/components/Header";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import Sidebar from "@/components/Sidebar";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 
@@ -77,7 +76,6 @@ const ChaptersPage = () => {
   const chapters = chapterData[subject] || chapterData.english;
   const [isOpening, setIsOpening] = useState(false);
   const [selectedChapter, setSelectedChapter] = useState<string | null>(null);
-  const [activeMenu, setActiveMenu] = useState("learning-resources");
   const [selectedClass, setSelectedClass] = useState<string>("1");
   const [selectedSubject, setSelectedSubject] = useState<string>(subject);
   const [combinedSelection, setCombinedSelection] = useState<string>(`1-${subject}`);
@@ -92,13 +90,6 @@ const ChaptersPage = () => {
   const handleLogout = () => {
     localStorage.removeItem("userRole");
     navigate("/");
-  };
-
-  const handleMenuChange = (menu: string) => {
-    setActiveMenu(menu);
-    if (menu === "dashboard") {
-      navigate("/teacher-dashboard");
-    }
   };
 
   const handleCombinedChange = (value: string) => {
@@ -122,7 +113,7 @@ const ChaptersPage = () => {
   };
 
   return (
-    <div className="dashboard-layout">
+    <div className="min-h-screen w-full bg-muted/40">
       <Header
         role="student"
         onLogout={handleLogout}
@@ -131,13 +122,6 @@ const ChaptersPage = () => {
         onCombinedChange={handleCombinedChange}
         combinedOptions={combinedOptions}
       />
-      <div className="dashboard-container">
-        <Sidebar
-          activeMenu={activeMenu}
-          onMenuChange={handleMenuChange}
-          role="teacher"
-        />
-      
       {/* Realistic Book Opening Transition */}
       <AnimatePresence>
         {isOpening && selectedChapter && (
@@ -347,7 +331,6 @@ const ChaptersPage = () => {
           </div>
         </div>
         </main>
-      </div>
     </div>
   );
 };

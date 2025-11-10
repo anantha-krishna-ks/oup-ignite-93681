@@ -1,15 +1,12 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
-import Sidebar from "@/components/Sidebar";
 import SubjectCard from "@/components/SubjectCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Input } from "@/components/ui/input";
-import { Video, FileText, Layers, Download, Menu, LayoutDashboard, BookOpen, ClipboardList, BookMarked, Calendar, Clock, ArrowLeft, Search } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Video, FileText, Layers, Download, Calendar, Clock, ArrowLeft, Search } from "lucide-react";
 import scienceImg from "@/assets/science-subject.png";
 import mathImg from "@/assets/mathematics-subject.png";
 import englishImg from "@/assets/english-subject.png";
@@ -99,7 +96,6 @@ const StudentDashboard = () => {
   const [assessmentSearch, setAssessmentSearch] = useState("");
   const [resourceSearch, setResourceSearch] = useState("");
   const [subjectSearch, setSubjectSearch] = useState("");
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isParentView, setIsParentView] = useState(false);
   const [isParentOnlyView, setIsParentOnlyView] = useState(false);
 
@@ -149,69 +145,11 @@ const StudentDashboard = () => {
     navigate(`/book-reader?subject=${subjectId}`);
   };
 
-  const handleMenuChange = (menu: string) => {
-    if (menu === "profile") {
-      navigate("/profile-settings");
-    } else {
-      setActiveMenu(menu);
-    }
-  };
-
   return (
     <div className="h-screen flex flex-col bg-background">
       {!isParentOnlyView && <Header onLogout={handleLogout} role="student" />}
 
       <div className="flex flex-1 overflow-hidden">
-        {/* Mobile Menu */}
-        {!isParentOnlyView && (
-        <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-          <SheetTrigger asChild>
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="md:hidden fixed top-16 left-4 z-50 bg-card border border-border shadow-md"
-            >
-              <Menu className="h-5 w-5" />
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="left" className="w-64 p-0">
-            <nav className="flex flex-col p-4 space-y-2 mt-8">
-              {[
-                { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-                { id: "learning-resources", label: "Learning Resources", icon: BookOpen },
-                { id: "assessments", label: "Assessments", icon: ClipboardList },
-                { id: "reports", label: "Reports", icon: FileText },
-              ].map((item) => {
-                const Icon = item.icon;
-                const isActive = activeMenu === item.id;
-
-                return (
-                  <button
-                    key={item.id}
-                    onClick={() => {
-                      setActiveMenu(item.id);
-                      setMobileMenuOpen(false);
-                    }}
-                    className={cn(
-                      "w-full flex items-center gap-3 px-3 py-3 rounded-lg transition-all duration-200",
-                      isActive
-                        ? "bg-primary text-primary-foreground shadow-md"
-                        : "hover:bg-muted text-foreground"
-                    )}
-                  >
-                    <Icon className="w-5 h-5 flex-shrink-0" />
-                    <span className="font-medium text-sm">{item.label}</span>
-                  </button>
-                );
-              })}
-            </nav>
-          </SheetContent>
-        </Sheet>
-        )}
-
-        {/* Desktop Sidebar */}
-        {!isParentOnlyView && <Sidebar activeMenu={activeMenu} onMenuChange={handleMenuChange} role="student" />}
-
         <main className="flex-1 overflow-y-auto">
           {/* Parent Back Navigation */}
           {isParentOnlyView && (
