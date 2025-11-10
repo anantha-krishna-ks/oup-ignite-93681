@@ -131,7 +131,7 @@ const mockAssessments = [
 const BookReader = ({ subject, onClose }: BookReaderProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [numPages, setNumPages] = useState<number>(0);
-  const [scale, setScale] = useState(1.2);
+  const [scale, setScale] = useState(1.0);
   const [selectedResource, setSelectedResource] = useState<any>(null);
   const [showResources, setShowResources] = useState(false);
   const [showAssessments, setShowAssessments] = useState(false);
@@ -300,10 +300,10 @@ const BookReader = ({ subject, onClose }: BookReaderProps) => {
       {/* Body */}
       <div className="flex-1 flex overflow-hidden">
         {/* Main Content - PDF View */}
-        <div className="flex-1 overflow-y-auto bg-muted/30 relative">
-          <div className="w-full p-2 sm:p-4 md:p-8">
-            {/* PDF Document */}
-            <div className="bg-card shadow-2xl rounded-lg border border-border p-2 sm:p-4 md:p-8 flex justify-center overflow-x-auto relative">
+        <div className="flex-1 flex flex-col overflow-hidden bg-muted/30 relative">
+          <div className="flex-1 flex flex-col items-center justify-center p-2 sm:p-4 overflow-hidden">
+            {/* PDF Document Container */}
+            <div className="bg-card shadow-2xl rounded-lg border border-border w-full h-full flex items-center justify-center overflow-hidden relative">
               {/* PDF Controls - Embedded at bottom */}
               <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-4 bg-card/95 backdrop-blur-sm p-2 sm:p-3 rounded-lg border border-border shadow-lg">
                 <div className="flex items-center gap-2 sm:gap-3">
@@ -352,6 +352,9 @@ const BookReader = ({ subject, onClose }: BookReaderProps) => {
                   </Button>
                 </div>
               </div>
+              
+              {/* PDF Viewer - Centered and Fitted */}
+              <div className="w-full h-full flex items-center justify-center overflow-auto p-4">
               <Document
                 file="/english-grade1-chapter.pdf"
                 onLoadSuccess={onDocumentLoadSuccess}
@@ -373,6 +376,7 @@ const BookReader = ({ subject, onClose }: BookReaderProps) => {
                   renderAnnotationLayer={true}
                 />
               </Document>
+              </div>
             </div>
           </div>
         </div>
