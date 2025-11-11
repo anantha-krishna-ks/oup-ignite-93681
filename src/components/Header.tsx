@@ -35,9 +35,6 @@ const Header = ({ onLogout, role = "teacher", combinedSelection, onCombinedChang
         
         <div className="header-brand">
           <img src={oxfordIgniteLogo} alt="Oxford Ignite" className="h-10 w-auto" />
-          <div>
-            <p className="header-subtitle">{role === "teacher" ? "Teacher" : "Student"} Portal</p>
-          </div>
         </div>
       </div>
 
