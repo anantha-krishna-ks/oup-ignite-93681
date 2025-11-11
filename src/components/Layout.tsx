@@ -1,6 +1,5 @@
 import { ReactNode } from "react";
 import Header from "./Header";
-import Sidebar from "./Sidebar";
 import { useLocation, useNavigate } from "react-router-dom";
 
 interface LayoutProps {
@@ -38,13 +37,6 @@ const Layout = ({ children, role }: LayoutProps) => {
     <div className="dashboard-layout">
       <Header onLogout={handleLogout} />
       <div className="dashboard-container">
-        {role !== "parent" && (
-          <Sidebar
-            activeMenu={getActiveMenu()}
-            onMenuChange={handleMenuChange}
-            role={role}
-          />
-        )}
         <main className="dashboard-main">
           {children}
         </main>
