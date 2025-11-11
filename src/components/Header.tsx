@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import MobileSidebar from "./MobileSidebar";
+import oxfordIgniteLogo from "@/assets/oxford-ignite-logo.png";
 
 interface HeaderProps {
   onLogout?: () => void;
@@ -33,11 +34,8 @@ const Header = ({ onLogout, role = "teacher", combinedSelection, onCombinedChang
         />
         
         <div className="header-brand">
-          <div className="header-logo">
-            <BookOpen className="header-logo-icon" />
-          </div>
+          <img src={oxfordIgniteLogo} alt="Oxford Ignite" className="h-10 w-auto" />
           <div>
-            <h1 className="header-title">Ignite</h1>
             <p className="header-subtitle">{role === "teacher" ? "Teacher" : "Student"} Portal</p>
           </div>
         </div>
