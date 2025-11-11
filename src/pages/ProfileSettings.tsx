@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
+
 import { toast } from "@/hooks/use-toast";
 
 const ProfileSettings = () => {
@@ -34,7 +34,7 @@ const ProfileSettings = () => {
     securityAnswer: "1234",
   });
 
-  const [enableFeedback, setEnableFeedback] = useState(false);
+  
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -249,20 +249,6 @@ const ProfileSettings = () => {
             <p className="text-sm text-muted-foreground">
               Fields marked with '<span className="text-destructive">*</span>' are mandatory
             </p>
-
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="enableFeedback"
-                checked={enableFeedback}
-                onCheckedChange={(checked) => setEnableFeedback(checked as boolean)}
-              />
-              <Label
-                htmlFor="enableFeedback"
-                className="text-sm font-normal cursor-pointer"
-              >
-                Enable Post Session Feedback
-              </Label>
-            </div>
           </CardContent>
         </Card>
 
