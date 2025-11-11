@@ -33,7 +33,7 @@ const Header = ({ onLogout, role = "teacher", combinedSelection, onCombinedChang
           showClassSubjectSelector={showClassSubjectSelector}
         />
         
-        <div className="header-brand">
+        <div className="header-brand cursor-pointer" onClick={() => navigate("/chapters")}>
           <img src={oxfordIgniteLogo} alt="Oxford Ignite" className="h-10 w-auto" />
         </div>
       </div>
