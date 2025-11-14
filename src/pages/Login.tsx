@@ -62,7 +62,6 @@ const Login = () => {
           <div className="flex justify-center mb-4">
             <img src={oxfordIgniteLogo} alt="Oxford Ignite" className="h-16 w-auto" />
           </div>
-          <h1 className="text-2xl font-semibold text-foreground">Login to Ignite</h1>
           <p className="text-muted-foreground">
             Sign in to access your dashboard
           </p>
