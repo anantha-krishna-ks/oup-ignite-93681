@@ -273,23 +273,25 @@ const ChaptersPage = () => {
                       className="absolute inset-0 w-full h-full object-cover"
                     />
                     
-                    {/* Hover Overlay */}
-                    <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    {/* Dark Overlay for Text Readability */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
 
                     {/* 3D Book Spine Effect */}
                     <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-black/40 via-black/20 to-black/40" />
                     
                     {/* Corner Fold Effect */}
                     <div className="absolute top-0 right-0 w-0 h-0 border-l-[20px] border-l-transparent border-t-[20px] border-t-white/30" />
+
+                    {/* Chapter Title on Image */}
+                    <div className="absolute bottom-0 left-0 right-0 p-4">
+                      <h3 className="font-semibold text-sm md:text-base text-white line-clamp-2 drop-shadow-lg">
+                        {chapter.title}
+                      </h3>
+                    </div>
                   </div>
 
                   {/* Book Details Card */}
                   <div className="p-3 space-y-2 bg-card flex-1 flex flex-col rounded-b-2xl">
-                    {/* Chapter Title */}
-                    <h3 className="font-semibold text-sm md:text-base text-foreground line-clamp-2 group-hover:text-primary transition-colors">
-                      {chapter.title}
-                    </h3>
-
                     {/* Read Button */}
                     <Button 
                       className="w-full mt-auto bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-sm group-hover:shadow-md transition-all"
