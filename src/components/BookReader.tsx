@@ -234,76 +234,26 @@ const BookReader = ({ subject, onClose }: BookReaderProps) => {
         onChapterChange={setSelectedChapter}
         chapterOptions={chapters}
         showChapterSelector={true}
+        showResourcesFloater={true}
+        showResources={showResources}
+        showAssessments={showAssessments}
+        showLessonPlans={showLessonPlans}
+        onResourcesClick={() => {
+          setShowResources(!showResources);
+          setShowAssessments(false);
+          setShowLessonPlans(false);
+        }}
+        onAssessmentsClick={() => {
+          setShowAssessments(!showAssessments);
+          setShowResources(false);
+          setShowLessonPlans(false);
+        }}
+        onLessonPlansClick={() => {
+          setShowLessonPlans(!showLessonPlans);
+          setShowResources(false);
+          setShowAssessments(false);
+        }}
       />
-      
-      {/* Secondary Header with Resources Floater */}
-      <div className="h-auto md:h-14 bg-card border-b border-border flex items-center justify-between px-4 md:px-6 py-2 md:py-0">
-        <div className="flex items-center gap-2">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={onClose}
-            className="shrink-0 hover:bg-accent"
-          >
-            <ArrowLeft className="w-5 h-5" />
-          </Button>
-          <h2 className="text-base md:text-lg font-bold text-foreground flex items-center gap-2 truncate">
-            <BookOpen className="w-4 h-4 md:w-5 md:h-5 shrink-0" />
-            <span className="truncate">{subject} - Book</span>
-          </h2>
-        </div>
-
-        {/* Resources Floater Button */}
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button variant="outline" size="sm" className="gap-2">
-              <MoreVertical className="w-4 h-4" />
-              <span className="hidden sm:inline">Resources</span>
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-64 p-3 bg-popover" align="end">
-            <div className="space-y-2">
-              <h3 className="font-semibold text-sm text-foreground mb-3">Learning Resources</h3>
-              <Button
-                variant={showResources ? "default" : "outline"}
-                className="w-full justify-start gap-2"
-                onClick={() => {
-                  setShowResources(!showResources);
-                  setShowAssessments(false);
-                  setShowLessonPlans(false);
-                }}
-              >
-                <Video className="w-4 h-4" />
-                Learning Resources
-              </Button>
-              <Button
-                variant={showAssessments ? "default" : "outline"}
-                className="w-full justify-start gap-2"
-                onClick={() => {
-                  setShowAssessments(!showAssessments);
-                  setShowResources(false);
-                  setShowLessonPlans(false);
-                }}
-              >
-                <FileText className="w-4 h-4" />
-                Assessments
-              </Button>
-              <Button
-                variant={showLessonPlans ? "default" : "outline"}
-                className="w-full justify-start gap-2"
-                onClick={() => {
-                  setShowLessonPlans(!showLessonPlans);
-                  setShowResources(false);
-                  setShowAssessments(false);
-                }}
-              >
-                <BookMarked className="w-4 h-4" />
-                Lesson Plan
-              </Button>
-            </div>
-          </PopoverContent>
-        </Popover>
-      </div>
 
       {/* Body */}
       <div className="flex-1 flex overflow-hidden">
