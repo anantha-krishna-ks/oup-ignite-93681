@@ -94,35 +94,41 @@ const Header = ({ onLogout, role = "teacher", combinedSelection, onCombinedChang
 
         {/* Desktop User Dropdown - Hidden on Mobile */}
         <DropdownMenu>
-        <DropdownMenuTrigger className="header-user-trigger hidden md:flex">
-          <Avatar className="w-9 h-9">
-            <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=teacher" />
-            <AvatarFallback className="bg-primary text-primary-foreground">TC</AvatarFallback>
-          </Avatar>
-          <div className="header-user-info">
-            <p className="header-user-name">Ms. Sarah Johnson</p>
-            <p className="header-user-role">{role === "teacher" ? "Teacher" : "Class 6"}</p>
-          </div>
-          <ChevronDown className="w-4 h-4 text-muted-foreground" />
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-56 bg-popover border-border">
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem 
-            className="cursor-pointer hover:bg-muted"
-            onClick={() => navigate("/profile-settings")}
-          >
-            Profile Settings
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem 
-            className="cursor-pointer hover:bg-muted text-destructive"
-            onClick={onLogout}
-          >
-            Logout
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+          <DropdownMenuTrigger className="hidden md:flex focus:outline-none">
+            <Avatar className="w-9 h-9 cursor-pointer hover:opacity-90 transition-opacity">
+              <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=teacher" />
+              <AvatarFallback className="bg-primary text-primary-foreground">SJ</AvatarFallback>
+            </Avatar>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-80 bg-popover border-border p-0">
+            <div className="p-4 text-center">
+              <div className="flex justify-center mb-3">
+                <Avatar className="w-20 h-20">
+                  <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=teacher" />
+                  <AvatarFallback className="bg-primary text-primary-foreground text-2xl">SJ</AvatarFallback>
+                </Avatar>
+              </div>
+              <h3 className="font-semibold text-foreground mb-1">Ms. Sarah Johnson</h3>
+              <p className="text-sm text-muted-foreground mb-1">sarah.johnson@school.edu</p>
+              <p className="text-xs text-muted-foreground">{role === "teacher" ? "Teacher Account" : "Class 6 Student"}</p>
+            </div>
+            <DropdownMenuSeparator className="my-0" />
+            <div className="p-2">
+              <DropdownMenuItem 
+                className="cursor-pointer hover:bg-muted rounded-md"
+                onClick={() => navigate("/profile-settings")}
+              >
+                Profile Settings
+              </DropdownMenuItem>
+              <DropdownMenuItem 
+                className="cursor-pointer hover:bg-muted text-destructive rounded-md"
+                onClick={onLogout}
+              >
+                Logout
+              </DropdownMenuItem>
+            </div>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </header>
   );
