@@ -61,7 +61,7 @@ const BookReaderPage = () => {
   return (
     <div className="min-h-screen flex flex-col w-full relative">
       <div 
-        className={`relative transition-all duration-500 ease-in-out ${
+        className={`transition-all duration-500 ease-in-out ${
           isHeaderCollapsed ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'
         }`}
       >
@@ -77,16 +77,19 @@ const BookReaderPage = () => {
           onChapterChange={setSelectedChapter}
           chapterOptions={chapters}
         />
-        
-        {/* Toggle Button - Attached to Header Bottom */}
-        <Button
-          onClick={() => setIsHeaderCollapsed(!isHeaderCollapsed)}
-          className="absolute -bottom-5 left-1/2 -translate-x-1/2 z-[100] h-10 w-10 rounded-full shadow-lg bg-primary hover:bg-primary/90 transition-all duration-300 p-0 !opacity-100"
-          title={isHeaderCollapsed ? "Show header" : "Hide header"}
-        >
-          {isHeaderCollapsed ? <ChevronDown className="w-5 h-5" /> : <ChevronUp className="w-5 h-5" />}
-        </Button>
       </div>
+
+      {/* Toggle Button - Always Visible, visually attached to header */}
+      <Button
+        onClick={() => setIsHeaderCollapsed(!isHeaderCollapsed)}
+        className={`fixed left-1/2 -translate-x-1/2 z-[1000] pointer-events-auto h-10 w-10 rounded-full shadow-lg bg-primary hover:bg-primary/90 transition-all duration-300 p-0 ${
+          isHeaderCollapsed ? 'top-4' : 'top-[4.5rem]'
+        }`}
+        aria-label={isHeaderCollapsed ? "Show header" : "Hide header"}
+        title={isHeaderCollapsed ? "Show header" : "Hide header"}
+      >
+        {isHeaderCollapsed ? <ChevronDown className="w-5 h-5" /> : <ChevronUp className="w-5 h-5" />}
+      </Button>
 
       <div className="flex-1 flex flex-col">
         <BookReader
