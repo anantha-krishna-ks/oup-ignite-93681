@@ -249,15 +249,15 @@ const BookReader = ({ subject, onClose, selectedChapter }: BookReaderProps) => {
               
               {/* Floating Resources Button */}
               <Popover open={isResourceFloaterOpen} onOpenChange={setIsResourceFloaterOpen}>
-                <PopoverTrigger asChild>
-                  <Button
-                    size="lg"
-                    className="absolute bottom-20 right-4 z-10 h-14 w-14 rounded-full shadow-lg bg-primary hover:bg-primary/90 transition-all duration-300 hover:scale-110"
-                    title="Learning Resources"
-                  >
-                    <GraduationCap className="w-6 h-6" />
-                  </Button>
-                </PopoverTrigger>
+              <PopoverTrigger asChild>
+                <Button
+                  size="lg"
+                  className="fixed bottom-20 right-4 z-10 h-14 w-14 rounded-full shadow-lg bg-primary hover:bg-primary/90 transition-all duration-300 hover:scale-110"
+                  title="Learning Resources"
+                >
+                  <GraduationCap className="w-6 h-6" />
+                </Button>
+              </PopoverTrigger>
                 <PopoverContent 
                   className="w-72 p-4 bg-card border-2 border-primary/20 shadow-xl" 
                   align="end"
