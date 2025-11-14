@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight, FileText, Video, BookOpen, ZoomIn, ZoomOut, Search, X, Maximize, BookMarked } from "lucide-react";
+import { ChevronLeft, ChevronRight, FileText, Video, BookOpen, ZoomIn, ZoomOut, Search, X, Maximize, BookMarked, GraduationCap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import ResourceViewer from "./ResourceViewer";
 import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
@@ -145,6 +146,7 @@ const BookReader = ({ subject, onClose, selectedChapter }: BookReaderProps) => {
   const [lessonPlanSearch, setLessonPlanSearch] = useState("");
   const [assessmentSearch, setAssessmentSearch] = useState("");
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isResourceFloaterOpen, setIsResourceFloaterOpen] = useState(false);
 
   const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
     setNumPages(numPages);
@@ -244,6 +246,83 @@ const BookReader = ({ subject, onClose, selectedChapter }: BookReaderProps) => {
               >
                 <Maximize className="w-4 h-4" />
               </Button>
+              
+              {/* Floating Resources Button */}
+              <Popover open={isResourceFloaterOpen} onOpenChange={setIsResourceFloaterOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    size="lg"
+                    className="absolute bottom-20 right-4 z-10 h-14 w-14 rounded-full shadow-lg bg-primary hover:bg-primary/90 transition-all duration-300 hover:scale-110"
+                    title="Learning Resources"
+                  >
+                    <GraduationCap className="w-6 h-6" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent 
+                  className="w-72 p-4 bg-card border-2 border-primary/20 shadow-xl" 
+                  align="end"
+                  side="left"
+                  sideOffset={10}
+                >
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2 mb-4">
+                      <GraduationCap className="w-5 h-5 text-primary" />
+                      <h3 className="font-semibold text-base text-foreground">Learning Tools</h3>
+                    </div>
+                    
+                    <Button
+                      variant={showResources ? "default" : "outline"}
+                      className="w-full justify-start gap-3 h-12 text-sm font-medium"
+                      onClick={() => {
+                        setShowResources(!showResources);
+                        setShowAssessments(false);
+                        setShowLessonPlans(false);
+                        setIsResourceFloaterOpen(false);
+                      }}
+                    >
+                      <Video className="w-5 h-5" />
+                      <div className="text-left">
+                        <div>Learning Resources</div>
+                        <div className="text-xs opacity-70 font-normal">Videos & Materials</div>
+                      </div>
+                    </Button>
+                    
+                    <Button
+                      variant={showAssessments ? "default" : "outline"}
+                      className="w-full justify-start gap-3 h-12 text-sm font-medium"
+                      onClick={() => {
+                        setShowAssessments(!showAssessments);
+                        setShowResources(false);
+                        setShowLessonPlans(false);
+                        setIsResourceFloaterOpen(false);
+                      }}
+                    >
+                      <FileText className="w-5 h-5" />
+                      <div className="text-left">
+                        <div>Assessments</div>
+                        <div className="text-xs opacity-70 font-normal">Quizzes & Tests</div>
+                      </div>
+                    </Button>
+                    
+                    <Button
+                      variant={showLessonPlans ? "default" : "outline"}
+                      className="w-full justify-start gap-3 h-12 text-sm font-medium"
+                      onClick={() => {
+                        setShowLessonPlans(!showLessonPlans);
+                        setShowResources(false);
+                        setShowAssessments(false);
+                        setIsResourceFloaterOpen(false);
+                      }}
+                    >
+                      <BookMarked className="w-5 h-5" />
+                      <div className="text-left">
+                        <div>Lesson Plan</div>
+                        <div className="text-xs opacity-70 font-normal">Teaching Guide</div>
+                      </div>
+                    </Button>
+                  </div>
+                </PopoverContent>
+              </Popover>
               
               {/* PDF Controls - Embedded at bottom */}
               <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-4 bg-card/95 backdrop-blur-sm p-2 sm:p-3 rounded-lg border border-border shadow-lg">
