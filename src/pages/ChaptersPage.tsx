@@ -289,12 +289,6 @@ const ChaptersPage = () => {
                     <h3 className="font-semibold text-sm md:text-base text-foreground line-clamp-2 group-hover:text-primary transition-colors">
                       {chapter.title}
                     </h3>
-                    
-                    {/* Pages Count */}
-                    <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                      <BookOpen className="w-3.5 h-3.5" />
-                      <span>{chapter.pages} pages</span>
-                    </div>
 
                     {/* Read Button */}
                     <Button 
