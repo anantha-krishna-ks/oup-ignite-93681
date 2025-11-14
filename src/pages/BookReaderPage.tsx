@@ -82,8 +82,8 @@ const BookReaderPage = () => {
       {/* Floating Toggle Button */}
       <Button
         onClick={() => setIsHeaderCollapsed(!isHeaderCollapsed)}
-        className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 h-10 w-10 rounded-full shadow-lg bg-primary hover:bg-primary/90 transition-all duration-300 p-0 ${
-          isHeaderCollapsed ? 'translate-y-0' : '-translate-y-20 opacity-0 pointer-events-none'
+        className={`fixed left-1/2 -translate-x-1/2 z-50 h-10 w-10 rounded-full shadow-lg bg-primary hover:bg-primary/90 transition-all duration-300 p-0 ${
+          isHeaderCollapsed ? 'top-4' : 'top-20'
         }`}
         title={isHeaderCollapsed ? "Show header" : "Hide header"}
       >
