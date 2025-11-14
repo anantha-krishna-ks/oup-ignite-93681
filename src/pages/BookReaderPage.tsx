@@ -61,7 +61,7 @@ const BookReaderPage = () => {
   return (
     <div className="min-h-screen flex flex-col w-full relative">
       <div 
-        className={`transition-all duration-500 ease-in-out ${
+        className={`relative transition-all duration-500 ease-in-out ${
           isHeaderCollapsed ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'
         }`}
       >
@@ -77,18 +77,16 @@ const BookReaderPage = () => {
           onChapterChange={setSelectedChapter}
           chapterOptions={chapters}
         />
+        
+        {/* Toggle Button - Attached to Header */}
+        <Button
+          onClick={() => setIsHeaderCollapsed(!isHeaderCollapsed)}
+          className="absolute -bottom-5 left-1/2 -translate-x-1/2 z-50 h-10 w-10 rounded-full shadow-lg bg-primary hover:bg-primary/90 transition-all duration-300 p-0"
+          title={isHeaderCollapsed ? "Show header" : "Hide header"}
+        >
+          {isHeaderCollapsed ? <ChevronDown className="w-5 h-5" /> : <ChevronUp className="w-5 h-5" />}
+        </Button>
       </div>
-
-      {/* Floating Toggle Button */}
-      <Button
-        onClick={() => setIsHeaderCollapsed(!isHeaderCollapsed)}
-        className={`fixed left-1/2 -translate-x-1/2 z-50 h-10 w-10 rounded-full shadow-lg bg-primary hover:bg-primary/90 transition-all duration-300 p-0 ${
-          isHeaderCollapsed ? 'top-4' : 'top-20'
-        }`}
-        title={isHeaderCollapsed ? "Show header" : "Hide header"}
-      >
-        {isHeaderCollapsed ? <ChevronDown className="w-5 h-5" /> : <ChevronUp className="w-5 h-5" />}
-      </Button>
 
       <div className="flex-1 flex flex-col">
         <BookReader
