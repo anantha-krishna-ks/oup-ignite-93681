@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight, ArrowLeft, FileText, Video, BookOpen, ZoomIn, ZoomOut, Search, X, List, BookMarked, Maximize } from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowLeft, FileText, Video, BookOpen, ZoomIn, ZoomOut, Search, X, List, BookMarked, Maximize, MoreVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -7,10 +7,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import ResourceViewer from "./ResourceViewer";
 import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
+import Header from "./Header";
 
 // Set up the worker for react-pdf
 pdfjs.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
@@ -227,8 +229,16 @@ const BookReader = ({ subject, onClose }: BookReaderProps) => {
   return (
     <div className="flex flex-col h-full bg-background">
       {/* Header */}
-      <div className="h-auto md:h-16 bg-card border-b border-border flex flex-col md:flex-row items-start md:items-center justify-between px-4 md:px-6 py-3 md:py-0 gap-3 md:gap-4">
-        <div className="flex items-center gap-2 md:gap-4 w-full md:w-auto">
+      <Header
+        chapterSelection={selectedChapter}
+        onChapterChange={setSelectedChapter}
+        chapterOptions={chapters}
+        showChapterSelector={true}
+      />
+      
+      {/* Secondary Header with Resources Floater */}
+      <div className="h-auto md:h-14 bg-card border-b border-border flex items-center justify-between px-4 md:px-6 py-2 md:py-0">
+        <div className="flex items-center gap-2">
           <Button
             variant="ghost"
             size="icon"
@@ -237,66 +247,62 @@ const BookReader = ({ subject, onClose }: BookReaderProps) => {
           >
             <ArrowLeft className="w-5 h-5" />
           </Button>
-          <h2 className="text-base md:text-xl font-bold text-foreground flex items-center gap-2 truncate">
+          <h2 className="text-base md:text-lg font-bold text-foreground flex items-center gap-2 truncate">
             <BookOpen className="w-4 h-4 md:w-5 md:h-5 shrink-0" />
             <span className="truncate">{subject} - Book</span>
           </h2>
         </div>
-        <div className="flex items-center gap-2 md:gap-4 w-full md:w-auto flex-wrap md:flex-nowrap">
-          {/* Chapter Dropdown */}
-          <Select value={selectedChapter} onValueChange={setSelectedChapter}>
-            <SelectTrigger className="w-full sm:w-[200px] md:w-[280px]">
-              <div className="flex items-center gap-2">
-                <List className="w-4 h-4" />
-                <SelectValue placeholder="Select chapter" />
-              </div>
-            </SelectTrigger>
-            <SelectContent>
-              {chapters.map((chapter) => (
-                <SelectItem key={chapter.id} value={chapter.id.toString()}>
-                  {chapter.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          
-          <Button
-            variant={showResources ? "default" : "outline"}
-            size="icon"
-            onClick={() => {
-              setShowResources(!showResources);
-              setShowAssessments(false);
-              setShowLessonPlans(false);
-            }}
-            title="Learning Resources"
-          >
-            <Video className="w-4 h-4" />
-          </Button>
-          <Button
-            variant={showAssessments ? "default" : "outline"}
-            size="icon"
-            onClick={() => {
-              setShowAssessments(!showAssessments);
-              setShowResources(false);
-              setShowLessonPlans(false);
-            }}
-            title="Assessments"
-          >
-            <FileText className="w-4 h-4" />
-          </Button>
-          <Button
-            variant={showLessonPlans ? "default" : "outline"}
-            size="icon"
-            onClick={() => {
-              setShowLessonPlans(!showLessonPlans);
-              setShowResources(false);
-              setShowAssessments(false);
-            }}
-            title="Lesson Plan"
-          >
-            <BookMarked className="w-4 h-4" />
-          </Button>
-        </div>
+
+        {/* Resources Floater Button */}
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button variant="outline" size="sm" className="gap-2">
+              <MoreVertical className="w-4 h-4" />
+              <span className="hidden sm:inline">Resources</span>
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-64 p-3 bg-popover" align="end">
+            <div className="space-y-2">
+              <h3 className="font-semibold text-sm text-foreground mb-3">Learning Resources</h3>
+              <Button
+                variant={showResources ? "default" : "outline"}
+                className="w-full justify-start gap-2"
+                onClick={() => {
+                  setShowResources(!showResources);
+                  setShowAssessments(false);
+                  setShowLessonPlans(false);
+                }}
+              >
+                <Video className="w-4 h-4" />
+                Learning Resources
+              </Button>
+              <Button
+                variant={showAssessments ? "default" : "outline"}
+                className="w-full justify-start gap-2"
+                onClick={() => {
+                  setShowAssessments(!showAssessments);
+                  setShowResources(false);
+                  setShowLessonPlans(false);
+                }}
+              >
+                <FileText className="w-4 h-4" />
+                Assessments
+              </Button>
+              <Button
+                variant={showLessonPlans ? "default" : "outline"}
+                className="w-full justify-start gap-2"
+                onClick={() => {
+                  setShowLessonPlans(!showLessonPlans);
+                  setShowResources(false);
+                  setShowAssessments(false);
+                }}
+              >
+                <BookMarked className="w-4 h-4" />
+                Lesson Plan
+              </Button>
+            </div>
+          </PopoverContent>
+        </Popover>
       </div>
 
       {/* Body */}

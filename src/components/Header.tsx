@@ -1,4 +1,4 @@
-import { BookOpen, ChevronDown, Home, BarChart3 } from "lucide-react";
+import { BookOpen, ChevronDown, Home, BarChart3, List } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -15,9 +15,13 @@ interface HeaderProps {
   onCombinedChange?: (value: string) => void;
   combinedOptions?: Array<{ id: string; label: string }>;
   showClassSubjectSelector?: boolean;
+  chapterSelection?: string;
+  onChapterChange?: (value: string) => void;
+  chapterOptions?: Array<{ id: number; name: string }>;
+  showChapterSelector?: boolean;
 }
 
-const Header = ({ onLogout, role = "teacher", combinedSelection, onCombinedChange, combinedOptions, showClassSubjectSelector = false }: HeaderProps) => {
+const Header = ({ onLogout, role = "teacher", combinedSelection, onCombinedChange, combinedOptions, showClassSubjectSelector = false, chapterSelection, onChapterChange, chapterOptions, showChapterSelector = false }: HeaderProps) => {
   const navigate = useNavigate();
   
   return (
@@ -51,6 +55,24 @@ const Header = ({ onLogout, role = "teacher", combinedSelection, onCombinedChang
               {combinedOptions.map((option) => (
                 <SelectItem key={option.id} value={option.id} className="dark:text-black">
                   {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
+
+        {showChapterSelector && chapterSelection && onChapterChange && chapterOptions && (
+          <Select value={chapterSelection} onValueChange={onChapterChange}>
+            <SelectTrigger className="hidden md:flex w-[240px] bg-white dark:bg-white dark:text-black rounded-lg border-2">
+              <div className="flex items-center gap-2">
+                <List className="w-4 h-4" />
+                <SelectValue placeholder="Select chapter" />
+              </div>
+            </SelectTrigger>
+            <SelectContent className="bg-white dark:bg-white z-50">
+              {chapterOptions.map((chapter) => (
+                <SelectItem key={chapter.id} value={chapter.id.toString()} className="dark:text-black">
+                  {chapter.name}
                 </SelectItem>
               ))}
             </SelectContent>
