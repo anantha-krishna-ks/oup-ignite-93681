@@ -240,18 +240,6 @@ const ChaptersPage = () => {
       
         <main className="dashboard-main">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
-          {/* Modern Header */}
-          <div className="mb-10">
-            
-            <div className="flex items-center justify-between mb-6">
-              <h1 className="text-xl md:text-2xl font-semibold text-foreground">
-                {subjectTitles[subject]}
-                <span className="text-sm md:text-base text-muted-foreground font-normal ml-3">
-                  ({chapters.length} chapters)
-                </span>
-              </h1>
-            </div>
-          </div>
 
           {/* Premium Chapters Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-6">
