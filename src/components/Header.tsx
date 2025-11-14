@@ -1,11 +1,10 @@
-import { BookOpen, ChevronDown, Home, BarChart3, List, MoreVertical, Video, FileText, BookMarked } from "lucide-react";
+import { BookOpen, ChevronDown, Home, BarChart3, List } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import MobileSidebar from "./MobileSidebar";
 import oxfordIgniteLogo from "@/assets/oxford-ignite-logo.png";
 
@@ -20,13 +19,6 @@ interface HeaderProps {
   onChapterChange?: (value: string) => void;
   chapterOptions?: Array<{ id: number; name: string }>;
   showChapterSelector?: boolean;
-  showResourcesFloater?: boolean;
-  showResources?: boolean;
-  showAssessments?: boolean;
-  showLessonPlans?: boolean;
-  onResourcesClick?: () => void;
-  onAssessmentsClick?: () => void;
-  onLessonPlansClick?: () => void;
 }
 
 const Header = ({ 
@@ -39,14 +31,7 @@ const Header = ({
   chapterSelection, 
   onChapterChange, 
   chapterOptions, 
-  showChapterSelector = false,
-  showResourcesFloater = false,
-  showResources = false,
-  showAssessments = false,
-  showLessonPlans = false,
-  onResourcesClick,
-  onAssessmentsClick,
-  onLessonPlansClick
+  showChapterSelector = false
 }: HeaderProps) => {
   const navigate = useNavigate();
   
@@ -105,83 +90,40 @@ const Header = ({
           </Select>
         )}
 
-        {/* Resources Floater - Show in BookReader */}
-        {showResourcesFloater && (
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button variant="outline" size="sm" className="gap-2">
-                <MoreVertical className="w-4 h-4" />
-                <span className="hidden sm:inline">Resources</span>
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-64 p-3 bg-popover" align="end">
-              <div className="space-y-2">
-                <h3 className="font-semibold text-sm text-foreground mb-3">Learning Resources</h3>
-                <Button
-                  variant={showResources ? "default" : "outline"}
-                  className="w-full justify-start gap-2"
-                  onClick={onResourcesClick}
-                >
-                  <Video className="w-4 h-4" />
-                  Learning Resources
-                </Button>
-                <Button
-                  variant={showAssessments ? "default" : "outline"}
-                  className="w-full justify-start gap-2"
-                  onClick={onAssessmentsClick}
-                >
-                  <FileText className="w-4 h-4" />
-                  Assessments
-                </Button>
-                <Button
-                  variant={showLessonPlans ? "default" : "outline"}
-                  className="w-full justify-start gap-2"
-                  onClick={onLessonPlansClick}
-                >
-                  <BookMarked className="w-4 h-4" />
-                  Lesson Plan
-                </Button>
-              </div>
-            </PopoverContent>
-          </Popover>
-        )}
-
         {/* Navigation Icons - Desktop only */}
-        {!showResourcesFloater && (
-          <div className="hidden md:flex items-center gap-2">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={() => navigate("/chapters")}
-                  className="h-9 w-9 rounded-lg border-2"
-                >
-                  <Home className="h-4 w-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Home</p>
-              </TooltipContent>
-            </Tooltip>
+        <div className="hidden md:flex items-center gap-2">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => navigate("/chapters")}
+                className="h-9 w-9 rounded-lg border-2"
+              >
+                <Home className="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Home</p>
+            </TooltipContent>
+          </Tooltip>
 
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={() => navigate("/reports-coming-soon")}
-                  className="h-9 w-9 rounded-lg border-2"
-                >
-                  <BarChart3 className="h-4 w-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Reports</p>
-              </TooltipContent>
-            </Tooltip>
-          </div>
-        )}
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => navigate("/reports-coming-soon")}
+                className="h-9 w-9 rounded-lg border-2"
+              >
+                <BarChart3 className="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Reports</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
 
         {/* Desktop User Dropdown - Hidden on Mobile */}
         <DropdownMenu>
