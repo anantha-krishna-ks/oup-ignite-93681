@@ -82,13 +82,13 @@ const BookReaderPage = () => {
       {/* Toggle Button - Always Visible, visually attached to header */}
       <Button
         onClick={() => setIsHeaderCollapsed(!isHeaderCollapsed)}
-        className={`fixed left-1/2 -translate-x-1/2 z-[1000] pointer-events-auto h-10 w-10 rounded-full shadow-lg bg-primary hover:bg-primary/90 transition-all duration-300 p-0 ${
+        className={`fixed left-1/2 -translate-x-1/2 z-[1000] pointer-events-auto h-12 w-12 rounded-lg shadow-lg bg-orange-500 hover:bg-orange-600 text-white transition-all duration-300 p-0 ${
           isHeaderCollapsed ? 'top-4' : 'top-[4.5rem]'
         }`}
         aria-label={isHeaderCollapsed ? "Show header" : "Hide header"}
         title={isHeaderCollapsed ? "Show header" : "Hide header"}
       >
-        {isHeaderCollapsed ? <ChevronDown className="w-5 h-5" /> : <ChevronUp className="w-5 h-5" />}
+        {isHeaderCollapsed ? <ChevronDown className="w-6 h-6" /> : <ChevronUp className="w-6 h-6" />}
       </Button>
 
       <div className="flex-1 flex flex-col">
