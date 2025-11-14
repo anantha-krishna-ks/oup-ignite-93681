@@ -32,6 +32,7 @@ const subjects = [
 const Index = () => {
   const [selectedClass, setSelectedClass] = useState("class-6");
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
+  const [selectedChapter, setSelectedChapter] = useState<string>("1");
 
   if (selectedSubject) {
     const subject = subjects.find((s) => s.id === selectedSubject);
@@ -39,6 +40,7 @@ const Index = () => {
       <BookReader
         subject={subject?.title || ""}
         onClose={() => setSelectedSubject(null)}
+        selectedChapter={selectedChapter}
       />
     );
   }

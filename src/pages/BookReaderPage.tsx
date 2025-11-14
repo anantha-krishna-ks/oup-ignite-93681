@@ -2,6 +2,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import BookReader from "@/components/BookReader";
 import Header from "@/components/Header";
+import { chapters } from "@/data/chapters";
 
 const subjects = [
   { id: "english", title: "English" },
@@ -33,6 +34,8 @@ const BookReaderPage = () => {
   const userRole = localStorage.getItem("userRole") as "student" | "teacher" | null;
   const [combinedSelection, setCombinedSelection] = useState<string>(`1-${subjectId || "english"}`);
 
+  const [selectedChapter, setSelectedChapter] = useState<string>("1");
+
   const subject = subjects.find((s) => s.id === subjectId);
 
   if (!subject) {
@@ -62,11 +65,16 @@ const BookReaderPage = () => {
         combinedSelection={combinedSelection}
         onCombinedChange={handleCombinedChange}
         combinedOptions={combinedOptions}
+        showChapterSelector={true}
+        chapterSelection={selectedChapter}
+        onChapterChange={setSelectedChapter}
+        chapterOptions={chapters}
       />
       <div className="flex-1 flex flex-col">
         <BookReader
           subject={subject.title}
           onClose={() => navigate(-1)}
+          selectedChapter={selectedChapter}
         />
       </div>
     </div>
