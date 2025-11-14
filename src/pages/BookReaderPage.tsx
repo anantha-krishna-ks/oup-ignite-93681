@@ -61,7 +61,7 @@ const BookReaderPage = () => {
   return (
     <div className="min-h-screen flex flex-col w-full relative">
       <div 
-        className={`relative transition-all duration-500 ease-in-out ${
+        className={`relative z-[10000] transition-all duration-500 ease-in-out ${
           isHeaderCollapsed ? '-translate-y-full' : 'translate-y-0'
         }`}
       >
