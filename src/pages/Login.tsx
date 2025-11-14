@@ -60,7 +60,7 @@ const Login = () => {
       <Card className="w-full max-w-md p-6 sm:p-8 space-y-6 shadow-xl">
         <div className="text-center space-y-2">
           <div className="flex justify-center mb-4">
-            <img src={oxfordIgniteLogo} alt="Oxford Ignite" className="h-16 w-auto" />
+            <img src={oxfordIgniteLogo} alt="Oxford Ignite" className="h-20 w-auto" />
           </div>
           <p className="text-muted-foreground">
             Sign in to access your dashboard
