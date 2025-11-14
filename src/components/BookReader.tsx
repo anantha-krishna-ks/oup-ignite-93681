@@ -234,26 +234,60 @@ const BookReader = ({ subject, onClose }: BookReaderProps) => {
         onChapterChange={setSelectedChapter}
         chapterOptions={chapters}
         showChapterSelector={true}
-        showResourcesFloater={true}
-        showResources={showResources}
-        showAssessments={showAssessments}
-        showLessonPlans={showLessonPlans}
-        onResourcesClick={() => {
-          setShowResources(!showResources);
-          setShowAssessments(false);
-          setShowLessonPlans(false);
-        }}
-        onAssessmentsClick={() => {
-          setShowAssessments(!showAssessments);
-          setShowResources(false);
-          setShowLessonPlans(false);
-        }}
-        onLessonPlansClick={() => {
-          setShowLessonPlans(!showLessonPlans);
-          setShowResources(false);
-          setShowAssessments(false);
-        }}
       />
+      
+      {/* Resources Bar */}
+      <div className="h-14 bg-card border-b border-border flex items-center justify-end px-4 md:px-6">
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button variant="outline" size="sm" className="gap-2">
+              <MoreVertical className="w-4 h-4" />
+              <span className="hidden sm:inline">Resources</span>
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-64 p-3 bg-popover" align="end">
+            <div className="space-y-2">
+              <h3 className="font-semibold text-sm text-foreground mb-3">Learning Resources</h3>
+              <Button
+                variant={showResources ? "default" : "outline"}
+                className="w-full justify-start gap-2"
+                onClick={() => {
+                  setShowResources(!showResources);
+                  setShowAssessments(false);
+                  setShowLessonPlans(false);
+                }}
+              >
+                <Video className="w-4 h-4" />
+                Learning Resources
+              </Button>
+              <Button
+                variant={showAssessments ? "default" : "outline"}
+                className="w-full justify-start gap-2"
+                onClick={() => {
+                  setShowAssessments(!showAssessments);
+                  setShowResources(false);
+                  setShowLessonPlans(false);
+                }}
+              >
+                <FileText className="w-4 h-4" />
+                Assessments
+              </Button>
+              <Button
+                variant={showLessonPlans ? "default" : "outline"}
+                className="w-full justify-start gap-2"
+                onClick={() => {
+                  setShowLessonPlans(!showLessonPlans);
+                  setShowResources(false);
+                  setShowAssessments(false);
+                }}
+              >
+                <BookMarked className="w-4 h-4" />
+                Lesson Plan
+              </Button>
+            </div>
+          </PopoverContent>
+        </Popover>
+      </div>
 
       {/* Body */}
       <div className="flex-1 flex overflow-hidden">
