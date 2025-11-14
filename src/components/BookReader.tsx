@@ -253,7 +253,7 @@ const BookReader = ({ subject, onClose, selectedChapter }: BookReaderProps) => {
                 <Button
                   size="lg"
                   className="fixed bottom-20 right-4 z-10 h-14 w-14 rounded-full shadow-lg bg-primary hover:bg-primary/90 transition-all duration-300 hover:scale-110"
-                  title="Learning Resources"
+                  title="Teacher Tools"
                 >
                   <GraduationCap className="w-6 h-6" />
                 </Button>
@@ -267,7 +267,7 @@ const BookReader = ({ subject, onClose, selectedChapter }: BookReaderProps) => {
                   <div className="space-y-3">
                     <div className="flex items-center gap-2 mb-4">
                       <GraduationCap className="w-5 h-5 text-primary" />
-                      <h3 className="font-semibold text-base text-foreground">Learning Tools</h3>
+                      <h3 className="font-semibold text-base text-foreground">Teacher Tools</h3>
                     </div>
                     
                     <Button
