@@ -3,6 +3,8 @@ import { useState } from "react";
 import BookReader from "@/components/BookReader";
 import Header from "@/components/Header";
 import { chapters } from "@/data/chapters";
+import { Button } from "@/components/ui/button";
+import { ChevronUp, ChevronDown } from "lucide-react";
 
 const subjects = [
   { id: "english", title: "English" },
@@ -74,11 +76,19 @@ const BookReaderPage = () => {
           chapterSelection={selectedChapter}
           onChapterChange={setSelectedChapter}
           chapterOptions={chapters}
-          showCollapseToggle={true}
-          isCollapsed={isHeaderCollapsed}
-          onToggleCollapse={() => setIsHeaderCollapsed(!isHeaderCollapsed)}
         />
       </div>
+
+      {/* Floating Toggle Button */}
+      <Button
+        onClick={() => setIsHeaderCollapsed(!isHeaderCollapsed)}
+        className={`fixed left-1/2 -translate-x-1/2 z-50 h-10 w-10 rounded-full shadow-lg bg-primary hover:bg-primary/90 transition-all duration-300 p-0 ${
+          isHeaderCollapsed ? 'top-4' : 'top-20'
+        }`}
+        title={isHeaderCollapsed ? "Show header" : "Hide header"}
+      >
+        {isHeaderCollapsed ? <ChevronDown className="w-5 h-5" /> : <ChevronUp className="w-5 h-5" />}
+      </Button>
 
       <div className="flex-1 flex flex-col">
         <BookReader

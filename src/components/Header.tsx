@@ -1,4 +1,4 @@
-import { BookOpen, ChevronDown, Home, BarChart3, List, ChevronUp } from "lucide-react";
+import { BookOpen, ChevronDown, Home, BarChart3, List } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -19,9 +19,6 @@ interface HeaderProps {
   onChapterChange?: (value: string) => void;
   chapterOptions?: Array<{ id: number; name: string }>;
   showChapterSelector?: boolean;
-  showCollapseToggle?: boolean;
-  isCollapsed?: boolean;
-  onToggleCollapse?: () => void;
 }
 
 const Header = ({ 
@@ -34,10 +31,7 @@ const Header = ({
   chapterSelection, 
   onChapterChange, 
   chapterOptions, 
-  showChapterSelector = false,
-  showCollapseToggle = false,
-  isCollapsed = false,
-  onToggleCollapse
+  showChapterSelector = false
 }: HeaderProps) => {
   const navigate = useNavigate();
   
@@ -94,25 +88,6 @@ const Header = ({
               ))}
             </SelectContent>
           </Select>
-        )}
-
-        {/* Collapse Toggle Button */}
-        {showCollapseToggle && onToggleCollapse && (
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={onToggleCollapse}
-                className="h-9 w-9"
-              >
-                {isCollapsed ? <ChevronDown className="w-5 h-5" /> : <ChevronUp className="w-5 h-5" />}
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>{isCollapsed ? "Show header" : "Hide header"}</p>
-            </TooltipContent>
-          </Tooltip>
         )}
 
         {/* Navigation Icons - Desktop only */}
