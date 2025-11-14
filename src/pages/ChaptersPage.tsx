@@ -242,7 +242,7 @@ const ChaptersPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
 
           {/* Premium Chapters Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 md:gap-5">
             {chapters.map((chapter, index) => (
               <motion.div
                 key={chapter.id}
@@ -266,7 +266,7 @@ const ChaptersPage = () => {
                   </div>
 
                   {/* Book Cover with Image */}
-                  <div className="relative aspect-[3/4] overflow-hidden flex-shrink-0 rounded-t-2xl">
+                  <div className="relative aspect-[4/5] overflow-hidden flex-shrink-0 rounded-t-2xl">
                     <img 
                       src={oxfordIgniteCover} 
                       alt={chapter.title}
@@ -284,7 +284,7 @@ const ChaptersPage = () => {
                   </div>
 
                   {/* Book Details Card */}
-                  <div className="p-4 space-y-2 bg-card flex-1 flex flex-col rounded-b-2xl">
+                  <div className="p-3 space-y-2 bg-card flex-1 flex flex-col rounded-b-2xl">
                     {/* Chapter Title */}
                     <h3 className="font-semibold text-sm md:text-base text-foreground line-clamp-2 group-hover:text-primary transition-colors">
                       {chapter.title}
