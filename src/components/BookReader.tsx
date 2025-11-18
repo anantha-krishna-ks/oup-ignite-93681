@@ -472,8 +472,8 @@ const BookReader = ({ subject, onClose, selectedChapter }: BookReaderProps) => {
         {/* Right Panel - Assessments */}
         {showAssessments && (
           <div className="fixed md:relative inset-0 md:inset-auto z-40 md:z-0 w-full md:w-96 bg-card md:border-l border-border overflow-y-auto">
-            <div className="p-4 sm:p-6">
-              <div className="flex items-center justify-between mb-6">
+            <div className="p-2 sm:p-3">
+              <div className="flex items-center justify-between mb-2">
                 <h3 className="text-lg font-bold text-foreground">Assessments</h3>
                 <Button
                   variant="ghost"
@@ -580,8 +580,8 @@ const BookReader = ({ subject, onClose, selectedChapter }: BookReaderProps) => {
         {/* Right Panel - Lesson Plans */}
         {showLessonPlans && (
           <div className="fixed md:relative inset-0 md:inset-auto z-40 md:z-0 w-full md:w-96 bg-card md:border-l border-border overflow-y-auto">
-            <div className="p-4 sm:p-6">
-              <div className="flex items-center justify-between mb-6">
+            <div className="p-2 sm:p-3">
+              <div className="flex items-center justify-between mb-2">
                 <h3 className="text-lg font-bold text-foreground">Lesson Plans</h3>
                 <Button
                   variant="ghost"
