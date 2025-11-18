@@ -2,6 +2,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import BookReader from "@/components/BookReader";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import { chapters } from "@/data/chapters";
 import { Button } from "@/components/ui/button";
 import { ChevronUp, ChevronDown } from "lucide-react";
@@ -98,6 +99,8 @@ const BookReaderPage = () => {
           selectedChapter={selectedChapter}
         />
       </div>
+
+      <Footer />
     </div>
   );
 };
