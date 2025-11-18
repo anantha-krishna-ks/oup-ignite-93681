@@ -404,8 +404,8 @@ const BookReader = ({ subject, onClose, selectedChapter }: BookReaderProps) => {
         {/* Right Panel - Learning Resources */}
         {showResources && (
           <div className="fixed md:relative inset-0 md:inset-auto z-40 md:z-0 w-full md:w-96 bg-card md:border-l border-border overflow-y-auto">
-            <div className="p-4 sm:p-6">
-              <div className="flex items-center justify-between mb-6">
+            <div className="p-2 sm:p-3">
+              <div className="flex items-center justify-between mb-2">
                 <h3 className="text-lg font-bold text-foreground">Resources</h3>
                 <Button
                   variant="ghost"
@@ -416,7 +416,7 @@ const BookReader = ({ subject, onClose, selectedChapter }: BookReaderProps) => {
                 </Button>
               </div>
 
-              <div className="mt-4 space-y-4">
+              <div className="mt-2 space-y-4">
                 <div>
                   <h4 className="text-base font-semibold text-foreground mb-3">Filter by Type</h4>
                   <Select value={filterType} onValueChange={setFilterType}>
