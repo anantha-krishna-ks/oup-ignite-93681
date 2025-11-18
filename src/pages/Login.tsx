@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card";
 import { Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 import oxfordIgniteLogo from "@/assets/oxford-ignite-logo.png";
+import Footer from "@/components/Footer";
 
 // Predefined credentials
 const CREDENTIALS = {
@@ -56,7 +57,8 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-primary/5 via-background to-secondary/5 p-4">
+    <div className="min-h-screen w-full flex flex-col bg-gradient-to-br from-primary/5 via-background to-secondary/5">
+      <div className="flex-1 flex items-center justify-center p-4">
       <Card className="w-full max-w-md p-6 sm:p-8 space-y-6 shadow-xl">
         <div className="text-center">
           <div className="flex justify-center mb-6">
@@ -125,6 +127,9 @@ const Login = () => {
         </div>
 
       </Card>
+      </div>
+      
+      <Footer />
     </div>
   );
 };

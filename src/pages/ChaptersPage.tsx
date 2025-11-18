@@ -2,6 +2,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { BookOpen, Clock, Star, List, GraduationCap, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
@@ -307,6 +308,8 @@ const ChaptersPage = () => {
           </div>
         </div>
         </main>
+
+        <Footer />
     </div>
   );
 };
