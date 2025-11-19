@@ -87,7 +87,7 @@ const BookReaderPage = () => {
             aria-label={isHeaderCollapsed ? "Show header" : "Hide header"}
             title={isHeaderCollapsed ? "Show header" : "Hide header"}
           >
-            {isHeaderCollapsed ? <ChevronDown className="w-5 h-5" /> : <ChevronUp className="w-5 h-5" />}
+            {isHeaderCollapsed ? <ChevronDown className="w-4 h-4" /> : <ChevronUp className="w-4 h-4" />}
           </Button>
         </div>
       </div>
