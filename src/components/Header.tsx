@@ -1,10 +1,11 @@
-import { BookOpen, ChevronDown, Home, BarChart3, List } from "lucide-react";
+import { BookOpen, ChevronDown, Home, BarChart3, List, Info } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import MobileSidebar from "./MobileSidebar";
 import oxfordIgniteLogo from "@/assets/oxford-ignite-logo.png";
 
@@ -143,22 +144,48 @@ const Header = ({
               </div>
               <h3 className="font-semibold text-foreground mb-1">Ms. Sarah Johnson</h3>
               <p className="text-sm text-muted-foreground mb-1">sarah.johnson@school.edu</p>
-              <p className="text-xs text-muted-foreground mb-3">{role === "teacher" ? "Teacher Account" : "Class 6 Student"}</p>
+              <p className="text-xs text-muted-foreground">{role === "teacher" ? "Teacher Account" : "Class 6 Student"}</p>
               
               {role === "teacher" && (
-                <div className="text-left pt-2 border-t border-border space-y-2">
-                  <div>
-                    <p className="text-[10px] font-semibold text-foreground mb-0.5">Teaching</p>
-                    <div className="text-[10px] text-muted-foreground leading-tight space-y-0.5">
-                      <p><span className="font-medium">6-A, 6-B:</span> Math, Gen. Science</p>
-                      <p><span className="font-medium">7-A, 7-B:</span> Gen. Science</p>
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <p className="text-[10px] font-semibold text-foreground mb-0.5">Class Teacher</p>
-                    <p className="text-[10px] text-muted-foreground">6-A, 7-A</p>
-                  </div>
+                <div className="mt-3">
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button variant="outline" size="sm" className="w-full text-xs h-8">
+                        <Info className="w-3 h-3 mr-1.5" />
+                        Teaching Details
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-80 bg-popover z-[9999]" align="center">
+                      <div className="space-y-3">
+                        <div>
+                          <h4 className="font-semibold text-sm mb-2 text-foreground">Teaching Teacher</h4>
+                          <div className="space-y-2 text-xs text-muted-foreground">
+                            <div>
+                              <p className="font-medium text-foreground">Class 6-A</p>
+                              <p className="pl-3">Mathematics, General Science</p>
+                            </div>
+                            <div>
+                              <p className="font-medium text-foreground">Class 6-B</p>
+                              <p className="pl-3">Mathematics, General Science</p>
+                            </div>
+                            <div>
+                              <p className="font-medium text-foreground">Class 7-A</p>
+                              <p className="pl-3">General Science</p>
+                            </div>
+                            <div>
+                              <p className="font-medium text-foreground">Class 7-B</p>
+                              <p className="pl-3">General Science</p>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="pt-2 border-t border-border">
+                          <h4 className="font-semibold text-sm mb-1 text-foreground">Class Teacher</h4>
+                          <p className="text-xs text-muted-foreground">Class 6-A, Class 7-A</p>
+                        </div>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
                 </div>
               )}
             </div>
