@@ -117,7 +117,7 @@ const ChaptersPage = () => {
   return (
     <div className="min-h-screen w-full bg-muted/40">
       <Header
-        role="student"
+        role="teacher"
         onLogout={handleLogout}
         showClassSubjectSelector={true}
         combinedSelection={combinedSelection}
