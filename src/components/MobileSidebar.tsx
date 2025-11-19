@@ -1,4 +1,4 @@
-import { Home, BarChart3, User, LogOut, Menu } from "lucide-react";
+import { Home, BarChart3, User, LogOut, Menu, Info } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import {
   Sheet,
@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 interface MobileSidebarProps {
   onLogout?: () => void;
@@ -51,17 +52,60 @@ const MobileSidebar = ({
 
         <div className="flex flex-col gap-6 mt-6">
           {/* User Profile Section */}
-          <div className="flex items-center gap-3 px-2">
-            <Avatar className="w-12 h-12">
-              <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=teacher" />
-              <AvatarFallback className="bg-primary text-primary-foreground">TC</AvatarFallback>
-            </Avatar>
-            <div>
-              <p className="font-semibold text-sm">Ms. Sarah Johnson</p>
-              <p className="text-xs text-muted-foreground">
-                {role === "teacher" ? "Teacher" : "Class 6"}
-              </p>
+          <div className="px-2 space-y-3">
+            <div className="flex items-center gap-3">
+              <Avatar className="w-12 h-12">
+                <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=teacher" />
+                <AvatarFallback className="bg-primary text-primary-foreground">TC</AvatarFallback>
+              </Avatar>
+              <div>
+                <p className="font-semibold text-sm">Ms. Sarah Johnson</p>
+                <p className="text-xs text-muted-foreground">
+                  {role === "teacher" ? "Teacher" : "Class 6"}
+                </p>
+              </div>
             </div>
+            
+            {role === "teacher" && (
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="outline" size="sm" className="w-full text-xs h-8">
+                    <Info className="w-3 h-3 mr-1.5" />
+                    Teaching Details
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-80 bg-popover z-[9999]" align="center">
+                  <div className="space-y-3">
+                    <div>
+                      <h4 className="font-semibold text-sm mb-2 text-foreground">Teaching Teacher</h4>
+                      <div className="space-y-2 text-xs text-muted-foreground">
+                        <div>
+                          <p className="font-medium text-foreground">Class 6-A</p>
+                          <p className="pl-3">Mathematics, General Science</p>
+                        </div>
+                        <div>
+                          <p className="font-medium text-foreground">Class 6-B</p>
+                          <p className="pl-3">Mathematics, General Science</p>
+                        </div>
+                        <div>
+                          <p className="font-medium text-foreground">Class 7-A</p>
+                          <p className="pl-3">General Science</p>
+                        </div>
+                        <div>
+                          <p className="font-medium text-foreground">Class 7-B</p>
+                          <p className="pl-3">General Science</p>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="pt-2 border-t border-border">
+                      <h4 className="font-semibold text-sm mb-1 text-foreground">Class Teacher</h4>
+                      <p className="text-xs text-muted-foreground">Class 6-A, Class 7-A</p>
+                    </div>
+                  </div>
+                </PopoverContent>
+              </Popover>
+            )}
           </div>
 
           <Separator />
