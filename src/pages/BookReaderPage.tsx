@@ -83,7 +83,7 @@ const BookReaderPage = () => {
         <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 z-[9999]">
           <Button
             onClick={() => setIsHeaderCollapsed(!isHeaderCollapsed)}
-            className="h-10 px-6 rounded-b-lg rounded-t-none shadow-lg bg-orange-500 hover:bg-orange-600 text-white transition-all duration-300"
+            className="h-8 px-4 rounded-b-lg rounded-t-none shadow-lg bg-orange-500 hover:bg-orange-600 text-white transition-all duration-300"
             aria-label={isHeaderCollapsed ? "Show header" : "Hide header"}
             title={isHeaderCollapsed ? "Show header" : "Hide header"}
           >
