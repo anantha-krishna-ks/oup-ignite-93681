@@ -143,7 +143,30 @@ const Header = ({
               </div>
               <h3 className="font-semibold text-foreground mb-1">Ms. Sarah Johnson</h3>
               <p className="text-sm text-muted-foreground mb-1">sarah.johnson@school.edu</p>
-              <p className="text-xs text-muted-foreground">{role === "teacher" ? "Teacher Account" : "Class 6 Student"}</p>
+              <p className="text-xs text-muted-foreground mb-3">{role === "teacher" ? "Teacher Account" : "Class 6 Student"}</p>
+              
+              {role === "teacher" && (
+                <div className="text-left space-y-3 pt-3 border-t border-border">
+                  <div>
+                    <p className="text-xs font-semibold text-foreground mb-1">Teaching Teacher</p>
+                    <div className="text-xs text-muted-foreground space-y-1">
+                      <p>Class 6-A</p>
+                      <p className="pl-4">Mathematics, General Science</p>
+                      <p>Class 6-B</p>
+                      <p className="pl-4">Mathematics, General Science</p>
+                      <p>Class 7-A</p>
+                      <p className="pl-4">General Science</p>
+                      <p>Class 7-B</p>
+                      <p className="pl-4">General Science</p>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <p className="text-xs font-semibold text-foreground mb-1">Class Teacher</p>
+                    <p className="text-xs text-muted-foreground">Class 6-A, Class 7-A</p>
+                  </div>
+                </div>
+              )}
             </div>
             <DropdownMenuSeparator className="my-0" />
             <div className="p-2">
