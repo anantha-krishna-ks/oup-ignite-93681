@@ -158,7 +158,7 @@ const Header = ({
                     <PopoverContent className="w-80 bg-popover z-[9999]" align="center">
                       <div className="space-y-3">
                         <div>
-                          <h4 className="font-semibold text-sm mb-2 text-foreground">Teaching Teacher</h4>
+                          <h4 className="font-semibold text-sm mb-2 text-foreground">Teaching Details</h4>
                           <div className="space-y-2 text-xs text-muted-foreground">
                             <div>
                               <p className="font-medium text-foreground">Class 6-A</p>
@@ -177,11 +177,6 @@ const Header = ({
                               <p className="pl-3">General Science</p>
                             </div>
                           </div>
-                        </div>
-                        
-                        <div className="pt-2 border-t border-border">
-                          <h4 className="font-semibold text-sm mb-1 text-foreground">Class Teacher</h4>
-                          <p className="text-xs text-muted-foreground">Class 6-A, Class 7-A</p>
                         </div>
                       </div>
                     </PopoverContent>
