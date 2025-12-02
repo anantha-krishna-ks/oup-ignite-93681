@@ -9,6 +9,7 @@ import ParentDashboard from "./pages/ParentDashboard";
 import TeacherDashboard from "./pages/TeacherDashboard";
 import StudentDashboard from "./pages/StudentDashboard";
 import ProfileSettings from "./pages/ProfileSettings";
+import ChangePassword from "./pages/ChangePassword";
 import BookReaderPage from "./pages/BookReaderPage";
 import SplashScreen from "./pages/SplashScreen";
 import LearnerLogin from "./pages/LearnerLogin";
@@ -35,6 +36,7 @@ const App = () => (
           <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
           <Route path="/student-dashboard" element={<StudentDashboard />} />
           <Route path="/profile-settings" element={<ProfileSettings />} />
+          <Route path="/change-password" element={<ChangePassword />} />
           <Route path="/chapters" element={<ChaptersPage />} />
           <Route path="/book-reader" element={<BookReaderPage />} />
           <Route path="/reports-coming-soon" element={<ReportsComingSoon />} />

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Camera, Mail, Phone, MapPin } from "lucide-react";
+import { Camera, Mail, Phone, MapPin, Lock } from "lucide-react";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -253,6 +253,22 @@ const ProfileSettings = () => {
         </Card>
 
         <Separator />
+
+        {/* Password Management */}
+        <Card className="bg-muted/50">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Lock className="h-5 w-5" />
+              Password Management
+            </CardTitle>
+            <CardDescription>Update your password and security settings</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button onClick={() => navigate("/change-password")} className="w-full sm:w-auto">
+              Change Password
+            </Button>
+          </CardContent>
+        </Card>
 
         {/* Action Buttons */}
         <div className="flex justify-end gap-4">
