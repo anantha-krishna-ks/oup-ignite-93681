@@ -4,7 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
-import { Menu, Home, BookOpen, ClipboardList, BookMarked, Search, FileText, Layers, Video } from 'lucide-react';
+import { Menu, Library, BookOpen, GraduationCap, Calendar, Search, FileText, Layers, Video } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import englishImg from '@/assets/english-subject.png';
@@ -333,7 +333,7 @@ const LearnerDashboard = () => {
               onClick={() => setActiveTab('resources')}
               className="flex flex-col items-center justify-center gap-1 py-2 px-4 min-w-[70px] active:opacity-60 transition-opacity"
             >
-              <BookOpen 
+              <FileText 
                 className={cn(
                   "w-6 h-6 transition-colors",
                   activeTab === 'resources' ? "text-blue-600" : "text-gray-700"
@@ -348,12 +348,12 @@ const LearnerDashboard = () => {
               </span>
             </button>
 
-            {/* Home Button */}
+            {/* Books Button */}
             <button 
               onClick={() => setActiveTab('home')}
               className="flex flex-col items-center justify-center gap-1 py-2 px-4 min-w-[70px] active:opacity-60 transition-opacity"
             >
-              <Home 
+              <Library 
                 className={cn(
                   "w-6 h-6 transition-colors",
                   activeTab === 'home' ? "text-blue-600" : "text-gray-700"
@@ -365,7 +365,7 @@ const LearnerDashboard = () => {
                 "text-[11px] font-medium transition-colors",
                 activeTab === 'home' ? "text-blue-600" : "text-gray-700"
               )}>
-                Home
+                Books
               </span>
             </button>
 
@@ -374,7 +374,7 @@ const LearnerDashboard = () => {
               onClick={() => setActiveTab('assessments')}
               className="flex flex-col items-center justify-center gap-1 py-2 px-4 min-w-[70px] active:opacity-60 transition-opacity"
             >
-              <ClipboardList 
+              <GraduationCap 
                 className={cn(
                   "w-6 h-6 transition-colors",
                   activeTab === 'assessments' ? "text-blue-600" : "text-gray-700"
@@ -394,7 +394,7 @@ const LearnerDashboard = () => {
               onClick={() => setActiveTab('lessons')}
               className="flex flex-col items-center justify-center gap-1 py-2 px-4 min-w-[70px] active:opacity-60 transition-opacity"
             >
-              <BookMarked 
+              <Calendar 
                 className={cn(
                   "w-6 h-6 transition-colors",
                   activeTab === 'lessons' ? "text-blue-600" : "text-gray-700"
