@@ -4,7 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
-import { Menu, Library, BookOpen, GraduationCap, NotebookPen, Search, FileText, Layers, Video } from 'lucide-react';
+import { Menu, Library, BookOpen, ClipboardCheck, NotebookPen, Search, FileText, Layers, Video, FolderOpen } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import englishImg from '@/assets/english-subject.png';
@@ -333,7 +333,7 @@ const LearnerDashboard = () => {
               onClick={() => setActiveTab('resources')}
               className="flex flex-col items-center justify-center gap-1 py-2 px-4 min-w-[70px] active:opacity-60 transition-opacity"
             >
-              <FileText 
+              <FolderOpen 
                 className={cn(
                   "w-6 h-6 transition-colors",
                   activeTab === 'resources' ? "text-blue-600" : "text-gray-700"
@@ -374,7 +374,7 @@ const LearnerDashboard = () => {
               onClick={() => setActiveTab('assessments')}
               className="flex flex-col items-center justify-center gap-1 py-2 px-4 min-w-[70px] active:opacity-60 transition-opacity"
             >
-              <GraduationCap 
+              <ClipboardCheck 
                 className={cn(
                   "w-6 h-6 transition-colors",
                   activeTab === 'assessments' ? "text-blue-600" : "text-gray-700"
