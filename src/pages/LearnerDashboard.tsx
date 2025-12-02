@@ -4,7 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
-import { Menu, Library, BookOpen, GraduationCap, Calendar, Search, FileText, Layers, Video } from 'lucide-react';
+import { Menu, Library, BookOpen, GraduationCap, NotebookPen, Search, FileText, Layers, Video } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import englishImg from '@/assets/english-subject.png';
@@ -389,12 +389,12 @@ const LearnerDashboard = () => {
               </span>
             </button>
 
-            {/* Lessons Button */}
+            {/* Lesson Plans Button */}
             <button 
               onClick={() => setActiveTab('lessons')}
               className="flex flex-col items-center justify-center gap-1 py-2 px-4 min-w-[70px] active:opacity-60 transition-opacity"
             >
-              <Calendar 
+              <NotebookPen 
                 className={cn(
                   "w-6 h-6 transition-colors",
                   activeTab === 'lessons' ? "text-blue-600" : "text-gray-700"
@@ -405,7 +405,7 @@ const LearnerDashboard = () => {
                 "text-[11px] font-medium transition-colors",
                 activeTab === 'lessons' ? "text-blue-600" : "text-gray-700"
               )}>
-                Lessons
+                Lesson Plans
               </span>
             </button>
           </div>
