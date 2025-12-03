@@ -270,7 +270,7 @@ const ChaptersPage = () => {
                   {/* Book Cover with Image */}
                   <div className="relative aspect-[4/5] overflow-hidden flex-shrink-0 rounded-t-2xl">
                     <img 
-                      src={typeof chapter.cover === 'string' && chapter.cover.startsWith('/') ? oxfordIgniteCover : chapter.cover} 
+                      src={chapter.cover.endsWith('.pdf') ? oxfordIgniteCover : chapter.cover} 
                       alt={chapter.title}
                       className="absolute inset-0 w-full h-full object-cover"
                     />
