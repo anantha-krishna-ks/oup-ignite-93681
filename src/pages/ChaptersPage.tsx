@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import oxfordIgniteCover from "@/assets/oxford-ignite-cover.jpg";
+import funWithWordsCover from "@/assets/fun-with-words-cover.png";
 
 // Mock chapter data with enhanced metadata
 const chapterData: Record<string, { 
@@ -19,7 +20,7 @@ const chapterData: Record<string, {
   gradient: string;
 }[]> = {
   english: [
-    { id: "chapter-1", title: "Fun with Words", cover: "/english-grade1-chapter.pdf", description: "Explore the joy of words and language", duration: "10 min", pages: 18, gradient: "from-indigo-500 to-purple-600" },
+    { id: "chapter-1", title: "Fun with Words", cover: funWithWordsCover, description: "Explore the joy of words and language", duration: "10 min", pages: 18, gradient: "from-indigo-500 to-purple-600" },
     { id: "chapter-2", title: "Jo Jo Laali (A jogula)", cover: "/english-grade1-chapter.pdf", description: "A delightful story about Jo Jo Laali", duration: "12 min", pages: 24, gradient: "from-emerald-500 to-teal-600" },
     { id: "chapter-3", title: "Kamala's First Day at School", cover: "/english-grade1-chapter.pdf", description: "Join Kamala on her exciting first day", duration: "10 min", pages: 20, gradient: "from-amber-500 to-orange-600" },
     { id: "chapter-4", title: "Friends", cover: "/english-grade1-chapter.pdf", description: "Learn about friendship and caring", duration: "15 min", pages: 28, gradient: "from-pink-500 to-rose-600" },
@@ -269,7 +270,7 @@ const ChaptersPage = () => {
                   {/* Book Cover with Image */}
                   <div className="relative aspect-[4/5] overflow-hidden flex-shrink-0 rounded-t-2xl">
                     <img 
-                      src={oxfordIgniteCover} 
+                      src={typeof chapter.cover === 'string' && chapter.cover.startsWith('/') ? oxfordIgniteCover : chapter.cover} 
                       alt={chapter.title}
                       className="absolute inset-0 w-full h-full object-cover"
                     />
