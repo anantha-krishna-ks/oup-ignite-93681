@@ -668,7 +668,7 @@ const BookReader = ({ subject, onClose, selectedChapter, isFullscreen, onFullscr
 
       {/* Fullscreen PDF Dialog */}
       <Dialog open={isFullscreen} onOpenChange={onFullscreenChange}>
-        <DialogContent className="max-w-[95vw] max-h-[95vh] w-full h-full p-2">
+        <DialogContent className="max-w-[95vw] max-h-[95vh] w-full h-full p-2" hideCloseButton>
           <DialogTitle className="sr-only">PDF Fullscreen View</DialogTitle>
           <div className="w-full h-full flex flex-col">
             {/* Exit Fullscreen Button */}
