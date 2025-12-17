@@ -109,19 +109,6 @@ const BookReaderPage = () => {
         </div>
       </div>
 
-      {/* Fullscreen portal toggle (above Dialog overlay) */}
-      {isFullscreen && (
-        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-[1000000] pointer-events-auto">
-          <Button
-            onClick={() => setIsHeaderCollapsed(!isHeaderCollapsed)}
-            className="h-8 px-6 rounded-lg shadow-lg bg-orange-500 hover:bg-orange-600 text-white transition-all duration-300"
-            aria-label={isHeaderCollapsed ? "Show header" : "Hide header"}
-            title={isHeaderCollapsed ? "Show header" : "Hide header"}
-          >
-            {isHeaderCollapsed ? <ChevronDown className="w-5 h-5" /> : <ChevronUp className="w-5 h-5" />}
-          </Button>
-        </div>
-      )}
 
       <div className="flex-1 flex flex-col">
         <BookReader
