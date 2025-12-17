@@ -38,6 +38,7 @@ const BookReaderPage = () => {
   const [combinedSelection, setCombinedSelection] = useState<string>(`1-${subjectId || "english"}`);
   const [selectedChapter, setSelectedChapter] = useState<string>("1");
   const [isHeaderCollapsed, setIsHeaderCollapsed] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   const subject = subjects.find((s) => s.id === subjectId);
 
@@ -79,17 +80,19 @@ const BookReaderPage = () => {
           chapterOptions={chapters}
         />
 
-        {/* Toggle Button - Attached to header bottom */}
-        <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 z-[9999]">
-          <Button
-            onClick={() => setIsHeaderCollapsed(!isHeaderCollapsed)}
-            className="h-8 px-6 rounded-b-lg rounded-t-none shadow-lg bg-orange-500 hover:bg-orange-600 text-white transition-all duration-300"
-            aria-label={isHeaderCollapsed ? "Show header" : "Hide header"}
-            title={isHeaderCollapsed ? "Show header" : "Hide header"}
-          >
-            {isHeaderCollapsed ? <ChevronDown className="w-5 h-5" /> : <ChevronUp className="w-5 h-5" />}
-          </Button>
-        </div>
+        {/* Toggle Button - Attached to header bottom - Hidden in fullscreen mode */}
+        {!isFullscreen && (
+          <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 z-[9999]">
+            <Button
+              onClick={() => setIsHeaderCollapsed(!isHeaderCollapsed)}
+              className="h-8 px-6 rounded-b-lg rounded-t-none shadow-lg bg-orange-500 hover:bg-orange-600 text-white transition-all duration-300"
+              aria-label={isHeaderCollapsed ? "Show header" : "Hide header"}
+              title={isHeaderCollapsed ? "Show header" : "Hide header"}
+            >
+              {isHeaderCollapsed ? <ChevronDown className="w-5 h-5" /> : <ChevronUp className="w-5 h-5" />}
+            </Button>
+          </div>
+        )}
       </div>
 
       <div className="flex-1 flex flex-col">
@@ -97,6 +100,8 @@ const BookReaderPage = () => {
           subject={subject.title}
           onClose={() => navigate(-1)}
           selectedChapter={selectedChapter}
+          isFullscreen={isFullscreen}
+          onFullscreenChange={setIsFullscreen}
         />
       </div>
 

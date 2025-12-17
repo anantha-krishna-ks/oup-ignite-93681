@@ -20,6 +20,8 @@ interface BookReaderProps {
   subject: string;
   onClose: () => void;
   selectedChapter: string;
+  isFullscreen: boolean;
+  onFullscreenChange: (value: boolean) => void;
 }
 
 const mockPages = [
@@ -131,7 +133,7 @@ const mockAssessments = [
   { id: 4, title: "Mid-term Assessment", url: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", chapterId: 1 },
 ];
 
-const BookReader = ({ subject, onClose, selectedChapter }: BookReaderProps) => {
+const BookReader = ({ subject, onClose, selectedChapter, isFullscreen, onFullscreenChange }: BookReaderProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [numPages, setNumPages] = useState<number>(0);
   const [scale, setScale] = useState(1.0);
@@ -145,7 +147,6 @@ const BookReader = ({ subject, onClose, selectedChapter }: BookReaderProps) => {
   const [answerKeySearch, setAnswerKeySearch] = useState("");
   const [lessonPlanSearch, setLessonPlanSearch] = useState("");
   const [assessmentSearch, setAssessmentSearch] = useState("");
-  const [isFullscreen, setIsFullscreen] = useState(false);
   const [isResourceFloaterOpen, setIsResourceFloaterOpen] = useState(false);
 
   const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
@@ -240,7 +241,7 @@ const BookReader = ({ subject, onClose, selectedChapter }: BookReaderProps) => {
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => setIsFullscreen(true)}
+                onClick={() => onFullscreenChange(true)}
                 className="absolute top-2 right-2 z-10 bg-card/80 backdrop-blur-sm hover:bg-accent"
                 title="Fullscreen"
               >
@@ -648,7 +649,7 @@ const BookReader = ({ subject, onClose, selectedChapter }: BookReaderProps) => {
       )}
 
       {/* Fullscreen PDF Dialog */}
-      <Dialog open={isFullscreen} onOpenChange={setIsFullscreen}>
+      <Dialog open={isFullscreen} onOpenChange={onFullscreenChange}>
         <DialogContent className="max-w-[95vw] max-h-[95vh] w-full h-full p-2">
           <DialogTitle className="sr-only">PDF Fullscreen View</DialogTitle>
           <div className="w-full h-full flex flex-col">
