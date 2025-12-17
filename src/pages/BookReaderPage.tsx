@@ -77,37 +77,39 @@ const BookReaderPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col w-full relative">
-      <div
-        ref={headerRef}
-        className={`relative z-[10000] transition-all duration-500 ease-in-out ${
-          isHeaderCollapsed ? "-translate-y-full" : "translate-y-0"
-        }`}
-      >
-        <Header
-          onLogout={handleLogout}
-          role={userRole || "student"}
-          showClassSubjectSelector={true}
-          combinedSelection={combinedSelection}
-          onCombinedChange={handleCombinedChange}
-          combinedOptions={combinedOptions}
-          showChapterSelector={true}
-          chapterSelection={selectedChapter}
-          onChapterChange={setSelectedChapter}
-          chapterOptions={chapters}
-        />
+      {!isFullscreen && (
+        <div
+          ref={headerRef}
+          className={`relative z-[10000] transition-all duration-500 ease-in-out ${
+            isHeaderCollapsed ? "-translate-y-full" : "translate-y-0"
+          }`}
+        >
+          <Header
+            onLogout={handleLogout}
+            role={userRole || "student"}
+            showClassSubjectSelector={true}
+            combinedSelection={combinedSelection}
+            onCombinedChange={handleCombinedChange}
+            combinedOptions={combinedOptions}
+            showChapterSelector={true}
+            chapterSelection={selectedChapter}
+            onChapterChange={setSelectedChapter}
+            chapterOptions={chapters}
+          />
 
-        {/* Toggle Button - Attached to header bottom */}
-        <div className={`absolute -bottom-8 left-1/2 -translate-x-1/2 ${isFullscreen ? "z-[100001]" : "z-[9999]"}`}>
-          <Button
-            onClick={() => setIsHeaderCollapsed(!isHeaderCollapsed)}
-            className="h-8 px-6 rounded-b-lg rounded-t-none shadow-lg bg-orange-500 hover:bg-orange-600 text-white transition-all duration-300"
-            aria-label={isHeaderCollapsed ? "Show header" : "Hide header"}
-            title={isHeaderCollapsed ? "Show header" : "Hide header"}
-          >
-            {isHeaderCollapsed ? <ChevronDown className="w-5 h-5" /> : <ChevronUp className="w-5 h-5" />}
-          </Button>
+          {/* Toggle Button - Attached to header bottom */}
+          <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 z-[9999]">
+            <Button
+              onClick={() => setIsHeaderCollapsed(!isHeaderCollapsed)}
+              className="h-8 px-6 rounded-b-lg rounded-t-none shadow-lg bg-orange-500 hover:bg-orange-600 text-white transition-all duration-300"
+              aria-label={isHeaderCollapsed ? "Show header" : "Hide header"}
+              title={isHeaderCollapsed ? "Show header" : "Hide header"}
+            >
+              {isHeaderCollapsed ? <ChevronDown className="w-5 h-5" /> : <ChevronUp className="w-5 h-5" />}
+            </Button>
+          </div>
         </div>
-      </div>
+      )}
 
 
       <div className="flex-1 flex flex-col">
