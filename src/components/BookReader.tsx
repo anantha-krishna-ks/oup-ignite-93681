@@ -149,6 +149,24 @@ const BookReader = ({ subject, onClose, selectedChapter, isFullscreen, onFullscr
   const [assessmentSearch, setAssessmentSearch] = useState("");
   const [isResourceFloaterOpen, setIsResourceFloaterOpen] = useState(false);
 
+  // Keyboard shortcuts for fullscreen
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isFullscreen) {
+        onFullscreenChange(false);
+      }
+      if (e.key === 'f' && !isFullscreen && !e.ctrlKey && !e.metaKey) {
+        const target = e.target as HTMLElement;
+        if (target.tagName !== 'INPUT' && target.tagName !== 'TEXTAREA') {
+          onFullscreenChange(true);
+        }
+      }
+    };
+    
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isFullscreen, onFullscreenChange]);
+
   const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
     setNumPages(numPages);
   };
@@ -653,6 +671,19 @@ const BookReader = ({ subject, onClose, selectedChapter, isFullscreen, onFullscr
         <DialogContent className="max-w-[95vw] max-h-[95vh] w-full h-full p-2">
           <DialogTitle className="sr-only">PDF Fullscreen View</DialogTitle>
           <div className="w-full h-full flex flex-col">
+            {/* Exit Fullscreen Button */}
+            <div className="absolute top-4 right-12 z-10">
+              <Button
+                onClick={() => onFullscreenChange(false)}
+                variant="outline"
+                size="sm"
+                className="bg-card/90 backdrop-blur-sm hover:bg-accent"
+              >
+                <X className="w-4 h-4 mr-1" />
+                Exit Fullscreen
+              </Button>
+            </div>
+            
             <div className="flex-1 flex items-center justify-center overflow-auto">
               <Document
                 file="/english-grade1-chapter.pdf"
