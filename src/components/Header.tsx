@@ -148,7 +148,7 @@ const Header = ({
             <Popover open={teacherToolsState.isOpen} onOpenChange={teacherToolsCallbacks.setIsOpen}>
               <PopoverTrigger asChild>
                 <Button
-                  variant="outline"
+                  variant={teacherToolsState.isOpen ? "default" : "outline"}
                   size="icon"
                   className="h-9 w-9 rounded-lg border-2"
                   title="Teacher Tools"
