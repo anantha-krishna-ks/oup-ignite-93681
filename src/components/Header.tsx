@@ -148,9 +148,9 @@ const Header = ({
             <Popover open={teacherToolsState.isOpen} onOpenChange={teacherToolsCallbacks.setIsOpen}>
               <PopoverTrigger asChild>
                 <Button
-                  variant="default"
+                  variant="outline"
                   size="icon"
-                  className="h-9 w-9 rounded-lg"
+                  className="h-9 w-9 rounded-lg border-2"
                   title="Teacher Tools"
                 >
                   <GraduationCap className="h-4 w-4" />
