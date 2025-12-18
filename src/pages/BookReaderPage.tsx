@@ -39,6 +39,12 @@ const BookReaderPage = () => {
   const [selectedChapter, setSelectedChapter] = useState<string>("1");
   const [isHeaderCollapsed, setIsHeaderCollapsed] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  
+  // Teacher Tools state
+  const [showResources, setShowResources] = useState(false);
+  const [showAssessments, setShowAssessments] = useState(false);
+  const [showLessonPlans, setShowLessonPlans] = useState(false);
+  const [isTeacherToolsOpen, setIsTeacherToolsOpen] = useState(false);
 
   const headerRef = useRef<HTMLDivElement>(null);
   const [headerHeight, setHeaderHeight] = useState(0);
@@ -95,6 +101,18 @@ const BookReaderPage = () => {
             chapterSelection={selectedChapter}
             onChapterChange={setSelectedChapter}
             chapterOptions={chapters}
+            teacherToolsState={{
+              showResources,
+              showAssessments,
+              showLessonPlans,
+              isOpen: isTeacherToolsOpen
+            }}
+            teacherToolsCallbacks={{
+              setShowResources,
+              setShowAssessments,
+              setShowLessonPlans,
+              setIsOpen: setIsTeacherToolsOpen
+            }}
           />
 
           {/* Toggle Button - Attached to header bottom */}
@@ -119,6 +137,12 @@ const BookReaderPage = () => {
           selectedChapter={selectedChapter}
           isFullscreen={isFullscreen}
           onFullscreenChange={setIsFullscreen}
+          showResources={showResources}
+          setShowResources={setShowResources}
+          showAssessments={showAssessments}
+          setShowAssessments={setShowAssessments}
+          showLessonPlans={showLessonPlans}
+          setShowLessonPlans={setShowLessonPlans}
         />
       </div>
 
