@@ -1,4 +1,4 @@
-import { BookOpen, ChevronDown, Home, BarChart3, List, Info } from "lucide-react";
+import { BookOpen, ChevronDown, Home, BarChart3, List, Info, GraduationCap, Video, FileText, BookMarked } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -8,6 +8,20 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import MobileSidebar from "./MobileSidebar";
 import oxfordIgniteLogo from "@/assets/oxford-ignite-logo.png";
+
+interface TeacherToolsState {
+  showResources: boolean;
+  showAssessments: boolean;
+  showLessonPlans: boolean;
+  isOpen: boolean;
+}
+
+interface TeacherToolsCallbacks {
+  setShowResources: (value: boolean) => void;
+  setShowAssessments: (value: boolean) => void;
+  setShowLessonPlans: (value: boolean) => void;
+  setIsOpen: (value: boolean) => void;
+}
 
 interface HeaderProps {
   onLogout?: () => void;
@@ -20,6 +34,8 @@ interface HeaderProps {
   onChapterChange?: (value: string) => void;
   chapterOptions?: Array<{ id: number; name: string }>;
   showChapterSelector?: boolean;
+  teacherToolsState?: TeacherToolsState;
+  teacherToolsCallbacks?: TeacherToolsCallbacks;
 }
 
 const Header = ({ 
@@ -32,7 +48,9 @@ const Header = ({
   chapterSelection, 
   onChapterChange, 
   chapterOptions, 
-  showChapterSelector = false
+  showChapterSelector = false,
+  teacherToolsState,
+  teacherToolsCallbacks
 }: HeaderProps) => {
   const navigate = useNavigate();
   
@@ -124,6 +142,85 @@ const Header = ({
               <p>Reports</p>
             </TooltipContent>
           </Tooltip>
+
+          {/* Teacher Tools Button */}
+          {teacherToolsState && teacherToolsCallbacks && (
+            <Popover open={teacherToolsState.isOpen} onOpenChange={teacherToolsCallbacks.setIsOpen}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="default"
+                  size="icon"
+                  className="h-9 w-9 rounded-lg"
+                  title="Teacher Tools"
+                >
+                  <GraduationCap className="h-4 w-4" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent 
+                className="w-72 p-4 bg-card border-2 border-primary/20 shadow-xl" 
+                align="end"
+                sideOffset={10}
+              >
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2 mb-4">
+                    <GraduationCap className="w-5 h-5 text-primary" />
+                    <h3 className="font-semibold text-base text-foreground">Teacher Tools</h3>
+                  </div>
+                  
+                  <Button
+                    variant={teacherToolsState.showResources ? "default" : "outline"}
+                    className="w-full justify-start gap-3 h-12 text-sm font-medium"
+                    onClick={() => {
+                      teacherToolsCallbacks.setShowResources(!teacherToolsState.showResources);
+                      teacherToolsCallbacks.setShowAssessments(false);
+                      teacherToolsCallbacks.setShowLessonPlans(false);
+                      teacherToolsCallbacks.setIsOpen(false);
+                    }}
+                  >
+                    <Video className="w-5 h-5" />
+                    <div className="text-left">
+                      <div>Learning Resources</div>
+                      <div className="text-xs opacity-70 font-normal">Videos & Materials</div>
+                    </div>
+                  </Button>
+                  
+                  <Button
+                    variant={teacherToolsState.showAssessments ? "default" : "outline"}
+                    className="w-full justify-start gap-3 h-12 text-sm font-medium"
+                    onClick={() => {
+                      teacherToolsCallbacks.setShowAssessments(!teacherToolsState.showAssessments);
+                      teacherToolsCallbacks.setShowResources(false);
+                      teacherToolsCallbacks.setShowLessonPlans(false);
+                      teacherToolsCallbacks.setIsOpen(false);
+                    }}
+                  >
+                    <FileText className="w-5 h-5" />
+                    <div className="text-left">
+                      <div>Assessments</div>
+                      <div className="text-xs opacity-70 font-normal">Quizzes & Tests</div>
+                    </div>
+                  </Button>
+                  
+                  <Button
+                    variant={teacherToolsState.showLessonPlans ? "default" : "outline"}
+                    className="w-full justify-start gap-3 h-12 text-sm font-medium"
+                    onClick={() => {
+                      teacherToolsCallbacks.setShowLessonPlans(!teacherToolsState.showLessonPlans);
+                      teacherToolsCallbacks.setShowResources(false);
+                      teacherToolsCallbacks.setShowAssessments(false);
+                      teacherToolsCallbacks.setIsOpen(false);
+                    }}
+                  >
+                    <BookMarked className="w-5 h-5" />
+                    <div className="text-left">
+                      <div>Lesson Plan</div>
+                      <div className="text-xs opacity-70 font-normal">Teaching Guide</div>
+                    </div>
+                  </Button>
+                </div>
+              </PopoverContent>
+            </Popover>
+          )}
         </div>
 
         {/* Desktop User Dropdown - Hidden on Mobile */}

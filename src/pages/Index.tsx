@@ -34,6 +34,9 @@ const Index = () => {
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
   const [selectedChapter, setSelectedChapter] = useState<string>("1");
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [showResources, setShowResources] = useState(false);
+  const [showAssessments, setShowAssessments] = useState(false);
+  const [showLessonPlans, setShowLessonPlans] = useState(false);
 
   if (selectedSubject) {
     const subject = subjects.find((s) => s.id === selectedSubject);
@@ -44,6 +47,12 @@ const Index = () => {
         selectedChapter={selectedChapter}
         isFullscreen={isFullscreen}
         onFullscreenChange={setIsFullscreen}
+        showResources={showResources}
+        setShowResources={setShowResources}
+        showAssessments={showAssessments}
+        setShowAssessments={setShowAssessments}
+        showLessonPlans={showLessonPlans}
+        setShowLessonPlans={setShowLessonPlans}
       />
     );
   }

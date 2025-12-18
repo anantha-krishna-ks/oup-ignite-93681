@@ -22,6 +22,12 @@ interface BookReaderProps {
   selectedChapter: string;
   isFullscreen: boolean;
   onFullscreenChange: (value: boolean) => void;
+  showResources: boolean;
+  setShowResources: (value: boolean) => void;
+  showAssessments: boolean;
+  setShowAssessments: (value: boolean) => void;
+  showLessonPlans: boolean;
+  setShowLessonPlans: (value: boolean) => void;
 }
 
 const mockPages = [
@@ -133,21 +139,29 @@ const mockAssessments = [
   { id: 4, title: "Mid-term Assessment", url: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", chapterId: 1 },
 ];
 
-const BookReader = ({ subject, onClose, selectedChapter, isFullscreen, onFullscreenChange }: BookReaderProps) => {
+const BookReader = ({ 
+  subject, 
+  onClose, 
+  selectedChapter, 
+  isFullscreen, 
+  onFullscreenChange,
+  showResources,
+  setShowResources,
+  showAssessments,
+  setShowAssessments,
+  showLessonPlans,
+  setShowLessonPlans
+}: BookReaderProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [numPages, setNumPages] = useState<number>(0);
   const [scale, setScale] = useState(1.0);
   const [selectedResource, setSelectedResource] = useState<any>(null);
-  const [showResources, setShowResources] = useState(false);
-  const [showAssessments, setShowAssessments] = useState(false);
-  const [showLessonPlans, setShowLessonPlans] = useState(false);
   const [selectedClass, setSelectedClass] = useState<string>("6");
   const [filterType, setFilterType] = useState<string>("all");
   const [worksheetSearch, setWorksheetSearch] = useState("");
   const [answerKeySearch, setAnswerKeySearch] = useState("");
   const [lessonPlanSearch, setLessonPlanSearch] = useState("");
   const [assessmentSearch, setAssessmentSearch] = useState("");
-  const [isResourceFloaterOpen, setIsResourceFloaterOpen] = useState(false);
 
   // Keyboard shortcuts for fullscreen
   useEffect(() => {
@@ -265,83 +279,6 @@ const BookReader = ({ subject, onClose, selectedChapter, isFullscreen, onFullscr
               >
                 <Maximize className="w-4 h-4" />
               </Button>
-              
-              {/* Floating Resources Button */}
-              <Popover open={isResourceFloaterOpen} onOpenChange={setIsResourceFloaterOpen}>
-              <PopoverTrigger asChild>
-                <Button
-                  size="lg"
-                  className="fixed bottom-20 right-4 z-10 h-14 w-14 rounded-full shadow-lg bg-primary hover:bg-primary/90 transition-all duration-300 hover:scale-110"
-                  title="Teacher Tools"
-                >
-                  <GraduationCap className="w-6 h-6" />
-                </Button>
-              </PopoverTrigger>
-                <PopoverContent 
-                  className="w-72 p-4 bg-card border-2 border-primary/20 shadow-xl" 
-                  align="end"
-                  side="left"
-                  sideOffset={10}
-                >
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-2 mb-4">
-                      <GraduationCap className="w-5 h-5 text-primary" />
-                      <h3 className="font-semibold text-base text-foreground">Teacher Tools</h3>
-                    </div>
-                    
-                    <Button
-                      variant={showResources ? "default" : "outline"}
-                      className="w-full justify-start gap-3 h-12 text-sm font-medium"
-                      onClick={() => {
-                        setShowResources(!showResources);
-                        setShowAssessments(false);
-                        setShowLessonPlans(false);
-                        setIsResourceFloaterOpen(false);
-                      }}
-                    >
-                      <Video className="w-5 h-5" />
-                      <div className="text-left">
-                        <div>Learning Resources</div>
-                        <div className="text-xs opacity-70 font-normal">Videos & Materials</div>
-                      </div>
-                    </Button>
-                    
-                    <Button
-                      variant={showAssessments ? "default" : "outline"}
-                      className="w-full justify-start gap-3 h-12 text-sm font-medium"
-                      onClick={() => {
-                        setShowAssessments(!showAssessments);
-                        setShowResources(false);
-                        setShowLessonPlans(false);
-                        setIsResourceFloaterOpen(false);
-                      }}
-                    >
-                      <FileText className="w-5 h-5" />
-                      <div className="text-left">
-                        <div>Assessments</div>
-                        <div className="text-xs opacity-70 font-normal">Quizzes & Tests</div>
-                      </div>
-                    </Button>
-                    
-                    <Button
-                      variant={showLessonPlans ? "default" : "outline"}
-                      className="w-full justify-start gap-3 h-12 text-sm font-medium"
-                      onClick={() => {
-                        setShowLessonPlans(!showLessonPlans);
-                        setShowResources(false);
-                        setShowAssessments(false);
-                        setIsResourceFloaterOpen(false);
-                      }}
-                    >
-                      <BookMarked className="w-5 h-5" />
-                      <div className="text-left">
-                        <div>Lesson Plan</div>
-                        <div className="text-xs opacity-70 font-normal">Teaching Guide</div>
-                      </div>
-                    </Button>
-                  </div>
-                </PopoverContent>
-              </Popover>
               
               {/* PDF Controls - Embedded at bottom */}
               <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-4 bg-card/95 backdrop-blur-sm p-2 sm:p-3 rounded-lg border border-border shadow-lg">
