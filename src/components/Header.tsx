@@ -116,22 +116,6 @@ const Header = ({
               <Button
                 variant="outline"
                 size="icon"
-                onClick={() => navigate("/chapters")}
-                className="h-9 w-9 rounded-lg border-2"
-              >
-                <Home className="h-4 w-4" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Home</p>
-            </TooltipContent>
-          </Tooltip>
-
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="outline"
-                size="icon"
                 onClick={() => navigate("/reports-coming-soon")}
                 className="h-9 w-9 rounded-lg border-2"
               >
