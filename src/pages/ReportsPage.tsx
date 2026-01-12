@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -9,16 +9,12 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, Legend, Tooltip } from "recharts";
-import { ArrowLeft, Search, Download, Eye, FileText, BookOpen, Users, TrendingUp, CheckCircle, Clock, Filter, RefreshCw } from "lucide-react";
+import { ArrowLeft, Search, Download, Eye, FileText, BookOpen, Users, TrendingUp, CheckCircle, Clock, RefreshCw } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import {
   assessmentData,
   ebookData,
   studentData,
-  subjectPerformanceData,
-  classCompletionData,
   classOptions,
   sectionOptions,
   subjectOptions,
@@ -27,7 +23,6 @@ import {
   type StudentData,
 } from "@/data/reportsData";
 
-const COLORS = ["hsl(var(--primary))", "hsl(var(--chart-2))", "hsl(var(--chart-3))", "hsl(var(--chart-4))"];
 
 const ReportsPage = () => {
   const navigate = useNavigate();
@@ -260,56 +255,62 @@ const ReportsPage = () => {
       <div className="container mx-auto px-4 py-6">
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          {/* Tab Navigation */}
-          <div className="bg-muted/60 p-1.5 rounded-xl inline-flex gap-1 w-full sm:w-auto">
-            {[
-              { 
-                id: "assessment", 
-                label: "Assessment", 
-                icon: FileText, 
-                count: filteredAssessmentData.length,
-              },
-              { 
-                id: "ebook", 
-                label: "E-book", 
-                icon: BookOpen, 
-                count: filteredEbookData.length,
-              },
-              { 
-                id: "student", 
-                label: "Students", 
-                icon: Users, 
-                count: filteredStudentData.length,
-              },
-            ].map((tab) => {
-              const Icon = tab.icon;
-              const isActive = activeTab === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`
-                    relative flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-200
-                    ${isActive 
-                      ? "bg-background text-foreground shadow-sm" 
-                      : "text-foreground/70 hover:text-foreground hover:bg-background/50"
-                    }
-                  `}
-                >
-                  <Icon className={`h-4 w-4 ${isActive ? "text-primary" : ""}`} />
-                  <span className="hidden sm:inline">{tab.label}</span>
-                  <span className={`
-                    inline-flex items-center justify-center min-w-[20px] px-1.5 py-0.5 text-xs font-semibold rounded-md
-                    ${isActive 
-                      ? "bg-primary text-primary-foreground" 
-                      : "bg-foreground/10 text-foreground/70"
-                    }
-                  `}>
-                    {tab.count}
-                  </span>
-                </button>
-              );
-            })}
+          {/* Tab Navigation - Industry Standard */}
+          <div className="border-b">
+            <div className="flex gap-1">
+              {[
+                { 
+                  id: "assessment", 
+                  label: "Assessment Report", 
+                  icon: FileText, 
+                  count: filteredAssessmentData.length,
+                },
+                { 
+                  id: "ebook", 
+                  label: "E-book Report", 
+                  icon: BookOpen, 
+                  count: filteredEbookData.length,
+                },
+                { 
+                  id: "student", 
+                  label: "Student Report", 
+                  icon: Users, 
+                  count: filteredStudentData.length,
+                },
+              ].map((tab) => {
+                const Icon = tab.icon;
+                const isActive = activeTab === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`
+                      relative flex items-center gap-2.5 px-5 py-3.5 font-medium text-sm transition-colors
+                      ${isActive 
+                        ? "text-primary" 
+                        : "text-muted-foreground hover:text-foreground"
+                      }
+                    `}
+                  >
+                    <Icon className="h-4 w-4" />
+                    <span>{tab.label}</span>
+                    <span className={`
+                      inline-flex items-center justify-center min-w-[22px] h-5 px-1.5 text-xs font-semibold rounded-full
+                      ${isActive 
+                        ? "bg-primary text-primary-foreground" 
+                        : "bg-muted text-muted-foreground"
+                      }
+                    `}>
+                      {tab.count}
+                    </span>
+                    {/* Active indicator bar */}
+                    {isActive && (
+                      <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary" />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
           {/* Search and Filters */}
@@ -436,67 +437,43 @@ const ReportsPage = () => {
               </Card>
             </div>
 
-            {/* Chart and Table */}
-            <div className="grid lg:grid-cols-3 gap-6">
-              {/* Chart */}
-              <Card className="lg:col-span-1">
-                <CardHeader>
-                  <CardTitle className="text-base">Subject Performance</CardTitle>
-                  <CardDescription>Average scores by subject</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="h-[250px]">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={subjectPerformanceData} layout="vertical">
-                        <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} />
-                        <XAxis type="number" domain={[0, 100]} tickFormatter={(v) => `${v}%`} />
-                        <YAxis dataKey="subject" type="category" width={80} tick={{ fontSize: 12 }} />
-                        <Tooltip formatter={(value) => [`${value}%`, 'Avg Score']} />
-                        <Bar dataKey="avgScore" fill="hsl(var(--primary))" radius={[0, 4, 4, 0]} />
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Table */}
-              <Card className="lg:col-span-2">
-                <CardHeader>
-                  <CardTitle className="text-base">Assessment Details</CardTitle>
-                  <CardDescription>Student-wise assignment tracking</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ScrollArea className="h-[300px]">
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>Student</TableHead>
-                          <TableHead>Class</TableHead>
-                          <TableHead>Subject</TableHead>
-                          <TableHead className="text-center">Assigned</TableHead>
-                          <TableHead className="text-center">Submitted</TableHead>
-                          <TableHead className="text-center">Score</TableHead>
-                          <TableHead>Status</TableHead>
+            {/* Table */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">Assessment Details</CardTitle>
+                <CardDescription>Student-wise assignment tracking</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ScrollArea className="h-[400px]">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Student</TableHead>
+                        <TableHead>Class</TableHead>
+                        <TableHead>Subject</TableHead>
+                        <TableHead className="text-center">Assigned</TableHead>
+                        <TableHead className="text-center">Submitted</TableHead>
+                        <TableHead className="text-center">Score</TableHead>
+                        <TableHead>Status</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredAssessmentData.map((item) => (
+                        <TableRow key={item.id}>
+                          <TableCell className="font-medium">{item.studentName}</TableCell>
+                          <TableCell>{item.class} - {item.section}</TableCell>
+                          <TableCell>{item.subject}</TableCell>
+                          <TableCell className="text-center">{item.assignmentsAssigned}</TableCell>
+                          <TableCell className="text-center">{item.assignmentsSubmitted}</TableCell>
+                          <TableCell className="text-center">{item.averageScore}%</TableCell>
+                          <TableCell>{getCompletionBadge(item.completionRate)}</TableCell>
                         </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {filteredAssessmentData.map((item) => (
-                          <TableRow key={item.id}>
-                            <TableCell className="font-medium">{item.studentName}</TableCell>
-                            <TableCell>{item.class} - {item.section}</TableCell>
-                            <TableCell>{item.subject}</TableCell>
-                            <TableCell className="text-center">{item.assignmentsAssigned}</TableCell>
-                            <TableCell className="text-center">{item.assignmentsSubmitted}</TableCell>
-                            <TableCell className="text-center">{item.averageScore}%</TableCell>
-                            <TableCell>{getCompletionBadge(item.completionRate)}</TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </ScrollArea>
-                </CardContent>
-              </Card>
-            </div>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </ScrollArea>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           {/* E-book Report Tab */}
@@ -557,83 +534,48 @@ const ReportsPage = () => {
               </Card>
             </div>
 
-            {/* Chart and Table */}
-            <div className="grid lg:grid-cols-3 gap-6">
-              {/* Pie Chart */}
-              <Card className="lg:col-span-1">
-                <CardHeader>
-                  <CardTitle className="text-base">Class Completion</CardTitle>
-                  <CardDescription>E-book progress by class</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="h-[250px]">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                          data={classCompletionData}
-                          cx="50%"
-                          cy="50%"
-                          innerRadius={50}
-                          outerRadius={80}
-                          paddingAngle={5}
-                          dataKey="completion"
-                          label={({ class: cls, completion }) => `${cls}: ${completion}%`}
-                          labelLine={false}
-                        >
-                          {classCompletionData.map((_, index) => (
-                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                          ))}
-                        </Pie>
-                        <Tooltip formatter={(value) => [`${value}%`, 'Completion']} />
-                      </PieChart>
-                    </ResponsiveContainer>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Table */}
-              <Card className="lg:col-span-2">
-                <CardHeader>
-                  <CardTitle className="text-base">E-book Progress</CardTitle>
-                  <CardDescription>Chapter-wise completion tracking</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ScrollArea className="h-[300px]">
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>Student</TableHead>
-                          <TableHead>Book Title</TableHead>
-                          <TableHead>Subject</TableHead>
-                          <TableHead className="text-center">Progress</TableHead>
-                          <TableHead className="text-center">Chapters</TableHead>
-                          <TableHead>Actions</TableHead>
+            {/* Table */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">E-book Progress</CardTitle>
+                <CardDescription>Chapter-wise completion tracking</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ScrollArea className="h-[400px]">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Student</TableHead>
+                        <TableHead>Book Title</TableHead>
+                        <TableHead>Subject</TableHead>
+                        <TableHead className="text-center">Progress</TableHead>
+                        <TableHead className="text-center">Chapters</TableHead>
+                        <TableHead>Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredEbookData.map((item) => (
+                        <TableRow key={item.id}>
+                          <TableCell className="font-medium">{item.studentName}</TableCell>
+                          <TableCell>{item.bookTitle}</TableCell>
+                          <TableCell>{item.subject}</TableCell>
+                          <TableCell>
+                            <div className="flex items-center gap-2">
+                              <Progress value={item.overallCompletion} className="h-2 w-16" />
+                              <span className="text-sm text-muted-foreground w-10">{item.overallCompletion}%</span>
+                            </div>
+                          </TableCell>
+                          <TableCell className="text-center">{item.chaptersCompleted}/{item.totalChapters}</TableCell>
+                          <TableCell>
+                            <EbookDetailDialog ebook={item} />
+                          </TableCell>
                         </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {filteredEbookData.map((item) => (
-                          <TableRow key={item.id}>
-                            <TableCell className="font-medium">{item.studentName}</TableCell>
-                            <TableCell>{item.bookTitle}</TableCell>
-                            <TableCell>{item.subject}</TableCell>
-                            <TableCell>
-                              <div className="flex items-center gap-2">
-                                <Progress value={item.overallCompletion} className="h-2 w-16" />
-                                <span className="text-sm text-muted-foreground w-10">{item.overallCompletion}%</span>
-                              </div>
-                            </TableCell>
-                            <TableCell className="text-center">{item.chaptersCompleted}/{item.totalChapters}</TableCell>
-                            <TableCell>
-                              <EbookDetailDialog ebook={item} />
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </ScrollArea>
-                </CardContent>
-              </Card>
-            </div>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </ScrollArea>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           {/* Student Report Tab */}
