@@ -691,7 +691,7 @@ const ReportsPage = () => {
                           <TableCell className="py-4 text-muted-foreground">{item.subject}</TableCell>
                           <TableCell className="py-4">
                             <div className="flex items-center justify-center gap-2">
-                              <Progress value={item.overallCompletion} className="h-2 w-20 [&>div]:bg-[#dbdbdb]" />
+                              <Progress value={item.overallCompletion} className="h-2 w-20" />
                               <span className="text-sm font-medium w-10">{item.overallCompletion}%</span>
                             </div>
                           </TableCell>
