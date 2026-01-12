@@ -23,7 +23,7 @@ import {
   type StudentData,
 } from "@/data/reportsData";
 
-const ITEMS_PER_PAGE = 5;
+const ITEMS_PER_PAGE_OPTIONS = [5, 10, 25, 50];
 
 const ReportsPage = () => {
   const navigate = useNavigate();
@@ -40,6 +40,9 @@ const ReportsPage = () => {
   const [assessmentPage, setAssessmentPage] = useState(1);
   const [ebookPage, setEbookPage] = useState(1);
   const [studentPage, setStudentPage] = useState(1);
+  const [assessmentItemsPerPage, setAssessmentItemsPerPage] = useState(5);
+  const [ebookItemsPerPage, setEbookItemsPerPage] = useState(5);
+  const [studentItemsPerPage, setStudentItemsPerPage] = useState(5);
 
   // Reset filters
   const resetFilters = () => {
@@ -51,6 +54,25 @@ const ReportsPage = () => {
     setAssessmentPage(1);
     setEbookPage(1);
     setStudentPage(1);
+  };
+
+  // Helper function to generate page numbers for pagination
+  const getPageNumbers = (currentPage: number, totalPages: number) => {
+    const pages: (number | string)[] = [];
+    const maxVisiblePages = 5;
+    
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i);
+    } else {
+      if (currentPage <= 3) {
+        for (let i = 1; i <= Math.min(5, totalPages); i++) pages.push(i);
+      } else if (currentPage >= totalPages - 2) {
+        for (let i = totalPages - 4; i <= totalPages; i++) pages.push(i);
+      } else {
+        for (let i = currentPage - 2; i <= currentPage + 2; i++) pages.push(i);
+      }
+    }
+    return pages;
   };
 
   // Filtered Assessment Data
@@ -475,7 +497,7 @@ const ReportsPage = () => {
                     </TableHeader>
                     <TableBody>
                       {filteredAssessmentData
-                        .slice((assessmentPage - 1) * ITEMS_PER_PAGE, assessmentPage * ITEMS_PER_PAGE)
+                        .slice((assessmentPage - 1) * assessmentItemsPerPage, assessmentPage * assessmentItemsPerPage)
                         .map((item, index) => (
                         <TableRow 
                           key={item.id} 
@@ -496,34 +518,64 @@ const ReportsPage = () => {
                   </Table>
                 </div>
                 {/* Pagination */}
-                <div className="flex items-center justify-between px-4 py-3 border-t bg-muted/20">
-                  <p className="text-sm text-muted-foreground">
-                    Showing {((assessmentPage - 1) * ITEMS_PER_PAGE) + 1} to {Math.min(assessmentPage * ITEMS_PER_PAGE, filteredAssessmentData.length)} of {filteredAssessmentData.length}
-                  </p>
-                  <div className="flex items-center gap-2">
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      onClick={() => setAssessmentPage(p => Math.max(1, p - 1))}
-                      disabled={assessmentPage === 1}
-                      className="h-8 w-8 p-0"
-                    >
-                      <ChevronLeft className="h-4 w-4" />
-                    </Button>
-                    <span className="text-sm font-medium px-2">
-                      {assessmentPage} / {Math.ceil(filteredAssessmentData.length / ITEMS_PER_PAGE)}
-                    </span>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      onClick={() => setAssessmentPage(p => Math.min(Math.ceil(filteredAssessmentData.length / ITEMS_PER_PAGE), p + 1))}
-                      disabled={assessmentPage >= Math.ceil(filteredAssessmentData.length / ITEMS_PER_PAGE)}
-                      className="h-8 w-8 p-0"
-                    >
-                      <ChevronRight className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
+                {(() => {
+                  const totalPages = Math.ceil(filteredAssessmentData.length / assessmentItemsPerPage);
+                  const pageNumbers = getPageNumbers(assessmentPage, totalPages);
+                  return (
+                    <div className="flex items-center justify-between px-4 py-3 border-t bg-muted/20">
+                      <p className="text-sm text-muted-foreground">
+                        Total Records: {filteredAssessmentData.length}
+                      </p>
+                      <div className="flex items-center gap-1">
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          onClick={() => setAssessmentPage(p => Math.max(1, p - 1))}
+                          disabled={assessmentPage === 1}
+                          className="h-8 w-8 p-0"
+                        >
+                          <ChevronLeft className="h-4 w-4" />
+                        </Button>
+                        {pageNumbers.map((page, idx) => (
+                          <Button
+                            key={idx}
+                            variant={assessmentPage === page ? "default" : "ghost"}
+                            size="sm"
+                            onClick={() => typeof page === 'number' && setAssessmentPage(page)}
+                            className="h-8 w-8 p-0 text-sm"
+                          >
+                            {page}
+                          </Button>
+                        ))}
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          onClick={() => setAssessmentPage(p => Math.min(totalPages, p + 1))}
+                          disabled={assessmentPage >= totalPages}
+                          className="h-8 w-8 p-0"
+                        >
+                          <ChevronRight className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm text-muted-foreground">Show per Page:</span>
+                        <Select 
+                          value={String(assessmentItemsPerPage)} 
+                          onValueChange={(val) => { setAssessmentItemsPerPage(Number(val)); setAssessmentPage(1); }}
+                        >
+                          <SelectTrigger className="w-[70px] h-8">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {ITEMS_PER_PAGE_OPTIONS.map(opt => (
+                              <SelectItem key={opt} value={String(opt)}>{opt}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                  );
+                })()}
               </CardContent>
             </Card>
           </TabsContent>
@@ -614,7 +666,7 @@ const ReportsPage = () => {
                     </TableHeader>
                     <TableBody>
                       {filteredEbookData
-                        .slice((ebookPage - 1) * ITEMS_PER_PAGE, ebookPage * ITEMS_PER_PAGE)
+                        .slice((ebookPage - 1) * ebookItemsPerPage, ebookPage * ebookItemsPerPage)
                         .map((item, index) => (
                         <TableRow 
                           key={item.id}
@@ -642,34 +694,64 @@ const ReportsPage = () => {
                   </Table>
                 </div>
                 {/* Pagination */}
-                <div className="flex items-center justify-between px-4 py-3 border-t bg-muted/20">
-                  <p className="text-sm text-muted-foreground">
-                    Showing {((ebookPage - 1) * ITEMS_PER_PAGE) + 1} to {Math.min(ebookPage * ITEMS_PER_PAGE, filteredEbookData.length)} of {filteredEbookData.length}
-                  </p>
-                  <div className="flex items-center gap-2">
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      onClick={() => setEbookPage(p => Math.max(1, p - 1))}
-                      disabled={ebookPage === 1}
-                      className="h-8 w-8 p-0"
-                    >
-                      <ChevronLeft className="h-4 w-4" />
-                    </Button>
-                    <span className="text-sm font-medium px-2">
-                      {ebookPage} / {Math.ceil(filteredEbookData.length / ITEMS_PER_PAGE)}
-                    </span>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      onClick={() => setEbookPage(p => Math.min(Math.ceil(filteredEbookData.length / ITEMS_PER_PAGE), p + 1))}
-                      disabled={ebookPage >= Math.ceil(filteredEbookData.length / ITEMS_PER_PAGE)}
-                      className="h-8 w-8 p-0"
-                    >
-                      <ChevronRight className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
+                {(() => {
+                  const totalPages = Math.ceil(filteredEbookData.length / ebookItemsPerPage);
+                  const pageNumbers = getPageNumbers(ebookPage, totalPages);
+                  return (
+                    <div className="flex items-center justify-between px-4 py-3 border-t bg-muted/20">
+                      <p className="text-sm text-muted-foreground">
+                        Total Records: {filteredEbookData.length}
+                      </p>
+                      <div className="flex items-center gap-1">
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          onClick={() => setEbookPage(p => Math.max(1, p - 1))}
+                          disabled={ebookPage === 1}
+                          className="h-8 w-8 p-0"
+                        >
+                          <ChevronLeft className="h-4 w-4" />
+                        </Button>
+                        {pageNumbers.map((page, idx) => (
+                          <Button
+                            key={idx}
+                            variant={ebookPage === page ? "default" : "ghost"}
+                            size="sm"
+                            onClick={() => typeof page === 'number' && setEbookPage(page)}
+                            className="h-8 w-8 p-0 text-sm"
+                          >
+                            {page}
+                          </Button>
+                        ))}
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          onClick={() => setEbookPage(p => Math.min(totalPages, p + 1))}
+                          disabled={ebookPage >= totalPages}
+                          className="h-8 w-8 p-0"
+                        >
+                          <ChevronRight className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm text-muted-foreground">Show per Page:</span>
+                        <Select 
+                          value={String(ebookItemsPerPage)} 
+                          onValueChange={(val) => { setEbookItemsPerPage(Number(val)); setEbookPage(1); }}
+                        >
+                          <SelectTrigger className="w-[70px] h-8">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {ITEMS_PER_PAGE_OPTIONS.map(opt => (
+                              <SelectItem key={opt} value={String(opt)}>{opt}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                  );
+                })()}
               </CardContent>
             </Card>
           </TabsContent>
@@ -762,7 +844,7 @@ const ReportsPage = () => {
                     </TableHeader>
                     <TableBody>
                       {filteredStudentData
-                        .slice((studentPage - 1) * ITEMS_PER_PAGE, studentPage * ITEMS_PER_PAGE)
+                        .slice((studentPage - 1) * studentItemsPerPage, studentPage * studentItemsPerPage)
                         .map((item, index) => (
                         <TableRow 
                           key={item.id}
@@ -790,34 +872,64 @@ const ReportsPage = () => {
                   </Table>
                 </div>
                 {/* Pagination */}
-                <div className="flex items-center justify-between px-4 py-3 border-t bg-muted/20">
-                  <p className="text-sm text-muted-foreground">
-                    Showing {((studentPage - 1) * ITEMS_PER_PAGE) + 1} to {Math.min(studentPage * ITEMS_PER_PAGE, filteredStudentData.length)} of {filteredStudentData.length}
-                  </p>
-                  <div className="flex items-center gap-2">
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      onClick={() => setStudentPage(p => Math.max(1, p - 1))}
-                      disabled={studentPage === 1}
-                      className="h-8 w-8 p-0"
-                    >
-                      <ChevronLeft className="h-4 w-4" />
-                    </Button>
-                    <span className="text-sm font-medium px-2">
-                      {studentPage} / {Math.ceil(filteredStudentData.length / ITEMS_PER_PAGE)}
-                    </span>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      onClick={() => setStudentPage(p => Math.min(Math.ceil(filteredStudentData.length / ITEMS_PER_PAGE), p + 1))}
-                      disabled={studentPage >= Math.ceil(filteredStudentData.length / ITEMS_PER_PAGE)}
-                      className="h-8 w-8 p-0"
-                    >
-                      <ChevronRight className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
+                {(() => {
+                  const totalPages = Math.ceil(filteredStudentData.length / studentItemsPerPage);
+                  const pageNumbers = getPageNumbers(studentPage, totalPages);
+                  return (
+                    <div className="flex items-center justify-between px-4 py-3 border-t bg-muted/20">
+                      <p className="text-sm text-muted-foreground">
+                        Total Records: {filteredStudentData.length}
+                      </p>
+                      <div className="flex items-center gap-1">
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          onClick={() => setStudentPage(p => Math.max(1, p - 1))}
+                          disabled={studentPage === 1}
+                          className="h-8 w-8 p-0"
+                        >
+                          <ChevronLeft className="h-4 w-4" />
+                        </Button>
+                        {pageNumbers.map((page, idx) => (
+                          <Button
+                            key={idx}
+                            variant={studentPage === page ? "default" : "ghost"}
+                            size="sm"
+                            onClick={() => typeof page === 'number' && setStudentPage(page)}
+                            className="h-8 w-8 p-0 text-sm"
+                          >
+                            {page}
+                          </Button>
+                        ))}
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          onClick={() => setStudentPage(p => Math.min(totalPages, p + 1))}
+                          disabled={studentPage >= totalPages}
+                          className="h-8 w-8 p-0"
+                        >
+                          <ChevronRight className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm text-muted-foreground">Show per Page:</span>
+                        <Select 
+                          value={String(studentItemsPerPage)} 
+                          onValueChange={(val) => { setStudentItemsPerPage(Number(val)); setStudentPage(1); }}
+                        >
+                          <SelectTrigger className="w-[70px] h-8">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {ITEMS_PER_PAGE_OPTIONS.map(opt => (
+                              <SelectItem key={opt} value={String(opt)}>{opt}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                  );
+                })()}
               </CardContent>
             </Card>
           </TabsContent>
