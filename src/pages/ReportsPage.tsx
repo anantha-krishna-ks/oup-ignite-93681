@@ -27,7 +27,7 @@ const ITEMS_PER_PAGE_OPTIONS = [5, 10, 25, 50];
 
 const ReportsPage = () => {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("assessment");
+  const [activeTab, setActiveTab] = useState("ebook");
   
   // Filter states
   const [searchQuery, setSearchQuery] = useState("");
