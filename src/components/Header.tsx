@@ -116,7 +116,7 @@ const Header = ({
               <Button
                 variant="outline"
                 size="icon"
-                onClick={() => navigate("/reports-coming-soon")}
+                onClick={() => navigate("/reports")}
                 className="h-9 w-9 rounded-lg border-2"
               >
                 <BarChart3 className="h-4 w-4" />
