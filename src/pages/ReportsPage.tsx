@@ -290,24 +290,26 @@ const ReportsPage = () => {
           <div className="border-b">
             <div className="flex gap-1">
               {[
-                { 
-                  id: "assessment", 
-                  label: "Assessment Report", 
-                  icon: FileText, 
-                  count: filteredAssessmentData.length,
-                },
+                // Hidden for now - uncomment when needed
+                // { 
+                //   id: "assessment", 
+                //   label: "Assessment Report", 
+                //   icon: FileText, 
+                //   count: filteredAssessmentData.length,
+                // },
                 { 
                   id: "ebook", 
                   label: "E-book Report", 
                   icon: BookOpen, 
                   count: filteredEbookData.length,
                 },
-                { 
-                  id: "student", 
-                  label: "Student Report", 
-                  icon: Users, 
-                  count: filteredStudentData.length,
-                },
+                // Hidden for now - uncomment when needed
+                // { 
+                //   id: "student", 
+                //   label: "Student Report", 
+                //   icon: Users, 
+                //   count: filteredStudentData.length,
+                // },
               ].map((tab) => {
                 const Icon = tab.icon;
                 const isActive = activeTab === tab.id;
