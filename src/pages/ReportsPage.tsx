@@ -260,32 +260,26 @@ const ReportsPage = () => {
       <div className="container mx-auto px-4 py-6">
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          {/* Enhanced Tab Navigation */}
-          <div className="flex flex-col sm:flex-row gap-3">
+          {/* Tab Navigation */}
+          <div className="bg-muted/60 p-1.5 rounded-xl inline-flex gap-1 w-full sm:w-auto">
             {[
               { 
                 id: "assessment", 
-                label: "Assessment Report", 
+                label: "Assessment", 
                 icon: FileText, 
                 count: filteredAssessmentData.length,
-                description: "Track assignments & scores",
-                color: "from-blue-500 to-blue-600"
               },
               { 
                 id: "ebook", 
-                label: "E-book Report", 
+                label: "E-book", 
                 icon: BookOpen, 
                 count: filteredEbookData.length,
-                description: "Monitor reading progress",
-                color: "from-emerald-500 to-emerald-600"
               },
               { 
                 id: "student", 
-                label: "Student Report", 
+                label: "Students", 
                 icon: Users, 
                 count: filteredStudentData.length,
-                description: "View student directory",
-                color: "from-violet-500 to-violet-600"
               },
             ].map((tab) => {
               const Icon = tab.icon;
@@ -295,49 +289,24 @@ const ReportsPage = () => {
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={`
-                    relative flex-1 flex items-center gap-3 p-4 rounded-xl border-2 transition-all duration-200
+                    relative flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-200
                     ${isActive 
-                      ? "border-primary bg-primary/5 shadow-sm" 
-                      : "border-transparent bg-muted/50 hover:bg-muted hover:border-muted-foreground/20"
+                      ? "bg-background text-foreground shadow-sm" 
+                      : "text-foreground/70 hover:text-foreground hover:bg-background/50"
                     }
                   `}
                 >
-                  {/* Icon container */}
-                  <div className={`
-                    flex items-center justify-center w-10 h-10 rounded-lg shrink-0
+                  <Icon className={`h-4 w-4 ${isActive ? "text-primary" : ""}`} />
+                  <span className="hidden sm:inline">{tab.label}</span>
+                  <span className={`
+                    inline-flex items-center justify-center min-w-[20px] px-1.5 py-0.5 text-xs font-semibold rounded-md
                     ${isActive 
-                      ? `bg-gradient-to-br ${tab.color} text-white shadow-md` 
-                      : "bg-muted-foreground/10 text-muted-foreground"
+                      ? "bg-primary text-primary-foreground" 
+                      : "bg-foreground/10 text-foreground/70"
                     }
                   `}>
-                    <Icon className="h-5 w-5" />
-                  </div>
-                  
-                  {/* Text content */}
-                  <div className="flex-1 text-left min-w-0">
-                    <div className="flex items-center gap-2">
-                      <span className={`font-semibold text-sm truncate ${isActive ? "text-foreground" : "text-muted-foreground"}`}>
-                        {tab.label}
-                      </span>
-                      <span className={`
-                        inline-flex items-center justify-center px-2 py-0.5 text-xs font-medium rounded-full shrink-0
-                        ${isActive 
-                          ? "bg-primary text-primary-foreground" 
-                          : "bg-muted-foreground/20 text-muted-foreground"
-                        }
-                      `}>
-                        {tab.count}
-                      </span>
-                    </div>
-                    <p className={`text-xs truncate ${isActive ? "text-muted-foreground" : "text-muted-foreground/60"}`}>
-                      {tab.description}
-                    </p>
-                  </div>
-
-                  {/* Active indicator */}
-                  {isActive && (
-                    <div className="absolute -bottom-px left-4 right-4 h-0.5 bg-primary rounded-full" />
-                  )}
+                    {tab.count}
+                  </span>
                 </button>
               );
             })}
