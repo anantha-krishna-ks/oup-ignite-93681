@@ -118,12 +118,23 @@ const ReportsPage = () => {
     avgScore: Math.round(filteredAssessmentData.reduce((acc, item) => acc + item.averageScore, 0) / (filteredAssessmentData.length || 1)),
   }), [filteredAssessmentData]);
 
-  const ebookStats = useMemo(() => ({
-    totalBooks: filteredEbookData.length,
-    avgCompletion: Math.round(filteredEbookData.reduce((acc, item) => acc + item.overallCompletion, 0) / (filteredEbookData.length || 1)),
-    fullyCompleted: filteredEbookData.filter(item => item.overallCompletion === 100).length,
-    totalChapters: filteredEbookData.reduce((acc, item) => acc + item.totalChapters, 0),
-  }), [filteredEbookData]);
+  const ebookStats = useMemo(() => {
+    // Calculate total hours from all chapters
+    const totalMinutes = filteredEbookData.reduce((acc, item) => {
+      return acc + item.chapters.reduce((chapterAcc, chapter) => {
+        const minutes = parseInt(chapter.timeSpent.replace(' min', '')) || 0;
+        return chapterAcc + minutes;
+      }, 0);
+    }, 0);
+    const totalHours = Math.round(totalMinutes / 60 * 10) / 10; // Round to 1 decimal
+
+    return {
+      totalBooks: filteredEbookData.length,
+      avgCompletion: Math.round(filteredEbookData.reduce((acc, item) => acc + item.overallCompletion, 0) / (filteredEbookData.length || 1)),
+      totalHours,
+      totalChapters: filteredEbookData.reduce((acc, item) => acc + item.totalChapters, 0),
+    };
+  }, [filteredEbookData]);
 
   const studentStats = useMemo(() => ({
     totalStudents: filteredStudentData.length,
@@ -603,11 +614,11 @@ const ReportsPage = () => {
                 <CardContent className="pt-4">
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-emerald-500/10 rounded-lg">
-                      <CheckCircle className="h-5 w-5 text-emerald-600" />
+                      <Clock className="h-5 w-5 text-emerald-600" />
                     </div>
                     <div>
-                      <p className="text-2xl font-bold">{ebookStats.fullyCompleted}</p>
-                      <p className="text-xs text-muted-foreground">Fully Completed</p>
+                      <p className="text-2xl font-bold">{ebookStats.totalHours}h</p>
+                      <p className="text-xs text-muted-foreground">Hours of E-Book Usage</p>
                     </div>
                   </div>
                 </CardContent>
