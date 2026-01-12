@@ -438,35 +438,40 @@ const ReportsPage = () => {
             </div>
 
             {/* Table */}
-            <Card>
-              <CardHeader>
+            <Card className="overflow-hidden">
+              <CardHeader className="bg-muted/30 border-b">
                 <CardTitle className="text-base">Assessment Details</CardTitle>
                 <CardDescription>Student-wise assignment tracking</CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="p-0">
                 <ScrollArea className="h-[400px]">
                   <Table>
                     <TableHeader>
-                      <TableRow>
-                        <TableHead>Student</TableHead>
-                        <TableHead>Class</TableHead>
-                        <TableHead>Subject</TableHead>
-                        <TableHead className="text-center">Assigned</TableHead>
-                        <TableHead className="text-center">Submitted</TableHead>
-                        <TableHead className="text-center">Score</TableHead>
-                        <TableHead>Status</TableHead>
+                      <TableRow className="bg-muted/50 hover:bg-muted/50">
+                        <TableHead className="font-semibold text-foreground">Student</TableHead>
+                        <TableHead className="font-semibold text-foreground">Class</TableHead>
+                        <TableHead className="font-semibold text-foreground">Subject</TableHead>
+                        <TableHead className="font-semibold text-foreground text-center">Assigned</TableHead>
+                        <TableHead className="font-semibold text-foreground text-center">Submitted</TableHead>
+                        <TableHead className="font-semibold text-foreground text-center">Score</TableHead>
+                        <TableHead className="font-semibold text-foreground">Status</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {filteredAssessmentData.map((item) => (
-                        <TableRow key={item.id}>
-                          <TableCell className="font-medium">{item.studentName}</TableCell>
-                          <TableCell>{item.class} - {item.section}</TableCell>
-                          <TableCell>{item.subject}</TableCell>
-                          <TableCell className="text-center">{item.assignmentsAssigned}</TableCell>
-                          <TableCell className="text-center">{item.assignmentsSubmitted}</TableCell>
-                          <TableCell className="text-center">{item.averageScore}%</TableCell>
-                          <TableCell>{getCompletionBadge(item.completionRate)}</TableCell>
+                      {filteredAssessmentData.map((item, index) => (
+                        <TableRow 
+                          key={item.id} 
+                          className={`${index % 2 === 0 ? "bg-background" : "bg-muted/20"} hover:bg-primary/5 transition-colors`}
+                        >
+                          <TableCell className="font-medium py-3.5">{item.studentName}</TableCell>
+                          <TableCell className="py-3.5 text-muted-foreground">{item.class} - {item.section}</TableCell>
+                          <TableCell className="py-3.5">{item.subject}</TableCell>
+                          <TableCell className="text-center py-3.5 font-medium">{item.assignmentsAssigned}</TableCell>
+                          <TableCell className="text-center py-3.5 font-medium">{item.assignmentsSubmitted}</TableCell>
+                          <TableCell className="text-center py-3.5">
+                            <span className="font-semibold">{item.averageScore}%</span>
+                          </TableCell>
+                          <TableCell className="py-3.5">{getCompletionBadge(item.completionRate)}</TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
@@ -535,38 +540,44 @@ const ReportsPage = () => {
             </div>
 
             {/* Table */}
-            <Card>
-              <CardHeader>
+            <Card className="overflow-hidden">
+              <CardHeader className="bg-muted/30 border-b">
                 <CardTitle className="text-base">E-book Progress</CardTitle>
                 <CardDescription>Chapter-wise completion tracking</CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="p-0">
                 <ScrollArea className="h-[400px]">
                   <Table>
                     <TableHeader>
-                      <TableRow>
-                        <TableHead>Student</TableHead>
-                        <TableHead>Book Title</TableHead>
-                        <TableHead>Subject</TableHead>
-                        <TableHead className="text-center">Progress</TableHead>
-                        <TableHead className="text-center">Chapters</TableHead>
-                        <TableHead>Actions</TableHead>
+                      <TableRow className="bg-muted/50 hover:bg-muted/50">
+                        <TableHead className="font-semibold text-foreground">Student</TableHead>
+                        <TableHead className="font-semibold text-foreground">Book Title</TableHead>
+                        <TableHead className="font-semibold text-foreground">Subject</TableHead>
+                        <TableHead className="font-semibold text-foreground text-center">Progress</TableHead>
+                        <TableHead className="font-semibold text-foreground text-center">Chapters</TableHead>
+                        <TableHead className="font-semibold text-foreground">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {filteredEbookData.map((item) => (
-                        <TableRow key={item.id}>
-                          <TableCell className="font-medium">{item.studentName}</TableCell>
-                          <TableCell>{item.bookTitle}</TableCell>
-                          <TableCell>{item.subject}</TableCell>
-                          <TableCell>
-                            <div className="flex items-center gap-2">
-                              <Progress value={item.overallCompletion} className="h-2 w-16" />
-                              <span className="text-sm text-muted-foreground w-10">{item.overallCompletion}%</span>
+                      {filteredEbookData.map((item, index) => (
+                        <TableRow 
+                          key={item.id}
+                          className={`${index % 2 === 0 ? "bg-background" : "bg-muted/20"} hover:bg-primary/5 transition-colors`}
+                        >
+                          <TableCell className="font-medium py-3.5">{item.studentName}</TableCell>
+                          <TableCell className="py-3.5">{item.bookTitle}</TableCell>
+                          <TableCell className="py-3.5 text-muted-foreground">{item.subject}</TableCell>
+                          <TableCell className="py-3.5">
+                            <div className="flex items-center justify-center gap-2">
+                              <Progress value={item.overallCompletion} className="h-2 w-20" />
+                              <span className="text-sm font-medium w-10">{item.overallCompletion}%</span>
                             </div>
                           </TableCell>
-                          <TableCell className="text-center">{item.chaptersCompleted}/{item.totalChapters}</TableCell>
-                          <TableCell>
+                          <TableCell className="text-center py-3.5">
+                            <span className="font-medium">{item.chaptersCompleted}</span>
+                            <span className="text-muted-foreground">/{item.totalChapters}</span>
+                          </TableCell>
+                          <TableCell className="py-3.5">
                             <EbookDetailDialog ebook={item} />
                           </TableCell>
                         </TableRow>
@@ -637,41 +648,46 @@ const ReportsPage = () => {
             </div>
 
             {/* Table */}
-            <Card>
-              <CardHeader>
+            <Card className="overflow-hidden">
+              <CardHeader className="bg-muted/30 border-b">
                 <CardTitle className="text-base">Student Directory</CardTitle>
                 <CardDescription>View and manage student information</CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="p-0">
                 <ScrollArea className="h-[400px]">
                   <Table>
                     <TableHeader>
-                      <TableRow>
-                        <TableHead>Roll No.</TableHead>
-                        <TableHead>Student Name</TableHead>
-                        <TableHead>Class</TableHead>
-                        <TableHead>Email</TableHead>
-                        <TableHead className="text-center">Attendance</TableHead>
-                        <TableHead className="text-center">Grade</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Actions</TableHead>
+                      <TableRow className="bg-muted/50 hover:bg-muted/50">
+                        <TableHead className="font-semibold text-foreground">Roll No.</TableHead>
+                        <TableHead className="font-semibold text-foreground">Student Name</TableHead>
+                        <TableHead className="font-semibold text-foreground">Class</TableHead>
+                        <TableHead className="font-semibold text-foreground">Email</TableHead>
+                        <TableHead className="font-semibold text-foreground text-center">Attendance</TableHead>
+                        <TableHead className="font-semibold text-foreground text-center">Grade</TableHead>
+                        <TableHead className="font-semibold text-foreground">Status</TableHead>
+                        <TableHead className="font-semibold text-foreground">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {filteredStudentData.map((item) => (
-                        <TableRow key={item.id}>
-                          <TableCell className="font-mono text-sm">{item.rollNumber}</TableCell>
-                          <TableCell className="font-medium">{item.studentName}</TableCell>
-                          <TableCell>{item.class} - {item.section}</TableCell>
-                          <TableCell className="text-sm text-muted-foreground">{item.email}</TableCell>
-                          <TableCell className="text-center">{item.attendance}%</TableCell>
-                          <TableCell className="text-center">{getGradeBadge(item.overallGrade)}</TableCell>
-                          <TableCell>
+                      {filteredStudentData.map((item, index) => (
+                        <TableRow 
+                          key={item.id}
+                          className={`${index % 2 === 0 ? "bg-background" : "bg-muted/20"} hover:bg-primary/5 transition-colors`}
+                        >
+                          <TableCell className="font-mono text-sm py-3.5">{item.rollNumber}</TableCell>
+                          <TableCell className="font-medium py-3.5">{item.studentName}</TableCell>
+                          <TableCell className="py-3.5 text-muted-foreground">{item.class} - {item.section}</TableCell>
+                          <TableCell className="text-sm text-muted-foreground py-3.5">{item.email}</TableCell>
+                          <TableCell className="text-center py-3.5">
+                            <span className="font-semibold">{item.attendance}%</span>
+                          </TableCell>
+                          <TableCell className="text-center py-3.5">{getGradeBadge(item.overallGrade)}</TableCell>
+                          <TableCell className="py-3.5">
                             <Badge variant={item.status === "Active" ? "default" : "secondary"}>
                               {item.status}
                             </Badge>
                           </TableCell>
-                          <TableCell>
+                          <TableCell className="py-3.5">
                             <StudentDetailDialog student={item} />
                           </TableCell>
                         </TableRow>
