@@ -34,7 +34,7 @@ const MobileSidebar = ({
 
   const menuItems = [
     { icon: Home, label: "Home", onClick: () => navigate("/chapters") },
-    { icon: BarChart3, label: "Reports", onClick: () => navigate("/reports-coming-soon") },
+    { icon: BarChart3, label: "Reports", onClick: () => navigate("/reports") },
     { icon: User, label: "Profile Settings", onClick: () => navigate("/profile-settings") },
   ];
 

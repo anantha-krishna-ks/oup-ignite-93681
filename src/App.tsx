@@ -15,7 +15,7 @@ import SplashScreen from "./pages/SplashScreen";
 import LearnerLogin from "./pages/LearnerLogin";
 import LearnerDashboard from "./pages/LearnerDashboard";
 import ChaptersPage from "./pages/ChaptersPage";
-import ReportsComingSoon from "./pages/ReportsComingSoon";
+import ReportsPage from "./pages/ReportsPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -39,7 +39,7 @@ const App = () => (
           <Route path="/change-password" element={<ChangePassword />} />
           <Route path="/chapters" element={<ChaptersPage />} />
           <Route path="/book-reader" element={<BookReaderPage />} />
-          <Route path="/reports-coming-soon" element={<ReportsComingSoon />} />
+          <Route path="/reports" element={<ReportsPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
