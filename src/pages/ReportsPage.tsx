@@ -15,8 +15,7 @@ import {
   assessmentData,
   ebookData,
   studentData,
-  classOptions,
-  sectionOptions,
+  classSectionOptions,
   subjectOptions,
   statusOptions,
   type EbookData,
@@ -31,8 +30,7 @@ const ReportsPage = () => {
   
   // Filter states
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedClass, setSelectedClass] = useState("All Classes");
-  const [selectedSection, setSelectedSection] = useState("All Sections");
+  const [selectedClassSection, setSelectedClassSection] = useState("grade4-a");
   const [selectedSubject, setSelectedSubject] = useState("All Subjects");
   const [selectedStatus, setSelectedStatus] = useState("All Status");
 
@@ -44,11 +42,15 @@ const ReportsPage = () => {
   const [ebookItemsPerPage, setEbookItemsPerPage] = useState(5);
   const [studentItemsPerPage, setStudentItemsPerPage] = useState(5);
 
+  // Get selected class and section from combined selection
+  const selectedOption = classSectionOptions.find(opt => opt.id === selectedClassSection);
+  const selectedClass = selectedOption?.class || "Grade 4";
+  const selectedSection = selectedOption?.section || "A";
+
   // Reset filters
   const resetFilters = () => {
     setSearchQuery("");
-    setSelectedClass("All Classes");
-    setSelectedSection("All Sections");
+    setSelectedClassSection("grade4-a");
     setSelectedSubject("All Subjects");
     setSelectedStatus("All Status");
     setAssessmentPage(1);
@@ -79,8 +81,8 @@ const ReportsPage = () => {
   const filteredAssessmentData = useMemo(() => {
     return assessmentData.filter((item) => {
       const matchesSearch = item.studentName.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesClass = selectedClass === "All Classes" || item.class === selectedClass;
-      const matchesSection = selectedSection === "All Sections" || item.section === selectedSection;
+      const matchesClass = item.class === selectedClass;
+      const matchesSection = item.section === selectedSection;
       const matchesSubject = selectedSubject === "All Subjects" || item.subject === selectedSubject;
       return matchesSearch && matchesClass && matchesSection && matchesSubject;
     });
@@ -91,8 +93,8 @@ const ReportsPage = () => {
     return ebookData.filter((item) => {
       const matchesSearch = item.studentName.toLowerCase().includes(searchQuery.toLowerCase()) || 
                            item.bookTitle.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesClass = selectedClass === "All Classes" || item.class === selectedClass;
-      const matchesSection = selectedSection === "All Sections" || item.section === selectedSection;
+      const matchesClass = item.class === selectedClass;
+      const matchesSection = item.section === selectedSection;
       const matchesSubject = selectedSubject === "All Subjects" || item.subject === selectedSubject;
       return matchesSearch && matchesClass && matchesSection && matchesSubject;
     });
@@ -103,8 +105,8 @@ const ReportsPage = () => {
     return studentData.filter((item) => {
       const matchesSearch = item.studentName.toLowerCase().includes(searchQuery.toLowerCase()) ||
                            item.rollNumber.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesClass = selectedClass === "All Classes" || item.class === selectedClass;
-      const matchesSection = selectedSection === "All Sections" || item.section === selectedSection;
+      const matchesClass = item.class === selectedClass;
+      const matchesSection = item.section === selectedSection;
       const matchesStatus = selectedStatus === "All Status" || item.status === selectedStatus;
       return matchesSearch && matchesClass && matchesSection && matchesStatus;
     });
@@ -371,23 +373,13 @@ const ReportsPage = () => {
                   />
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  <Select value={selectedClass} onValueChange={setSelectedClass}>
-                    <SelectTrigger className="w-[130px]">
-                      <SelectValue placeholder="Class" />
+                  <Select value={selectedClassSection} onValueChange={setSelectedClassSection}>
+                    <SelectTrigger className="w-[150px]">
+                      <SelectValue placeholder="Class - Section" />
                     </SelectTrigger>
-                    <SelectContent>
-                      {classOptions.map((option) => (
-                        <SelectItem key={option} value={option}>{option}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <Select value={selectedSection} onValueChange={setSelectedSection}>
-                    <SelectTrigger className="w-[130px]">
-                      <SelectValue placeholder="Section" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {sectionOptions.map((option) => (
-                        <SelectItem key={option} value={option}>{option}</SelectItem>
+                    <SelectContent className="bg-white dark:bg-white z-50">
+                      {classSectionOptions.map((option) => (
+                        <SelectItem key={option.id} value={option.id} className="dark:text-black">{option.label}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>

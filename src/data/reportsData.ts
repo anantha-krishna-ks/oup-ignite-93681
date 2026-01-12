@@ -177,3 +177,13 @@ export const classOptions = ["All Classes", "Grade 4", "Grade 5", "Grade 6"];
 export const sectionOptions = ["All Sections", "A", "B"];
 export const subjectOptions = ["All Subjects", "Mathematics", "English", "Science", "Hindi"];
 export const statusOptions = ["All Status", "Active", "Inactive"];
+
+// Combined class-section options (without "All" option)
+export const classSectionOptions = [
+  { id: "grade4-a", label: "Grade 4 - A", class: "Grade 4", section: "A" },
+  { id: "grade4-b", label: "Grade 4 - B", class: "Grade 4", section: "B" },
+  { id: "grade5-a", label: "Grade 5 - A", class: "Grade 5", section: "A" },
+  { id: "grade5-b", label: "Grade 5 - B", class: "Grade 5", section: "B" },
+  { id: "grade6-a", label: "Grade 6 - A", class: "Grade 6", section: "A" },
+  { id: "grade6-b", label: "Grade 6 - B", class: "Grade 6", section: "B" },
+];
