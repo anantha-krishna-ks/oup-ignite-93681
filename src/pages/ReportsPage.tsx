@@ -205,73 +205,71 @@ const ReportsPage = () => {
           </div>
         </div>
 
-        {/* Chapters List */}
+        {/* Chapters Grid */}
         <div className="p-6">
           <h4 className="text-sm font-semibold mb-4 flex items-center gap-2">
             <FileText className="h-4 w-4 text-muted-foreground" />
             Chapter Progress
           </h4>
-          <ScrollArea className="h-[280px] pr-4">
-            <div className="space-y-3">
-              {ebook.chapters.map((chapter, index) => (
-                <div 
-                  key={index} 
-                  className={`p-3 rounded-lg border transition-all ${
-                    chapter.completionPercentage === 100 
-                      ? 'bg-emerald-50/50 border-emerald-200/50 dark:bg-emerald-950/20 dark:border-emerald-800/30' 
-                      : chapter.completionPercentage > 0 
-                        ? 'bg-blue-50/50 border-blue-200/50 dark:bg-blue-950/20 dark:border-blue-800/30' 
-                        : 'bg-muted/30 border-muted'
-                  }`}
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-3">
-                      <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium ${
-                        chapter.completionPercentage === 100 
-                          ? 'bg-emerald-500 text-white' 
-                          : chapter.completionPercentage > 0 
-                            ? 'bg-blue-500 text-white' 
-                            : 'bg-muted text-muted-foreground'
-                      }`}>
-                        {chapter.completionPercentage === 100 ? (
-                          <CheckCircle className="h-3.5 w-3.5" />
-                        ) : (
-                          index + 1
-                        )}
-                      </div>
-                      <span className="font-medium text-sm">{chapter.chapterName}</span>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[400px] overflow-y-auto pr-2">
+            {ebook.chapters.map((chapter, index) => (
+              <div 
+                key={index} 
+                className={`p-3 rounded-lg border transition-all ${
+                  chapter.completionPercentage === 100 
+                    ? 'bg-emerald-50/50 border-emerald-200/50 dark:bg-emerald-950/20 dark:border-emerald-800/30' 
+                    : chapter.completionPercentage > 0 
+                      ? 'bg-blue-50/50 border-blue-200/50 dark:bg-blue-950/20 dark:border-blue-800/30' 
+                      : 'bg-muted/30 border-muted'
+                }`}
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium shrink-0 ${
+                      chapter.completionPercentage === 100 
+                        ? 'bg-emerald-500 text-white' 
+                        : chapter.completionPercentage > 0 
+                          ? 'bg-blue-500 text-white' 
+                          : 'bg-muted text-muted-foreground'
+                    }`}>
+                      {chapter.completionPercentage === 100 ? (
+                        <CheckCircle className="h-3.5 w-3.5" />
+                      ) : (
+                        index + 1
+                      )}
                     </div>
-                    <div className="flex items-center gap-4">
-                      <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                        <Clock className="h-3 w-3" />
-                        {chapter.timeSpent}
-                      </div>
-                      <Badge 
-                        variant={chapter.completionPercentage === 100 ? "default" : "secondary"}
-                        className={`min-w-[52px] justify-center ${
-                          chapter.completionPercentage === 100 
-                            ? 'bg-emerald-500 hover:bg-emerald-600' 
-                            : chapter.completionPercentage > 0 
-                              ? 'bg-blue-500 hover:bg-blue-600 text-white' 
-                              : ''
-                        }`}
-                      >
-                        {chapter.completionPercentage}%
-                      </Badge>
-                    </div>
+                    <span className="font-medium text-sm truncate">{chapter.chapterName}</span>
                   </div>
+                  <Badge 
+                    variant={chapter.completionPercentage === 100 ? "default" : "secondary"}
+                    className={`min-w-[44px] justify-center text-xs shrink-0 ${
+                      chapter.completionPercentage === 100 
+                        ? 'bg-emerald-500 hover:bg-emerald-600' 
+                        : chapter.completionPercentage > 0 
+                          ? 'bg-blue-500 hover:bg-blue-600 text-white' 
+                          : ''
+                    }`}
+                  >
+                    {chapter.completionPercentage}%
+                  </Badge>
+                </div>
+                <div className="flex items-center gap-2">
                   <Progress 
                     value={chapter.completionPercentage} 
-                    className={`h-1.5 ${
+                    className={`h-1.5 flex-1 ${
                       chapter.completionPercentage === 100 
                         ? '[&>div]:bg-emerald-500' 
                         : ''
                     }`} 
                   />
+                  <div className="flex items-center gap-1 text-xs text-muted-foreground shrink-0">
+                    <Clock className="h-3 w-3" />
+                    {chapter.timeSpent}
+                  </div>
                 </div>
-              ))}
-            </div>
-          </ScrollArea>
+              </div>
+            ))}
+          </div>
         </div>
       </DialogContent>
     </Dialog>
