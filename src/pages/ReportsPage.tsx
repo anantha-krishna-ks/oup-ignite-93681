@@ -674,6 +674,7 @@ const ReportsPage = () => {
                         <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4">Subject</TableHead>
                         <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4 text-center">Progress</TableHead>
                         <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4 text-center">Chapters</TableHead>
+                        <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4 text-center">Hrs of Usage</TableHead>
                         <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
@@ -697,6 +698,11 @@ const ReportsPage = () => {
                           <TableCell className="text-center py-4">
                             <span className="font-medium">{item.chaptersCompleted}</span>
                             <span className="text-muted-foreground">/{item.totalChapters}</span>
+                          </TableCell>
+                          <TableCell className="text-center py-4">
+                            <span className="font-medium">
+                              {Math.round(item.chapters.reduce((acc, ch) => acc + (parseInt(ch.timeSpent.replace(' min', '')) || 0), 0) / 60 * 10) / 10}h
+                            </span>
                           </TableCell>
                           <TableCell className="py-4">
                             <EbookDetailDialog ebook={item} />
