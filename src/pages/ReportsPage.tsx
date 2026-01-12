@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ArrowLeft, Search, Download, Eye, FileText, BookOpen, Users, TrendingUp, CheckCircle, Clock, RefreshCw } from "lucide-react";
+import { ArrowLeft, Search, Download, Eye, FileText, BookOpen, Users, TrendingUp, CheckCircle, Clock, RefreshCw, ChevronLeft, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import {
   assessmentData,
@@ -23,6 +23,7 @@ import {
   type StudentData,
 } from "@/data/reportsData";
 
+const ITEMS_PER_PAGE = 5;
 
 const ReportsPage = () => {
   const navigate = useNavigate();
@@ -35,6 +36,11 @@ const ReportsPage = () => {
   const [selectedSubject, setSelectedSubject] = useState("All Subjects");
   const [selectedStatus, setSelectedStatus] = useState("All Status");
 
+  // Pagination states
+  const [assessmentPage, setAssessmentPage] = useState(1);
+  const [ebookPage, setEbookPage] = useState(1);
+  const [studentPage, setStudentPage] = useState(1);
+
   // Reset filters
   const resetFilters = () => {
     setSearchQuery("");
@@ -42,6 +48,9 @@ const ReportsPage = () => {
     setSelectedSection("All Sections");
     setSelectedSubject("All Subjects");
     setSelectedStatus("All Status");
+    setAssessmentPage(1);
+    setEbookPage(1);
+    setStudentPage(1);
   };
 
   // Filtered Assessment Data
@@ -438,45 +447,83 @@ const ReportsPage = () => {
             </div>
 
             {/* Table */}
-            <Card className="overflow-hidden">
-              <CardHeader className="bg-muted/30 border-b">
-                <CardTitle className="text-base">Assessment Details</CardTitle>
-                <CardDescription>Student-wise assignment tracking</CardDescription>
+            <Card className="overflow-hidden border">
+              <CardHeader className="bg-muted/40 border-b py-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle className="text-base">Assessment Details</CardTitle>
+                    <CardDescription>Student-wise assignment tracking</CardDescription>
+                  </div>
+                  <span className="text-sm text-muted-foreground">
+                    {filteredAssessmentData.length} records
+                  </span>
+                </div>
               </CardHeader>
               <CardContent className="p-0">
-                <ScrollArea className="h-[400px]">
+                <div className="overflow-x-auto">
                   <Table>
                     <TableHeader>
-                      <TableRow className="bg-muted/50 hover:bg-muted/50">
-                        <TableHead className="font-semibold text-foreground">Student</TableHead>
-                        <TableHead className="font-semibold text-foreground">Class</TableHead>
-                        <TableHead className="font-semibold text-foreground">Subject</TableHead>
-                        <TableHead className="font-semibold text-foreground text-center">Assigned</TableHead>
-                        <TableHead className="font-semibold text-foreground text-center">Submitted</TableHead>
-                        <TableHead className="font-semibold text-foreground text-center">Score</TableHead>
-                        <TableHead className="font-semibold text-foreground">Status</TableHead>
+                      <TableRow className="bg-primary/5 border-b-2 border-primary/20 hover:bg-primary/5">
+                        <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4">Student</TableHead>
+                        <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4">Class</TableHead>
+                        <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4">Subject</TableHead>
+                        <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4 text-center">Assigned</TableHead>
+                        <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4 text-center">Submitted</TableHead>
+                        <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4 text-center">Score</TableHead>
+                        <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4">Status</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {filteredAssessmentData.map((item, index) => (
+                      {filteredAssessmentData
+                        .slice((assessmentPage - 1) * ITEMS_PER_PAGE, assessmentPage * ITEMS_PER_PAGE)
+                        .map((item, index) => (
                         <TableRow 
                           key={item.id} 
-                          className={`${index % 2 === 0 ? "bg-background" : "bg-muted/20"} hover:bg-primary/5 transition-colors`}
+                          className={`${index % 2 === 0 ? "bg-background" : "bg-muted/30"} hover:bg-primary/5 transition-colors border-b`}
                         >
-                          <TableCell className="font-medium py-3.5">{item.studentName}</TableCell>
-                          <TableCell className="py-3.5 text-muted-foreground">{item.class} - {item.section}</TableCell>
-                          <TableCell className="py-3.5">{item.subject}</TableCell>
-                          <TableCell className="text-center py-3.5 font-medium">{item.assignmentsAssigned}</TableCell>
-                          <TableCell className="text-center py-3.5 font-medium">{item.assignmentsSubmitted}</TableCell>
-                          <TableCell className="text-center py-3.5">
+                          <TableCell className="font-medium py-4">{item.studentName}</TableCell>
+                          <TableCell className="py-4 text-muted-foreground">{item.class} - {item.section}</TableCell>
+                          <TableCell className="py-4">{item.subject}</TableCell>
+                          <TableCell className="text-center py-4 font-medium">{item.assignmentsAssigned}</TableCell>
+                          <TableCell className="text-center py-4 font-medium">{item.assignmentsSubmitted}</TableCell>
+                          <TableCell className="text-center py-4">
                             <span className="font-semibold">{item.averageScore}%</span>
                           </TableCell>
-                          <TableCell className="py-3.5">{getCompletionBadge(item.completionRate)}</TableCell>
+                          <TableCell className="py-4">{getCompletionBadge(item.completionRate)}</TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
                   </Table>
-                </ScrollArea>
+                </div>
+                {/* Pagination */}
+                <div className="flex items-center justify-between px-4 py-3 border-t bg-muted/20">
+                  <p className="text-sm text-muted-foreground">
+                    Showing {((assessmentPage - 1) * ITEMS_PER_PAGE) + 1} to {Math.min(assessmentPage * ITEMS_PER_PAGE, filteredAssessmentData.length)} of {filteredAssessmentData.length}
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => setAssessmentPage(p => Math.max(1, p - 1))}
+                      disabled={assessmentPage === 1}
+                      className="h-8 w-8 p-0"
+                    >
+                      <ChevronLeft className="h-4 w-4" />
+                    </Button>
+                    <span className="text-sm font-medium px-2">
+                      {assessmentPage} / {Math.ceil(filteredAssessmentData.length / ITEMS_PER_PAGE)}
+                    </span>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => setAssessmentPage(p => Math.min(Math.ceil(filteredAssessmentData.length / ITEMS_PER_PAGE), p + 1))}
+                      disabled={assessmentPage >= Math.ceil(filteredAssessmentData.length / ITEMS_PER_PAGE)}
+                      className="h-8 w-8 p-0"
+                    >
+                      <ChevronRight className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
@@ -540,51 +587,89 @@ const ReportsPage = () => {
             </div>
 
             {/* Table */}
-            <Card className="overflow-hidden">
-              <CardHeader className="bg-muted/30 border-b">
-                <CardTitle className="text-base">E-book Progress</CardTitle>
-                <CardDescription>Chapter-wise completion tracking</CardDescription>
+            <Card className="overflow-hidden border">
+              <CardHeader className="bg-muted/40 border-b py-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle className="text-base">E-book Progress</CardTitle>
+                    <CardDescription>Chapter-wise completion tracking</CardDescription>
+                  </div>
+                  <span className="text-sm text-muted-foreground">
+                    {filteredEbookData.length} records
+                  </span>
+                </div>
               </CardHeader>
               <CardContent className="p-0">
-                <ScrollArea className="h-[400px]">
+                <div className="overflow-x-auto">
                   <Table>
                     <TableHeader>
-                      <TableRow className="bg-muted/50 hover:bg-muted/50">
-                        <TableHead className="font-semibold text-foreground">Student</TableHead>
-                        <TableHead className="font-semibold text-foreground">Book Title</TableHead>
-                        <TableHead className="font-semibold text-foreground">Subject</TableHead>
-                        <TableHead className="font-semibold text-foreground text-center">Progress</TableHead>
-                        <TableHead className="font-semibold text-foreground text-center">Chapters</TableHead>
-                        <TableHead className="font-semibold text-foreground">Actions</TableHead>
+                      <TableRow className="bg-primary/5 border-b-2 border-primary/20 hover:bg-primary/5">
+                        <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4">Student</TableHead>
+                        <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4">Book Title</TableHead>
+                        <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4">Subject</TableHead>
+                        <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4 text-center">Progress</TableHead>
+                        <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4 text-center">Chapters</TableHead>
+                        <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {filteredEbookData.map((item, index) => (
+                      {filteredEbookData
+                        .slice((ebookPage - 1) * ITEMS_PER_PAGE, ebookPage * ITEMS_PER_PAGE)
+                        .map((item, index) => (
                         <TableRow 
                           key={item.id}
-                          className={`${index % 2 === 0 ? "bg-background" : "bg-muted/20"} hover:bg-primary/5 transition-colors`}
+                          className={`${index % 2 === 0 ? "bg-background" : "bg-muted/30"} hover:bg-primary/5 transition-colors border-b`}
                         >
-                          <TableCell className="font-medium py-3.5">{item.studentName}</TableCell>
-                          <TableCell className="py-3.5">{item.bookTitle}</TableCell>
-                          <TableCell className="py-3.5 text-muted-foreground">{item.subject}</TableCell>
-                          <TableCell className="py-3.5">
+                          <TableCell className="font-medium py-4">{item.studentName}</TableCell>
+                          <TableCell className="py-4">{item.bookTitle}</TableCell>
+                          <TableCell className="py-4 text-muted-foreground">{item.subject}</TableCell>
+                          <TableCell className="py-4">
                             <div className="flex items-center justify-center gap-2">
                               <Progress value={item.overallCompletion} className="h-2 w-20" />
                               <span className="text-sm font-medium w-10">{item.overallCompletion}%</span>
                             </div>
                           </TableCell>
-                          <TableCell className="text-center py-3.5">
+                          <TableCell className="text-center py-4">
                             <span className="font-medium">{item.chaptersCompleted}</span>
                             <span className="text-muted-foreground">/{item.totalChapters}</span>
                           </TableCell>
-                          <TableCell className="py-3.5">
+                          <TableCell className="py-4">
                             <EbookDetailDialog ebook={item} />
                           </TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
                   </Table>
-                </ScrollArea>
+                </div>
+                {/* Pagination */}
+                <div className="flex items-center justify-between px-4 py-3 border-t bg-muted/20">
+                  <p className="text-sm text-muted-foreground">
+                    Showing {((ebookPage - 1) * ITEMS_PER_PAGE) + 1} to {Math.min(ebookPage * ITEMS_PER_PAGE, filteredEbookData.length)} of {filteredEbookData.length}
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => setEbookPage(p => Math.max(1, p - 1))}
+                      disabled={ebookPage === 1}
+                      className="h-8 w-8 p-0"
+                    >
+                      <ChevronLeft className="h-4 w-4" />
+                    </Button>
+                    <span className="text-sm font-medium px-2">
+                      {ebookPage} / {Math.ceil(filteredEbookData.length / ITEMS_PER_PAGE)}
+                    </span>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => setEbookPage(p => Math.min(Math.ceil(filteredEbookData.length / ITEMS_PER_PAGE), p + 1))}
+                      disabled={ebookPage >= Math.ceil(filteredEbookData.length / ITEMS_PER_PAGE)}
+                      className="h-8 w-8 p-0"
+                    >
+                      <ChevronRight className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
@@ -648,53 +733,91 @@ const ReportsPage = () => {
             </div>
 
             {/* Table */}
-            <Card className="overflow-hidden">
-              <CardHeader className="bg-muted/30 border-b">
-                <CardTitle className="text-base">Student Directory</CardTitle>
-                <CardDescription>View and manage student information</CardDescription>
+            <Card className="overflow-hidden border">
+              <CardHeader className="bg-muted/40 border-b py-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle className="text-base">Student Directory</CardTitle>
+                    <CardDescription>View and manage student information</CardDescription>
+                  </div>
+                  <span className="text-sm text-muted-foreground">
+                    {filteredStudentData.length} records
+                  </span>
+                </div>
               </CardHeader>
               <CardContent className="p-0">
-                <ScrollArea className="h-[400px]">
+                <div className="overflow-x-auto">
                   <Table>
                     <TableHeader>
-                      <TableRow className="bg-muted/50 hover:bg-muted/50">
-                        <TableHead className="font-semibold text-foreground">Roll No.</TableHead>
-                        <TableHead className="font-semibold text-foreground">Student Name</TableHead>
-                        <TableHead className="font-semibold text-foreground">Class</TableHead>
-                        <TableHead className="font-semibold text-foreground">Email</TableHead>
-                        <TableHead className="font-semibold text-foreground text-center">Attendance</TableHead>
-                        <TableHead className="font-semibold text-foreground text-center">Grade</TableHead>
-                        <TableHead className="font-semibold text-foreground">Status</TableHead>
-                        <TableHead className="font-semibold text-foreground">Actions</TableHead>
+                      <TableRow className="bg-primary/5 border-b-2 border-primary/20 hover:bg-primary/5">
+                        <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4">Roll No.</TableHead>
+                        <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4">Student Name</TableHead>
+                        <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4">Class</TableHead>
+                        <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4">Email</TableHead>
+                        <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4 text-center">Attendance</TableHead>
+                        <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4 text-center">Grade</TableHead>
+                        <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4">Status</TableHead>
+                        <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {filteredStudentData.map((item, index) => (
+                      {filteredStudentData
+                        .slice((studentPage - 1) * ITEMS_PER_PAGE, studentPage * ITEMS_PER_PAGE)
+                        .map((item, index) => (
                         <TableRow 
                           key={item.id}
-                          className={`${index % 2 === 0 ? "bg-background" : "bg-muted/20"} hover:bg-primary/5 transition-colors`}
+                          className={`${index % 2 === 0 ? "bg-background" : "bg-muted/30"} hover:bg-primary/5 transition-colors border-b`}
                         >
-                          <TableCell className="font-mono text-sm py-3.5">{item.rollNumber}</TableCell>
-                          <TableCell className="font-medium py-3.5">{item.studentName}</TableCell>
-                          <TableCell className="py-3.5 text-muted-foreground">{item.class} - {item.section}</TableCell>
-                          <TableCell className="text-sm text-muted-foreground py-3.5">{item.email}</TableCell>
-                          <TableCell className="text-center py-3.5">
+                          <TableCell className="font-mono text-sm py-4">{item.rollNumber}</TableCell>
+                          <TableCell className="font-medium py-4">{item.studentName}</TableCell>
+                          <TableCell className="py-4 text-muted-foreground">{item.class} - {item.section}</TableCell>
+                          <TableCell className="text-sm text-muted-foreground py-4">{item.email}</TableCell>
+                          <TableCell className="text-center py-4">
                             <span className="font-semibold">{item.attendance}%</span>
                           </TableCell>
-                          <TableCell className="text-center py-3.5">{getGradeBadge(item.overallGrade)}</TableCell>
-                          <TableCell className="py-3.5">
+                          <TableCell className="text-center py-4">{getGradeBadge(item.overallGrade)}</TableCell>
+                          <TableCell className="py-4">
                             <Badge variant={item.status === "Active" ? "default" : "secondary"}>
                               {item.status}
                             </Badge>
                           </TableCell>
-                          <TableCell className="py-3.5">
+                          <TableCell className="py-4">
                             <StudentDetailDialog student={item} />
                           </TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
                   </Table>
-                </ScrollArea>
+                </div>
+                {/* Pagination */}
+                <div className="flex items-center justify-between px-4 py-3 border-t bg-muted/20">
+                  <p className="text-sm text-muted-foreground">
+                    Showing {((studentPage - 1) * ITEMS_PER_PAGE) + 1} to {Math.min(studentPage * ITEMS_PER_PAGE, filteredStudentData.length)} of {filteredStudentData.length}
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => setStudentPage(p => Math.max(1, p - 1))}
+                      disabled={studentPage === 1}
+                      className="h-8 w-8 p-0"
+                    >
+                      <ChevronLeft className="h-4 w-4" />
+                    </Button>
+                    <span className="text-sm font-medium px-2">
+                      {studentPage} / {Math.ceil(filteredStudentData.length / ITEMS_PER_PAGE)}
+                    </span>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => setStudentPage(p => Math.min(Math.ceil(filteredStudentData.length / ITEMS_PER_PAGE), p + 1))}
+                      disabled={studentPage >= Math.ceil(filteredStudentData.length / ITEMS_PER_PAGE)}
+                      className="h-8 w-8 p-0"
+                    >
+                      <ChevronRight className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
