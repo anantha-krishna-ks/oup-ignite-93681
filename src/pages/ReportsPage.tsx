@@ -665,7 +665,7 @@ const ReportsPage = () => {
                       ))}
                     </SelectContent>
                   </Select>
-                  {activeTab !== "student" && (
+                  {activeTab !== "student" && userRole !== 'student' && (
                     <Select value={selectedSubject} onValueChange={setSelectedSubject}>
                       <SelectTrigger className="w-[130px]">
                         <SelectValue placeholder="Subject" />
