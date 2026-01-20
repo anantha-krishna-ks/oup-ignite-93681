@@ -92,10 +92,10 @@ const ReportsPage = () => {
   const filteredEbookData = useMemo(() => {
     return ebookData.filter((item) => {
       const matchesSearch = item.studentName.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                           item.bookTitle.toLowerCase().includes(searchQuery.toLowerCase());
+                           item.subjects.some(s => s.bookTitle.toLowerCase().includes(searchQuery.toLowerCase()));
       const matchesClass = item.class === selectedClass;
       const matchesSection = item.section === selectedSection;
-      const matchesSubject = selectedSubject === "All Subjects" || item.subject === selectedSubject;
+      const matchesSubject = selectedSubject === "All Subjects" || item.subjects.some(s => s.subject === selectedSubject);
       return matchesSearch && matchesClass && matchesSection && matchesSubject;
     });
   }, [searchQuery, selectedClass, selectedSection, selectedSubject]);
@@ -121,22 +121,48 @@ const ReportsPage = () => {
   }), [filteredAssessmentData]);
 
   const ebookStats = useMemo(() => {
-    // Calculate total hours from all chapters
+    // Calculate total hours from all chapters across all subjects
     const totalMinutes = filteredEbookData.reduce((acc, item) => {
-      return acc + item.chapters.reduce((chapterAcc, chapter) => {
-        const minutes = parseInt(chapter.timeSpent.replace(' min', '')) || 0;
-        return chapterAcc + minutes;
+      const subjectsToCount = selectedSubject === "All Subjects" 
+        ? item.subjects 
+        : item.subjects.filter(s => s.subject === selectedSubject);
+      return acc + subjectsToCount.reduce((subjectAcc, subject) => {
+        return subjectAcc + subject.chapters.reduce((chapterAcc, chapter) => {
+          const minutes = parseInt(chapter.timeSpent.replace(' min', '')) || 0;
+          return chapterAcc + minutes;
+        }, 0);
       }, 0);
     }, 0);
     const totalHours = Math.round(totalMinutes / 60 * 10) / 10; // Round to 1 decimal
 
+    // Calculate average completion across subjects
+    let totalCompletion = 0;
+    let subjectCount = 0;
+    filteredEbookData.forEach(item => {
+      const subjectsToCount = selectedSubject === "All Subjects" 
+        ? item.subjects 
+        : item.subjects.filter(s => s.subject === selectedSubject);
+      subjectsToCount.forEach(s => {
+        totalCompletion += s.overallCompletion;
+        subjectCount++;
+      });
+    });
+
+    // Calculate total chapters
+    const totalChapters = filteredEbookData.reduce((acc, item) => {
+      const subjectsToCount = selectedSubject === "All Subjects" 
+        ? item.subjects 
+        : item.subjects.filter(s => s.subject === selectedSubject);
+      return acc + subjectsToCount.reduce((subjectAcc, subject) => subjectAcc + subject.totalChapters, 0);
+    }, 0);
+
     return {
       totalBooks: filteredEbookData.length,
-      avgCompletion: Math.round(filteredEbookData.reduce((acc, item) => acc + item.overallCompletion, 0) / (filteredEbookData.length || 1)),
+      avgCompletion: Math.round(totalCompletion / (subjectCount || 1)),
       totalHours,
-      totalChapters: filteredEbookData.reduce((acc, item) => acc + item.totalChapters, 0),
+      totalChapters,
     };
-  }, [filteredEbookData]);
+  }, [filteredEbookData, selectedSubject]);
 
   const studentStats = useMemo(() => ({
     totalStudents: filteredStudentData.length,
@@ -164,20 +190,15 @@ const ReportsPage = () => {
 
   // Ebook Detail Dialog
   const EbookDetailDialog = ({ ebook, selectedSubjectFilter }: { ebook: EbookData; selectedSubjectFilter: string }) => {
-    // Get all ebooks for this student to show subject-wise data
-    const studentEbooks = ebookData.filter(e => e.studentName === ebook.studentName);
-    
-    // Filter by selected subject if not "All Subjects"
+    // Filter subjects based on selection
     const subjectsToShow = selectedSubjectFilter === "All Subjects" 
-      ? [...new Set(studentEbooks.map(e => e.subject))]
-      : [selectedSubjectFilter];
-    
-    const filteredEbooks = studentEbooks.filter(e => subjectsToShow.includes(e.subject));
+      ? ebook.subjects
+      : ebook.subjects.filter(s => s.subject === selectedSubjectFilter);
     
     // Calculate totals
-    const totalChaptersCompleted = filteredEbooks.reduce((acc, e) => acc + e.chapters.filter(ch => ch.completionPercentage === 100).length, 0);
-    const totalChapters = filteredEbooks.reduce((acc, e) => acc + e.totalChapters, 0);
-    const totalHours = Math.round(filteredEbooks.reduce((acc, e) => acc + e.chapters.reduce((chAcc, ch) => chAcc + (parseInt(ch.timeSpent.replace(' min', '')) || 0), 0), 0) / 60 * 10) / 10;
+    const totalChaptersCompleted = subjectsToShow.reduce((acc, s) => acc + s.chapters.filter(ch => ch.completionPercentage === 100).length, 0);
+    const totalChapters = subjectsToShow.reduce((acc, s) => acc + s.totalChapters, 0);
+    const totalHours = Math.round(subjectsToShow.reduce((acc, s) => acc + s.chapters.reduce((chAcc, ch) => chAcc + (parseInt(ch.timeSpent.replace(' min', '')) || 0), 0), 0) / 60 * 10) / 10;
     
     return (
       <Dialog>
@@ -227,34 +248,34 @@ const ReportsPage = () => {
           {/* Subject-wise Chapter Tables */}
           <ScrollArea className="max-h-[60vh] p-6">
             <div className="space-y-6">
-              {filteredEbooks.map((subjectEbook) => (
-                <div key={subjectEbook.id} className="border rounded-lg overflow-hidden">
+              {subjectsToShow.map((subjectData, subjectIdx) => (
+                <div key={subjectIdx} className="border rounded-lg overflow-hidden">
                   {/* Subject Header */}
                   <div className={`px-4 py-3 flex items-center justify-between ${
-                    subjectEbook.subject === 'English' ? 'bg-blue-50 border-b border-blue-100 dark:bg-blue-950/30 dark:border-blue-900' :
-                    subjectEbook.subject === 'Mathematics' ? 'bg-emerald-50 border-b border-emerald-100 dark:bg-emerald-950/30 dark:border-emerald-900' :
-                    subjectEbook.subject === 'Science' ? 'bg-violet-50 border-b border-violet-100 dark:bg-violet-950/30 dark:border-violet-900' :
-                    subjectEbook.subject === 'Hindi' ? 'bg-amber-50 border-b border-amber-100 dark:bg-amber-950/30 dark:border-amber-900' :
+                    subjectData.subject === 'English' ? 'bg-blue-50 border-b border-blue-100 dark:bg-blue-950/30 dark:border-blue-900' :
+                    subjectData.subject === 'Mathematics' ? 'bg-emerald-50 border-b border-emerald-100 dark:bg-emerald-950/30 dark:border-emerald-900' :
+                    subjectData.subject === 'Science' ? 'bg-violet-50 border-b border-violet-100 dark:bg-violet-950/30 dark:border-violet-900' :
+                    subjectData.subject === 'Hindi' ? 'bg-amber-50 border-b border-amber-100 dark:bg-amber-950/30 dark:border-amber-900' :
                     'bg-muted/50 border-b'
                   }`}>
                     <div className="flex items-center gap-2">
                       <Badge variant="secondary" className={`font-semibold ${
-                        subjectEbook.subject === 'English' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300' :
-                        subjectEbook.subject === 'Mathematics' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300' :
-                        subjectEbook.subject === 'Science' ? 'bg-violet-100 text-violet-700 dark:bg-violet-900/50 dark:text-violet-300' :
-                        subjectEbook.subject === 'Hindi' ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300' :
+                        subjectData.subject === 'English' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300' :
+                        subjectData.subject === 'Mathematics' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300' :
+                        subjectData.subject === 'Science' ? 'bg-violet-100 text-violet-700 dark:bg-violet-900/50 dark:text-violet-300' :
+                        subjectData.subject === 'Hindi' ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300' :
                         ''
                       }`}>
-                        {subjectEbook.subject}
+                        {subjectData.subject}
                       </Badge>
-                      <span className="text-sm text-muted-foreground">({subjectEbook.bookTitle})</span>
+                      <span className="text-sm text-muted-foreground">({subjectData.bookTitle})</span>
                     </div>
                     <div className="flex items-center gap-2 text-sm">
                       <span className="text-muted-foreground">
-                        {subjectEbook.chaptersCompleted}/{subjectEbook.totalChapters} chapters
+                        {subjectData.chaptersCompleted}/{subjectData.totalChapters} chapters
                       </span>
-                      <Progress value={subjectEbook.overallCompletion} className="h-2 w-20" />
-                      <span className="font-medium">{subjectEbook.overallCompletion}%</span>
+                      <Progress value={subjectData.overallCompletion} className="h-2 w-20" />
+                      <span className="font-medium">{subjectData.overallCompletion}%</span>
                     </div>
                   </div>
                   
@@ -269,7 +290,7 @@ const ReportsPage = () => {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {subjectEbook.chapters.map((chapter, idx) => (
+                      {subjectData.chapters.map((chapter, idx) => (
                         <TableRow key={idx} className={idx % 2 === 0 ? "bg-background" : "bg-muted/20"}>
                           <TableCell className="py-3">
                             <div className="flex items-center gap-2">
@@ -794,9 +815,14 @@ const ReportsPage = () => {
                       {filteredEbookData
                         .slice((ebookPage - 1) * ebookItemsPerPage, ebookPage * ebookItemsPerPage)
                         .map((item, index) => {
-                          const chaptersCompleted = item.chapters.filter(ch => ch.completionPercentage === 100).length;
-                          const chaptersInProgress = item.chapters.filter(ch => ch.completionPercentage > 0 && ch.completionPercentage < 100).length;
-                          const totalHours = Math.round(item.chapters.reduce((acc, ch) => acc + (parseInt(ch.timeSpent.replace(' min', '')) || 0), 0) / 60 * 10) / 10;
+                          // Filter subjects based on selected subject filter
+                          const subjectsToCount = selectedSubject === "All Subjects" 
+                            ? item.subjects 
+                            : item.subjects.filter(s => s.subject === selectedSubject);
+                          
+                          const chaptersCompleted = subjectsToCount.reduce((acc, s) => acc + s.chapters.filter(ch => ch.completionPercentage === 100).length, 0);
+                          const chaptersInProgress = subjectsToCount.reduce((acc, s) => acc + s.chapters.filter(ch => ch.completionPercentage > 0 && ch.completionPercentage < 100).length, 0);
+                          const totalHours = Math.round(subjectsToCount.reduce((acc, s) => acc + s.chapters.reduce((chAcc, ch) => chAcc + (parseInt(ch.timeSpent.replace(' min', '')) || 0), 0), 0) / 60 * 10) / 10;
                           
                           return (
                             <TableRow 
