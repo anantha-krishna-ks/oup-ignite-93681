@@ -753,17 +753,7 @@ const ReportsPage = () => {
                               key={item.id}
                               className={`${index % 2 === 0 ? "bg-background" : "bg-muted/30"} hover:bg-primary/5 transition-colors border-b`}
                             >
-                              <TableCell className="py-4">
-                                <div className="flex items-center gap-3">
-                                  <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold text-sm">
-                                    {item.studentName.split(' ').map(n => n[0]).join('')}
-                                  </div>
-                                  <div>
-                                    <p className="font-medium">{item.studentName}</p>
-                                    <p className="text-xs text-muted-foreground">{item.class} - {item.section}</p>
-                                  </div>
-                                </div>
-                              </TableCell>
+                              <TableCell className="py-4 font-medium">{item.studentName}</TableCell>
                               <TableCell className="text-center py-4">
                                 <span className="inline-flex items-center justify-center min-w-[2.5rem] px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 font-semibold text-sm">
                                   {chaptersCompleted}
