@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
@@ -20,6 +20,7 @@ import {
   statusOptions,
   type EbookData,
   type StudentData,
+  type SubjectProgress,
 } from "@/data/reportsData";
 
 const ITEMS_PER_PAGE_OPTIONS = [5, 10, 25, 50];
@@ -27,12 +28,18 @@ const ITEMS_PER_PAGE_OPTIONS = [5, 10, 25, 50];
 const ReportsPage = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("ebook");
+  const [userRole, setUserRole] = useState<string | null>(null);
   
   // Filter states
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedClassSection, setSelectedClassSection] = useState("grade4-a");
   const [selectedSubject, setSelectedSubject] = useState("All Subjects");
   const [selectedStatus, setSelectedStatus] = useState("All Status");
+
+  useEffect(() => {
+    const role = localStorage.getItem("userRole");
+    setUserRole(role);
+  }, []);
 
   // Pagination states
   const [assessmentPage, setAssessmentPage] = useState(1);
@@ -340,6 +347,138 @@ const ReportsPage = () => {
                 </div>
               ))}
             </div>
+          </ScrollArea>
+        </DialogContent>
+      </Dialog>
+    );
+  };
+
+  // Subject Detail Dialog (for student login view)
+  const SubjectDetailDialog = ({ subject }: { subject: SubjectProgress }) => {
+    const chaptersCompleted = subject.chapters.filter(ch => ch.completionPercentage === 100).length;
+    const totalChapters = subject.totalChapters;
+    const totalHours = Math.round(subject.chapters.reduce((acc, ch) => acc + (parseInt(ch.timeSpent.replace(' min', '')) || 0), 0) / 60 * 10) / 10;
+    
+    return (
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button variant="ghost" size="sm" className="h-8 w-8 p-0 hover:bg-primary/10">
+            <Eye className="h-4 w-4" />
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="max-w-4xl w-[90vw] p-0 overflow-hidden max-h-[90vh]">
+          {/* Header */}
+          <div className={`p-6 border-b ${
+            subject.subject === 'English' ? 'bg-gradient-to-r from-blue-50 via-blue-25 to-transparent dark:from-blue-950/30' :
+            subject.subject === 'Mathematics' ? 'bg-gradient-to-r from-emerald-50 via-emerald-25 to-transparent dark:from-emerald-950/30' :
+            subject.subject === 'Science' ? 'bg-gradient-to-r from-violet-50 via-violet-25 to-transparent dark:from-violet-950/30' :
+            subject.subject === 'Hindi' ? 'bg-gradient-to-r from-amber-50 via-amber-25 to-transparent dark:from-amber-950/30' :
+            'bg-gradient-to-r from-primary/10 via-primary/5 to-transparent'
+          }`}>
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-3 text-xl">
+                <div className={`p-2 rounded-lg ${
+                  subject.subject === 'English' ? 'bg-blue-100 dark:bg-blue-900/50' :
+                  subject.subject === 'Mathematics' ? 'bg-emerald-100 dark:bg-emerald-900/50' :
+                  subject.subject === 'Science' ? 'bg-violet-100 dark:bg-violet-900/50' :
+                  subject.subject === 'Hindi' ? 'bg-amber-100 dark:bg-amber-900/50' :
+                  'bg-primary/10'
+                }`}>
+                  <BookOpen className={`h-5 w-5 ${
+                    subject.subject === 'English' ? 'text-blue-600' :
+                    subject.subject === 'Mathematics' ? 'text-emerald-600' :
+                    subject.subject === 'Science' ? 'text-violet-600' :
+                    subject.subject === 'Hindi' ? 'text-amber-600' :
+                    'text-primary'
+                  }`} />
+                </div>
+                {subject.subject} Progress
+              </DialogTitle>
+            </DialogHeader>
+            <div className="mt-4 flex items-center justify-between">
+              <div>
+                <p className="text-base font-semibold">{subject.bookTitle}</p>
+                <div className="flex items-center gap-2 mt-1">
+                  <Progress value={subject.overallCompletion} className="h-2 w-32" />
+                  <span className="text-sm font-medium">{subject.overallCompletion}% Complete</span>
+                </div>
+              </div>
+              <div className="flex items-center gap-6 text-sm">
+                <div className="text-center">
+                  <p className="text-lg font-bold text-emerald-600">{chaptersCompleted}</p>
+                  <p className="text-xs text-muted-foreground">Chapters Completed</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-lg font-bold text-blue-600">{totalChapters}</p>
+                  <p className="text-xs text-muted-foreground">Total Chapters</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-lg font-bold text-violet-600">{totalHours}h</p>
+                  <p className="text-xs text-muted-foreground">Total Hours</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Chapter Table */}
+          <ScrollArea className="max-h-[60vh] p-6">
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-muted/30 hover:bg-muted/30">
+                  <TableHead className="font-semibold text-xs uppercase tracking-wider py-3 w-[40%]">Chapter</TableHead>
+                  <TableHead className="font-semibold text-xs uppercase tracking-wider py-3 text-center w-[20%]">Completion %</TableHead>
+                  <TableHead className="font-semibold text-xs uppercase tracking-wider py-3 text-center w-[20%]">Hours of Usage</TableHead>
+                  <TableHead className="font-semibold text-xs uppercase tracking-wider py-3 text-center w-[20%]">Last Accessed</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {subject.chapters.map((chapter, idx) => (
+                  <TableRow key={idx} className={idx % 2 === 0 ? "bg-background" : "bg-muted/20"}>
+                    <TableCell className="py-3">
+                      <div className="flex items-center gap-2">
+                        <div className={`w-5 h-5 rounded-full flex items-center justify-center text-xs shrink-0 ${
+                          chapter.completionPercentage === 100 
+                            ? 'bg-emerald-500 text-white' 
+                            : chapter.completionPercentage > 0 
+                              ? 'bg-blue-500 text-white' 
+                              : 'bg-muted text-muted-foreground'
+                        }`}>
+                          {chapter.completionPercentage === 100 ? (
+                            <CheckCircle className="h-3 w-3" />
+                          ) : (
+                            idx + 1
+                          )}
+                        </div>
+                        <span className="text-sm font-medium">{chapter.chapterName}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="py-3 text-center">
+                      <div className="flex items-center justify-center gap-2">
+                        <Progress 
+                          value={chapter.completionPercentage} 
+                          className={`h-1.5 w-16 ${chapter.completionPercentage === 100 ? '[&>div]:bg-emerald-500' : ''}`} 
+                        />
+                        <span className={`text-sm font-medium min-w-[40px] ${
+                          chapter.completionPercentage === 100 ? 'text-emerald-600' :
+                          chapter.completionPercentage > 0 ? 'text-blue-600' : 'text-muted-foreground'
+                        }`}>
+                          {chapter.completionPercentage}%
+                        </span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="py-3 text-center">
+                      <div className="flex items-center justify-center gap-1 text-sm text-muted-foreground">
+                        <Clock className="h-3 w-3" />
+                        <span>{chapter.timeSpent === "0 min" ? "-" : chapter.timeSpent}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="py-3 text-center text-sm text-muted-foreground">
+                      {chapter.lastAccessed}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </ScrollArea>
         </DialogContent>
       </Dialog>
@@ -795,7 +934,17 @@ const ReportsPage = () => {
                     <CardDescription>Chapter-wise completion tracking</CardDescription>
                   </div>
                   <span className="text-sm text-muted-foreground">
-                    {filteredEbookData.length} records
+                    {(() => {
+                      if (userRole === "student") {
+                        const studentData = filteredEbookData[0];
+                        if (!studentData) return "0 records";
+                        const subjectsCount = selectedSubject === "All Subjects" 
+                          ? studentData.subjects.length 
+                          : studentData.subjects.filter(s => s.subject === selectedSubject).length;
+                        return `${subjectsCount} records`;
+                      }
+                      return `${filteredEbookData.length} records`;
+                    })()}
                   </span>
                 </div>
               </CardHeader>
@@ -804,7 +953,9 @@ const ReportsPage = () => {
                   <Table>
                     <TableHeader>
                       <TableRow className="bg-primary/5 border-b-2 border-primary/20 hover:bg-primary/5">
-                        <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4">Student</TableHead>
+                        <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4">
+                          {userRole === "student" ? "Subject" : "Student"}
+                        </TableHead>
                         <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4 text-center">Total Chapters Completed</TableHead>
                         <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4 text-center">Total Chapters in Progress</TableHead>
                         <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4 text-center">Hours of Usage</TableHead>
@@ -812,54 +963,107 @@ const ReportsPage = () => {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {filteredEbookData
-                        .slice((ebookPage - 1) * ebookItemsPerPage, ebookPage * ebookItemsPerPage)
-                        .map((item, index) => {
-                          // Filter subjects based on selected subject filter
-                          const subjectsToCount = selectedSubject === "All Subjects" 
-                            ? item.subjects 
-                            : item.subjects.filter(s => s.subject === selectedSubject);
+                      {userRole === "student" ? (
+                        // Student view - show subject-wise data
+                        (() => {
+                          // Get the first student's data (or current logged-in student in real app)
+                          const studentData = filteredEbookData[0];
+                          if (!studentData) return null;
                           
-                          const chaptersCompleted = subjectsToCount.reduce((acc, s) => acc + s.chapters.filter(ch => ch.completionPercentage === 100).length, 0);
-                          const chaptersInProgress = subjectsToCount.reduce((acc, s) => acc + s.chapters.filter(ch => ch.completionPercentage > 0 && ch.completionPercentage < 100).length, 0);
-                          const totalHours = Math.round(subjectsToCount.reduce((acc, s) => acc + s.chapters.reduce((chAcc, ch) => chAcc + (parseInt(ch.timeSpent.replace(' min', '')) || 0), 0), 0) / 60 * 10) / 10;
+                          const subjectsToShow = selectedSubject === "All Subjects" 
+                            ? studentData.subjects 
+                            : studentData.subjects.filter(s => s.subject === selectedSubject);
                           
-                          return (
-                            <TableRow 
-                              key={item.id}
-                              className={`${index % 2 === 0 ? "bg-background" : "bg-muted/30"} hover:bg-primary/5 transition-colors border-b`}
-                            >
-                              <TableCell className="py-4 font-medium">{item.studentName}</TableCell>
-                              <TableCell className="text-center py-4">
-                                <span className="inline-flex items-center justify-center min-w-[2.5rem] px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 font-semibold text-sm">
-                                  {chaptersCompleted}
-                                </span>
-                              </TableCell>
-                              <TableCell className="text-center py-4">
-                                <span className="inline-flex items-center justify-center min-w-[2.5rem] px-3 py-1 rounded-full bg-amber-100 text-amber-700 font-semibold text-sm">
-                                  {chaptersInProgress}
-                                </span>
-                              </TableCell>
-                              <TableCell className="text-center py-4">
-                                <span className="font-medium">{totalHours}h</span>
-                              </TableCell>
-                              <TableCell className="py-4">
-                                <EbookDetailDialog ebook={item} selectedSubjectFilter={selectedSubject} />
-                              </TableCell>
-                            </TableRow>
-                          );
-                        })}
+                          return subjectsToShow
+                            .slice((ebookPage - 1) * ebookItemsPerPage, ebookPage * ebookItemsPerPage)
+                            .map((subject, index) => {
+                              const chaptersCompleted = subject.chapters.filter(ch => ch.completionPercentage === 100).length;
+                              const chaptersInProgress = subject.chapters.filter(ch => ch.completionPercentage > 0 && ch.completionPercentage < 100).length;
+                              const totalHours = Math.round(subject.chapters.reduce((acc, ch) => acc + (parseInt(ch.timeSpent.replace(' min', '')) || 0), 0) / 60 * 10) / 10;
+                              
+                              return (
+                                <TableRow 
+                                  key={subject.subject}
+                                  className={`${index % 2 === 0 ? "bg-background" : "bg-muted/30"} hover:bg-primary/5 transition-colors border-b`}
+                                >
+                                  <TableCell className="py-4 font-medium">{subject.subject}</TableCell>
+                                  <TableCell className="text-center py-4">
+                                    <span className="inline-flex items-center justify-center min-w-[2.5rem] px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 font-semibold text-sm">
+                                      {chaptersCompleted}
+                                    </span>
+                                  </TableCell>
+                                  <TableCell className="text-center py-4">
+                                    <span className="inline-flex items-center justify-center min-w-[2.5rem] px-3 py-1 rounded-full bg-amber-100 text-amber-700 font-semibold text-sm">
+                                      {chaptersInProgress}
+                                    </span>
+                                  </TableCell>
+                                  <TableCell className="text-center py-4">
+                                    <span className="font-medium">{totalHours}h</span>
+                                  </TableCell>
+                                  <TableCell className="py-4">
+                                    <SubjectDetailDialog subject={subject} />
+                                  </TableCell>
+                                </TableRow>
+                              );
+                            });
+                        })()
+                      ) : (
+                        // Teacher/Admin view - show student-wise data
+                        filteredEbookData
+                          .slice((ebookPage - 1) * ebookItemsPerPage, ebookPage * ebookItemsPerPage)
+                          .map((item, index) => {
+                            // Filter subjects based on selected subject filter
+                            const subjectsToCount = selectedSubject === "All Subjects" 
+                              ? item.subjects 
+                              : item.subjects.filter(s => s.subject === selectedSubject);
+                            
+                            const chaptersCompleted = subjectsToCount.reduce((acc, s) => acc + s.chapters.filter(ch => ch.completionPercentage === 100).length, 0);
+                            const chaptersInProgress = subjectsToCount.reduce((acc, s) => acc + s.chapters.filter(ch => ch.completionPercentage > 0 && ch.completionPercentage < 100).length, 0);
+                            const totalHours = Math.round(subjectsToCount.reduce((acc, s) => acc + s.chapters.reduce((chAcc, ch) => chAcc + (parseInt(ch.timeSpent.replace(' min', '')) || 0), 0), 0) / 60 * 10) / 10;
+                            
+                            return (
+                              <TableRow 
+                                key={item.id}
+                                className={`${index % 2 === 0 ? "bg-background" : "bg-muted/30"} hover:bg-primary/5 transition-colors border-b`}
+                              >
+                                <TableCell className="py-4 font-medium">{item.studentName}</TableCell>
+                                <TableCell className="text-center py-4">
+                                  <span className="inline-flex items-center justify-center min-w-[2.5rem] px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 font-semibold text-sm">
+                                    {chaptersCompleted}
+                                  </span>
+                                </TableCell>
+                                <TableCell className="text-center py-4">
+                                  <span className="inline-flex items-center justify-center min-w-[2.5rem] px-3 py-1 rounded-full bg-amber-100 text-amber-700 font-semibold text-sm">
+                                    {chaptersInProgress}
+                                  </span>
+                                </TableCell>
+                                <TableCell className="text-center py-4">
+                                  <span className="font-medium">{totalHours}h</span>
+                                </TableCell>
+                                <TableCell className="py-4">
+                                  <EbookDetailDialog ebook={item} selectedSubjectFilter={selectedSubject} />
+                                </TableCell>
+                              </TableRow>
+                            );
+                          })
+                      )}
                     </TableBody>
                   </Table>
                 </div>
                 {/* Pagination */}
                 {(() => {
-                  const totalPages = Math.ceil(filteredEbookData.length / ebookItemsPerPage);
+                  // For student view, count subjects; for teacher view, count students
+                  const studentData = filteredEbookData[0];
+                  const studentSubjects = studentData 
+                    ? (selectedSubject === "All Subjects" ? studentData.subjects : studentData.subjects.filter(s => s.subject === selectedSubject))
+                    : [];
+                  const recordCount = userRole === "student" ? studentSubjects.length : filteredEbookData.length;
+                  const totalPages = Math.ceil(recordCount / ebookItemsPerPage);
                   const pageNumbers = getPageNumbers(ebookPage, totalPages);
                   return (
                     <div className="flex items-center justify-between px-4 py-3 border-t bg-muted/20">
                       <p className="text-sm text-muted-foreground">
-                        Total Records: {filteredEbookData.length}
+                        Total Records: {recordCount}
                       </p>
                       <div className="flex items-center gap-1">
                         <Button 
