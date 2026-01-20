@@ -163,117 +163,167 @@ const ReportsPage = () => {
   };
 
   // Ebook Detail Dialog
-  const EbookDetailDialog = ({ ebook }: { ebook: EbookData }) => (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="ghost" size="sm" className="h-8 w-8 p-0 hover:bg-primary/10">
-          <Eye className="h-4 w-4" />
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="max-w-4xl w-[90vw] p-0 overflow-hidden">
-        {/* Header */}
-        <div className="bg-gradient-to-r from-primary/10 via-primary/5 to-transparent p-6 border-b">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-3 text-xl">
-              <div className="p-2 bg-primary/10 rounded-lg">
-                <BookOpen className="h-5 w-5 text-primary" />
-              </div>
-              {ebook.bookTitle}
-            </DialogTitle>
-          </DialogHeader>
-          <div className="mt-4 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-sm font-medium text-primary">
-                {ebook.studentName.charAt(0)}
-              </div>
-              <div>
-                <p className="text-sm font-medium">{ebook.studentName}</p>
-                <p className="text-xs text-muted-foreground">{ebook.class} - {ebook.section}</p>
-              </div>
-            </div>
-            <div className="text-right">
+  const EbookDetailDialog = ({ ebook, selectedSubjectFilter }: { ebook: EbookData; selectedSubjectFilter: string }) => {
+    // Get all ebooks for this student to show subject-wise data
+    const studentEbooks = ebookData.filter(e => e.studentName === ebook.studentName);
+    
+    // Filter by selected subject if not "All Subjects"
+    const subjectsToShow = selectedSubjectFilter === "All Subjects" 
+      ? [...new Set(studentEbooks.map(e => e.subject))]
+      : [selectedSubjectFilter];
+    
+    const filteredEbooks = studentEbooks.filter(e => subjectsToShow.includes(e.subject));
+    
+    // Calculate totals
+    const totalChaptersCompleted = filteredEbooks.reduce((acc, e) => acc + e.chapters.filter(ch => ch.completionPercentage === 100).length, 0);
+    const totalChapters = filteredEbooks.reduce((acc, e) => acc + e.totalChapters, 0);
+    const totalHours = Math.round(filteredEbooks.reduce((acc, e) => acc + e.chapters.reduce((chAcc, ch) => chAcc + (parseInt(ch.timeSpent.replace(' min', '')) || 0), 0), 0) / 60 * 10) / 10;
+    
+    return (
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button variant="ghost" size="sm" className="h-8 w-8 p-0 hover:bg-primary/10">
+            <Eye className="h-4 w-4" />
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="max-w-5xl w-[95vw] p-0 overflow-hidden max-h-[90vh]">
+          {/* Header */}
+          <div className="bg-gradient-to-r from-primary/10 via-primary/5 to-transparent p-6 border-b">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-3 text-xl">
+                <div className="p-2 bg-primary/10 rounded-lg">
+                  <BookOpen className="h-5 w-5 text-primary" />
+                </div>
+                Student Progress Report
+              </DialogTitle>
+            </DialogHeader>
+            <div className="mt-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="w-24">
-                  <Progress value={ebook.overallCompletion} className="h-2" />
+                <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-sm font-medium text-primary">
+                  {ebook.studentName.charAt(0)}
                 </div>
-                <span className="text-lg font-bold text-primary">{ebook.overallCompletion}%</span>
+                <div>
+                  <p className="text-base font-semibold">{ebook.studentName}</p>
+                  <p className="text-xs text-muted-foreground">{ebook.class} - {ebook.section}</p>
+                </div>
               </div>
-              <p className="text-xs text-muted-foreground mt-1">
-                {ebook.chaptersCompleted} of {ebook.totalChapters} chapters completed
-              </p>
+              <div className="flex items-center gap-6 text-sm">
+                <div className="text-center">
+                  <p className="text-lg font-bold text-emerald-600">{totalChaptersCompleted}</p>
+                  <p className="text-xs text-muted-foreground">Chapters Completed</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-lg font-bold text-blue-600">{totalChapters}</p>
+                  <p className="text-xs text-muted-foreground">Total Chapters</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-lg font-bold text-violet-600">{totalHours}h</p>
+                  <p className="text-xs text-muted-foreground">Total Hours</p>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Chapters Grid */}
-        <div className="p-6">
-          <h4 className="text-sm font-semibold mb-4 flex items-center gap-2">
-            <FileText className="h-4 w-4 text-muted-foreground" />
-            Chapter Progress
-          </h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[400px] overflow-y-auto pr-2">
-            {ebook.chapters.map((chapter, index) => (
-              <div 
-                key={index} 
-                className={`p-3 rounded-lg border transition-all ${
-                  chapter.completionPercentage === 100 
-                    ? 'bg-emerald-50/50 border-emerald-200/50 dark:bg-emerald-950/20 dark:border-emerald-800/30' 
-                    : chapter.completionPercentage > 0 
-                      ? 'bg-blue-50/50 border-blue-200/50 dark:bg-blue-950/20 dark:border-blue-800/30' 
-                      : 'bg-muted/30 border-muted'
-                }`}
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-2">
-                    <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium shrink-0 ${
-                      chapter.completionPercentage === 100 
-                        ? 'bg-emerald-500 text-white' 
-                        : chapter.completionPercentage > 0 
-                          ? 'bg-blue-500 text-white' 
-                          : 'bg-muted text-muted-foreground'
-                    }`}>
-                      {chapter.completionPercentage === 100 ? (
-                        <CheckCircle className="h-3.5 w-3.5" />
-                      ) : (
-                        index + 1
-                      )}
+          {/* Subject-wise Chapter Tables */}
+          <ScrollArea className="max-h-[60vh] p-6">
+            <div className="space-y-6">
+              {filteredEbooks.map((subjectEbook) => (
+                <div key={subjectEbook.id} className="border rounded-lg overflow-hidden">
+                  {/* Subject Header */}
+                  <div className={`px-4 py-3 flex items-center justify-between ${
+                    subjectEbook.subject === 'English' ? 'bg-blue-50 border-b border-blue-100 dark:bg-blue-950/30 dark:border-blue-900' :
+                    subjectEbook.subject === 'Mathematics' ? 'bg-emerald-50 border-b border-emerald-100 dark:bg-emerald-950/30 dark:border-emerald-900' :
+                    subjectEbook.subject === 'Science' ? 'bg-violet-50 border-b border-violet-100 dark:bg-violet-950/30 dark:border-violet-900' :
+                    subjectEbook.subject === 'Hindi' ? 'bg-amber-50 border-b border-amber-100 dark:bg-amber-950/30 dark:border-amber-900' :
+                    'bg-muted/50 border-b'
+                  }`}>
+                    <div className="flex items-center gap-2">
+                      <Badge variant="secondary" className={`font-semibold ${
+                        subjectEbook.subject === 'English' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300' :
+                        subjectEbook.subject === 'Mathematics' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300' :
+                        subjectEbook.subject === 'Science' ? 'bg-violet-100 text-violet-700 dark:bg-violet-900/50 dark:text-violet-300' :
+                        subjectEbook.subject === 'Hindi' ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300' :
+                        ''
+                      }`}>
+                        {subjectEbook.subject}
+                      </Badge>
+                      <span className="text-sm text-muted-foreground">({subjectEbook.bookTitle})</span>
                     </div>
-                    <span className="font-medium text-sm truncate">{chapter.chapterName}</span>
+                    <div className="flex items-center gap-2 text-sm">
+                      <span className="text-muted-foreground">
+                        {subjectEbook.chaptersCompleted}/{subjectEbook.totalChapters} chapters
+                      </span>
+                      <Progress value={subjectEbook.overallCompletion} className="h-2 w-20" />
+                      <span className="font-medium">{subjectEbook.overallCompletion}%</span>
+                    </div>
                   </div>
-                  <Badge 
-                    variant={chapter.completionPercentage === 100 ? "default" : "secondary"}
-                    className={`min-w-[44px] justify-center text-xs shrink-0 ${
-                      chapter.completionPercentage === 100 
-                        ? 'bg-emerald-500 hover:bg-emerald-600' 
-                        : chapter.completionPercentage > 0 
-                          ? 'bg-blue-500 hover:bg-blue-600 text-white' 
-                          : ''
-                    }`}
-                  >
-                    {chapter.completionPercentage}%
-                  </Badge>
+                  
+                  {/* Chapter Table */}
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="bg-muted/30 hover:bg-muted/30">
+                        <TableHead className="font-semibold text-xs uppercase tracking-wider py-3 w-[40%]">Chapter</TableHead>
+                        <TableHead className="font-semibold text-xs uppercase tracking-wider py-3 text-center w-[20%]">Completion %</TableHead>
+                        <TableHead className="font-semibold text-xs uppercase tracking-wider py-3 text-center w-[20%]">Hours of Usage</TableHead>
+                        <TableHead className="font-semibold text-xs uppercase tracking-wider py-3 text-center w-[20%]">Last Accessed</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {subjectEbook.chapters.map((chapter, idx) => (
+                        <TableRow key={idx} className={idx % 2 === 0 ? "bg-background" : "bg-muted/20"}>
+                          <TableCell className="py-3">
+                            <div className="flex items-center gap-2">
+                              <div className={`w-5 h-5 rounded-full flex items-center justify-center text-xs shrink-0 ${
+                                chapter.completionPercentage === 100 
+                                  ? 'bg-emerald-500 text-white' 
+                                  : chapter.completionPercentage > 0 
+                                    ? 'bg-blue-500 text-white' 
+                                    : 'bg-muted text-muted-foreground'
+                              }`}>
+                                {chapter.completionPercentage === 100 ? (
+                                  <CheckCircle className="h-3 w-3" />
+                                ) : (
+                                  idx + 1
+                                )}
+                              </div>
+                              <span className="text-sm font-medium">{chapter.chapterName}</span>
+                            </div>
+                          </TableCell>
+                          <TableCell className="py-3 text-center">
+                            <div className="flex items-center justify-center gap-2">
+                              <Progress 
+                                value={chapter.completionPercentage} 
+                                className={`h-1.5 w-16 ${chapter.completionPercentage === 100 ? '[&>div]:bg-emerald-500' : ''}`} 
+                              />
+                              <span className={`text-sm font-medium min-w-[40px] ${
+                                chapter.completionPercentage === 100 ? 'text-emerald-600' :
+                                chapter.completionPercentage > 0 ? 'text-blue-600' : 'text-muted-foreground'
+                              }`}>
+                                {chapter.completionPercentage}%
+                              </span>
+                            </div>
+                          </TableCell>
+                          <TableCell className="py-3 text-center">
+                            <div className="flex items-center justify-center gap-1 text-sm text-muted-foreground">
+                              <Clock className="h-3 w-3" />
+                              <span>{chapter.timeSpent === "0 min" ? "-" : chapter.timeSpent}</span>
+                            </div>
+                          </TableCell>
+                          <TableCell className="py-3 text-center text-sm text-muted-foreground">
+                            {chapter.lastAccessed}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Progress 
-                    value={chapter.completionPercentage} 
-                    className={`h-1.5 flex-1 ${
-                      chapter.completionPercentage === 100 
-                        ? '[&>div]:bg-emerald-500' 
-                        : ''
-                    }`} 
-                  />
-                  <div className="flex items-center gap-1 text-xs text-muted-foreground shrink-0">
-                    <Clock className="h-3 w-3" />
-                    {chapter.timeSpent}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </DialogContent>
-    </Dialog>
-  );
+              ))}
+            </div>
+          </ScrollArea>
+        </DialogContent>
+      </Dialog>
+    );
+  };
 
   // Student Detail Dialog
   const StudentDetailDialog = ({ student }: { student: StudentData }) => (
@@ -768,7 +818,7 @@ const ReportsPage = () => {
                                 <span className="font-medium">{totalHours}h</span>
                               </TableCell>
                               <TableCell className="py-4">
-                                <EbookDetailDialog ebook={item} />
+                                <EbookDetailDialog ebook={item} selectedSubjectFilter={selectedSubject} />
                               </TableCell>
                             </TableRow>
                           );
