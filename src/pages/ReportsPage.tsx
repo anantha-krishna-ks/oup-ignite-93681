@@ -734,45 +734,55 @@ const ReportsPage = () => {
                     <TableHeader>
                       <TableRow className="bg-primary/5 border-b-2 border-primary/20 hover:bg-primary/5">
                         <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4">Student</TableHead>
-                        <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4">Book Title</TableHead>
-                        <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4">Subject</TableHead>
-                        <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4 text-center">Progress</TableHead>
-                        <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4 text-center">Chapters</TableHead>
-                        <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4 text-center">Hrs of Usage</TableHead>
+                        <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4 text-center">Total Chapters Completed</TableHead>
+                        <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4 text-center">Total Chapters in Progress</TableHead>
+                        <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4 text-center">Hours of Usage</TableHead>
                         <TableHead className="font-bold text-foreground text-xs uppercase tracking-wider py-4">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {filteredEbookData
                         .slice((ebookPage - 1) * ebookItemsPerPage, ebookPage * ebookItemsPerPage)
-                        .map((item, index) => (
-                        <TableRow 
-                          key={item.id}
-                          className={`${index % 2 === 0 ? "bg-background" : "bg-muted/30"} hover:bg-primary/5 transition-colors border-b`}
-                        >
-                          <TableCell className="font-medium py-4">{item.studentName}</TableCell>
-                          <TableCell className="py-4">{item.bookTitle}</TableCell>
-                          <TableCell className="py-4 text-muted-foreground">{item.subject}</TableCell>
-                          <TableCell className="py-4">
-                            <div className="flex items-center justify-center gap-2">
-                              <Progress value={item.overallCompletion} className="h-2 w-20" />
-                              <span className="text-sm font-medium w-10">{item.overallCompletion}%</span>
-                            </div>
-                          </TableCell>
-                          <TableCell className="text-center py-4">
-                            <span className="font-medium">{item.chaptersCompleted}</span>
-                            <span className="text-muted-foreground">/{item.totalChapters}</span>
-                          </TableCell>
-                          <TableCell className="text-center py-4">
-                            <span className="font-medium">
-                              {Math.round(item.chapters.reduce((acc, ch) => acc + (parseInt(ch.timeSpent.replace(' min', '')) || 0), 0) / 60 * 10) / 10}h
-                            </span>
-                          </TableCell>
-                          <TableCell className="py-4">
-                            <EbookDetailDialog ebook={item} />
-                          </TableCell>
-                        </TableRow>
-                      ))}
+                        .map((item, index) => {
+                          const chaptersCompleted = item.chapters.filter(ch => ch.completionPercentage === 100).length;
+                          const chaptersInProgress = item.chapters.filter(ch => ch.completionPercentage > 0 && ch.completionPercentage < 100).length;
+                          const totalHours = Math.round(item.chapters.reduce((acc, ch) => acc + (parseInt(ch.timeSpent.replace(' min', '')) || 0), 0) / 60 * 10) / 10;
+                          
+                          return (
+                            <TableRow 
+                              key={item.id}
+                              className={`${index % 2 === 0 ? "bg-background" : "bg-muted/30"} hover:bg-primary/5 transition-colors border-b`}
+                            >
+                              <TableCell className="py-4">
+                                <div className="flex items-center gap-3">
+                                  <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold text-sm">
+                                    {item.studentName.split(' ').map(n => n[0]).join('')}
+                                  </div>
+                                  <div>
+                                    <p className="font-medium">{item.studentName}</p>
+                                    <p className="text-xs text-muted-foreground">{item.class} - {item.section}</p>
+                                  </div>
+                                </div>
+                              </TableCell>
+                              <TableCell className="text-center py-4">
+                                <span className="inline-flex items-center justify-center min-w-[2.5rem] px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 font-semibold text-sm">
+                                  {chaptersCompleted}
+                                </span>
+                              </TableCell>
+                              <TableCell className="text-center py-4">
+                                <span className="inline-flex items-center justify-center min-w-[2.5rem] px-3 py-1 rounded-full bg-amber-100 text-amber-700 font-semibold text-sm">
+                                  {chaptersInProgress}
+                                </span>
+                              </TableCell>
+                              <TableCell className="text-center py-4">
+                                <span className="font-medium">{totalHours}h</span>
+                              </TableCell>
+                              <TableCell className="py-4">
+                                <EbookDetailDialog ebook={item} />
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })}
                     </TableBody>
                   </Table>
                 </div>
