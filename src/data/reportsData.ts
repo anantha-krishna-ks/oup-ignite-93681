@@ -527,6 +527,413 @@ export const ebookData: EbookData[] = [
         ]
       }
     ]
+  },
+  { 
+    id: "9", 
+    studentName: "Rahul Joshi", 
+    class: "Grade 6", 
+    section: "A", 
+    lastAccessed: "2026-01-07",
+    subjects: [
+      {
+        subject: "English",
+        bookTitle: "Advanced English",
+        overallCompletion: 65,
+        chaptersCompleted: 4,
+        totalChapters: 7,
+        chapters: [
+          { chapterName: "Essay Writing", completionPercentage: 100, timeSpent: "55 min", lastAccessed: "2026-01-01" },
+          { chapterName: "Comprehension", completionPercentage: 100, timeSpent: "48 min", lastAccessed: "2026-01-03" },
+          { chapterName: "Poetry Analysis", completionPercentage: 100, timeSpent: "42 min", lastAccessed: "2026-01-05" },
+          { chapterName: "Letter Writing", completionPercentage: 60, timeSpent: "25 min", lastAccessed: "2026-01-07" },
+          { chapterName: "Story Writing", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+          { chapterName: "Report Writing", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+          { chapterName: "Debate Skills", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+        ]
+      },
+      {
+        subject: "Mathematics",
+        bookTitle: "Advanced Math",
+        overallCompletion: 55,
+        chaptersCompleted: 6,
+        totalChapters: 12,
+        chapters: [
+          { chapterName: "Algebra Basics", completionPercentage: 100, timeSpent: "60 min", lastAccessed: "2026-01-01" },
+          { chapterName: "Linear Equations", completionPercentage: 100, timeSpent: "72 min", lastAccessed: "2026-01-02" },
+          { chapterName: "Geometry", completionPercentage: 100, timeSpent: "55 min", lastAccessed: "2026-01-03" },
+          { chapterName: "Triangles", completionPercentage: 100, timeSpent: "48 min", lastAccessed: "2026-01-04" },
+          { chapterName: "Circles", completionPercentage: 80, timeSpent: "35 min", lastAccessed: "2026-01-06" },
+          { chapterName: "Area & Perimeter", completionPercentage: 80, timeSpent: "30 min", lastAccessed: "2026-01-07" },
+          { chapterName: "Volume", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+          { chapterName: "Statistics", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+          { chapterName: "Probability", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+          { chapterName: "Ratios", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+          { chapterName: "Percentages", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+          { chapterName: "Data Analysis", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+        ]
+      },
+      {
+        subject: "Science",
+        bookTitle: "Advanced Science",
+        overallCompletion: 50,
+        chaptersCompleted: 4,
+        totalChapters: 8,
+        chapters: [
+          { chapterName: "Cell Biology", completionPercentage: 100, timeSpent: "65 min", lastAccessed: "2026-01-02" },
+          { chapterName: "Genetics Basics", completionPercentage: 100, timeSpent: "70 min", lastAccessed: "2026-01-03" },
+          { chapterName: "Ecology", completionPercentage: 100, timeSpent: "55 min", lastAccessed: "2026-01-05" },
+          { chapterName: "Chemistry Intro", completionPercentage: 100, timeSpent: "58 min", lastAccessed: "2026-01-06" },
+          { chapterName: "Physics Basics", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+          { chapterName: "Electricity", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+          { chapterName: "Magnetism", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+          { chapterName: "Light & Sound", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+        ]
+      }
+    ]
+  },
+  { 
+    id: "10", 
+    studentName: "Meera Iyer", 
+    class: "Grade 4", 
+    section: "A", 
+    lastAccessed: "2026-01-11",
+    subjects: [
+      {
+        subject: "Mathematics",
+        bookTitle: "Fun with Numbers",
+        overallCompletion: 95,
+        chaptersCompleted: 7,
+        totalChapters: 8,
+        chapters: [
+          { chapterName: "Numbers & Counting", completionPercentage: 100, timeSpent: "38 min", lastAccessed: "2026-01-02" },
+          { chapterName: "Addition Basics", completionPercentage: 100, timeSpent: "42 min", lastAccessed: "2026-01-03" },
+          { chapterName: "Subtraction Fun", completionPercentage: 100, timeSpent: "35 min", lastAccessed: "2026-01-05" },
+          { chapterName: "Multiplication Magic", completionPercentage: 100, timeSpent: "50 min", lastAccessed: "2026-01-06" },
+          { chapterName: "Division Intro", completionPercentage: 100, timeSpent: "48 min", lastAccessed: "2026-01-08" },
+          { chapterName: "Fractions", completionPercentage: 100, timeSpent: "45 min", lastAccessed: "2026-01-09" },
+          { chapterName: "Decimals", completionPercentage: 100, timeSpent: "40 min", lastAccessed: "2026-01-11" },
+          { chapterName: "Word Problems", completionPercentage: 60, timeSpent: "20 min", lastAccessed: "2026-01-11" },
+        ]
+      },
+      {
+        subject: "English",
+        bookTitle: "English Grammar Essentials",
+        overallCompletion: 100,
+        chaptersCompleted: 6,
+        totalChapters: 6,
+        chapters: [
+          { chapterName: "Nouns & Pronouns", completionPercentage: 100, timeSpent: "35 min", lastAccessed: "2026-01-01" },
+          { chapterName: "Verbs & Tenses", completionPercentage: 100, timeSpent: "42 min", lastAccessed: "2026-01-03" },
+          { chapterName: "Adjectives", completionPercentage: 100, timeSpent: "32 min", lastAccessed: "2026-01-05" },
+          { chapterName: "Adverbs", completionPercentage: 100, timeSpent: "38 min", lastAccessed: "2026-01-07" },
+          { chapterName: "Prepositions", completionPercentage: 100, timeSpent: "35 min", lastAccessed: "2026-01-09" },
+          { chapterName: "Sentence Structure", completionPercentage: 100, timeSpent: "45 min", lastAccessed: "2026-01-10" },
+        ]
+      },
+      {
+        subject: "Science",
+        bookTitle: "Science Explorer",
+        overallCompletion: 80,
+        chaptersCompleted: 4,
+        totalChapters: 5,
+        chapters: [
+          { chapterName: "Living Things", completionPercentage: 100, timeSpent: "50 min", lastAccessed: "2026-01-02" },
+          { chapterName: "Plants & Animals", completionPercentage: 100, timeSpent: "45 min", lastAccessed: "2026-01-04" },
+          { chapterName: "Human Body", completionPercentage: 100, timeSpent: "55 min", lastAccessed: "2026-01-06" },
+          { chapterName: "Matter & Materials", completionPercentage: 100, timeSpent: "48 min", lastAccessed: "2026-01-08" },
+          { chapterName: "Energy & Forces", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+        ]
+      },
+      {
+        subject: "Hindi",
+        bookTitle: "हिंदी प्रारंभ",
+        overallCompletion: 90,
+        chaptersCompleted: 4,
+        totalChapters: 5,
+        chapters: [
+          { chapterName: "वर्णमाला", completionPercentage: 100, timeSpent: "30 min", lastAccessed: "2026-01-01" },
+          { chapterName: "संज्ञा", completionPercentage: 100, timeSpent: "35 min", lastAccessed: "2026-01-03" },
+          { chapterName: "सर्वनाम", completionPercentage: 100, timeSpent: "28 min", lastAccessed: "2026-01-05" },
+          { chapterName: "क्रिया", completionPercentage: 100, timeSpent: "32 min", lastAccessed: "2026-01-08" },
+          { chapterName: "विशेषण", completionPercentage: 50, timeSpent: "15 min", lastAccessed: "2026-01-10" },
+        ]
+      }
+    ]
+  },
+  { 
+    id: "11", 
+    studentName: "Aditya Verma", 
+    class: "Grade 5", 
+    section: "B", 
+    lastAccessed: "2026-01-10",
+    subjects: [
+      {
+        subject: "Mathematics",
+        bookTitle: "Fun with Numbers",
+        overallCompletion: 72,
+        chaptersCompleted: 5,
+        totalChapters: 8,
+        chapters: [
+          { chapterName: "Numbers & Counting", completionPercentage: 100, timeSpent: "44 min", lastAccessed: "2026-01-02" },
+          { chapterName: "Addition Basics", completionPercentage: 100, timeSpent: "50 min", lastAccessed: "2026-01-04" },
+          { chapterName: "Subtraction Fun", completionPercentage: 100, timeSpent: "38 min", lastAccessed: "2026-01-05" },
+          { chapterName: "Multiplication Magic", completionPercentage: 100, timeSpent: "55 min", lastAccessed: "2026-01-07" },
+          { chapterName: "Division Intro", completionPercentage: 80, timeSpent: "40 min", lastAccessed: "2026-01-10" },
+          { chapterName: "Fractions", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+          { chapterName: "Decimals", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+          { chapterName: "Word Problems", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+        ]
+      },
+      {
+        subject: "Science",
+        bookTitle: "Science Explorer",
+        overallCompletion: 85,
+        chaptersCompleted: 4,
+        totalChapters: 5,
+        chapters: [
+          { chapterName: "Living Things", completionPercentage: 100, timeSpent: "58 min", lastAccessed: "2026-01-03" },
+          { chapterName: "Plants & Animals", completionPercentage: 100, timeSpent: "52 min", lastAccessed: "2026-01-05" },
+          { chapterName: "Human Body", completionPercentage: 100, timeSpent: "65 min", lastAccessed: "2026-01-07" },
+          { chapterName: "Matter & Materials", completionPercentage: 85, timeSpent: "42 min", lastAccessed: "2026-01-09" },
+          { chapterName: "Energy & Forces", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+        ]
+      },
+      {
+        subject: "English",
+        bookTitle: "English Grammar Essentials",
+        overallCompletion: 60,
+        chaptersCompleted: 3,
+        totalChapters: 6,
+        chapters: [
+          { chapterName: "Nouns & Pronouns", completionPercentage: 100, timeSpent: "40 min", lastAccessed: "2026-01-02" },
+          { chapterName: "Verbs & Tenses", completionPercentage: 100, timeSpent: "45 min", lastAccessed: "2026-01-06" },
+          { chapterName: "Adjectives", completionPercentage: 80, timeSpent: "30 min", lastAccessed: "2026-01-09" },
+          { chapterName: "Adverbs", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+          { chapterName: "Prepositions", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+          { chapterName: "Sentence Structure", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+        ]
+      }
+    ]
+  },
+  { 
+    id: "12", 
+    studentName: "Ishita Kapoor", 
+    class: "Grade 6", 
+    section: "B", 
+    lastAccessed: "2026-01-12",
+    subjects: [
+      {
+        subject: "English",
+        bookTitle: "Advanced English",
+        overallCompletion: 88,
+        chaptersCompleted: 6,
+        totalChapters: 7,
+        chapters: [
+          { chapterName: "Essay Writing", completionPercentage: 100, timeSpent: "68 min", lastAccessed: "2026-01-01" },
+          { chapterName: "Comprehension", completionPercentage: 100, timeSpent: "58 min", lastAccessed: "2026-01-03" },
+          { chapterName: "Poetry Analysis", completionPercentage: 100, timeSpent: "52 min", lastAccessed: "2026-01-05" },
+          { chapterName: "Letter Writing", completionPercentage: 100, timeSpent: "45 min", lastAccessed: "2026-01-07" },
+          { chapterName: "Story Writing", completionPercentage: 100, timeSpent: "62 min", lastAccessed: "2026-01-09" },
+          { chapterName: "Report Writing", completionPercentage: 100, timeSpent: "55 min", lastAccessed: "2026-01-12" },
+          { chapterName: "Debate Skills", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+        ]
+      },
+      {
+        subject: "Hindi",
+        bookTitle: "उच्च हिंदी",
+        overallCompletion: 78,
+        chaptersCompleted: 7,
+        totalChapters: 10,
+        chapters: [
+          { chapterName: "गद्य साहित्य", completionPercentage: 100, timeSpent: "55 min", lastAccessed: "2026-01-02" },
+          { chapterName: "पद्य साहित्य", completionPercentage: 100, timeSpent: "60 min", lastAccessed: "2026-01-04" },
+          { chapterName: "नाटक", completionPercentage: 100, timeSpent: "65 min", lastAccessed: "2026-01-05" },
+          { chapterName: "उपन्यास अंश", completionPercentage: 100, timeSpent: "70 min", lastAccessed: "2026-01-07" },
+          { chapterName: "कहानी", completionPercentage: 100, timeSpent: "48 min", lastAccessed: "2026-01-09" },
+          { chapterName: "निबंध लेखन", completionPercentage: 100, timeSpent: "55 min", lastAccessed: "2026-01-11" },
+          { chapterName: "पत्र लेखन", completionPercentage: 80, timeSpent: "35 min", lastAccessed: "2026-01-12" },
+          { chapterName: "व्याकरण", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+          { chapterName: "मुहावरे", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+          { chapterName: "लोकोक्तियाँ", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+        ]
+      },
+      {
+        subject: "Mathematics",
+        bookTitle: "Advanced Math",
+        overallCompletion: 70,
+        chaptersCompleted: 8,
+        totalChapters: 12,
+        chapters: [
+          { chapterName: "Algebra Basics", completionPercentage: 100, timeSpent: "65 min", lastAccessed: "2026-01-01" },
+          { chapterName: "Linear Equations", completionPercentage: 100, timeSpent: "78 min", lastAccessed: "2026-01-02" },
+          { chapterName: "Geometry", completionPercentage: 100, timeSpent: "58 min", lastAccessed: "2026-01-03" },
+          { chapterName: "Triangles", completionPercentage: 100, timeSpent: "52 min", lastAccessed: "2026-01-04" },
+          { chapterName: "Circles", completionPercentage: 100, timeSpent: "50 min", lastAccessed: "2026-01-06" },
+          { chapterName: "Area & Perimeter", completionPercentage: 100, timeSpent: "45 min", lastAccessed: "2026-01-08" },
+          { chapterName: "Volume", completionPercentage: 100, timeSpent: "48 min", lastAccessed: "2026-01-10" },
+          { chapterName: "Statistics", completionPercentage: 60, timeSpent: "25 min", lastAccessed: "2026-01-12" },
+          { chapterName: "Probability", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+          { chapterName: "Ratios", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+          { chapterName: "Percentages", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+          { chapterName: "Data Analysis", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+        ]
+      },
+      {
+        subject: "Science",
+        bookTitle: "Advanced Science",
+        overallCompletion: 62,
+        chaptersCompleted: 5,
+        totalChapters: 8,
+        chapters: [
+          { chapterName: "Cell Biology", completionPercentage: 100, timeSpent: "72 min", lastAccessed: "2026-01-02" },
+          { chapterName: "Genetics Basics", completionPercentage: 100, timeSpent: "78 min", lastAccessed: "2026-01-04" },
+          { chapterName: "Ecology", completionPercentage: 100, timeSpent: "62 min", lastAccessed: "2026-01-06" },
+          { chapterName: "Chemistry Intro", completionPercentage: 100, timeSpent: "70 min", lastAccessed: "2026-01-08" },
+          { chapterName: "Physics Basics", completionPercentage: 100, timeSpent: "68 min", lastAccessed: "2026-01-10" },
+          { chapterName: "Electricity", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+          { chapterName: "Magnetism", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+          { chapterName: "Light & Sound", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+        ]
+      }
+    ]
+  },
+  { 
+    id: "13", 
+    studentName: "Dev Malhotra", 
+    class: "Grade 4", 
+    section: "B", 
+    lastAccessed: "2026-01-09",
+    subjects: [
+      {
+        subject: "Mathematics",
+        bookTitle: "Fun with Numbers",
+        overallCompletion: 68,
+        chaptersCompleted: 5,
+        totalChapters: 8,
+        chapters: [
+          { chapterName: "Numbers & Counting", completionPercentage: 100, timeSpent: "40 min", lastAccessed: "2026-01-01" },
+          { chapterName: "Addition Basics", completionPercentage: 100, timeSpent: "45 min", lastAccessed: "2026-01-03" },
+          { chapterName: "Subtraction Fun", completionPercentage: 100, timeSpent: "38 min", lastAccessed: "2026-01-05" },
+          { chapterName: "Multiplication Magic", completionPercentage: 100, timeSpent: "52 min", lastAccessed: "2026-01-07" },
+          { chapterName: "Division Intro", completionPercentage: 70, timeSpent: "30 min", lastAccessed: "2026-01-09" },
+          { chapterName: "Fractions", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+          { chapterName: "Decimals", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+          { chapterName: "Word Problems", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+        ]
+      },
+      {
+        subject: "English",
+        bookTitle: "English Grammar Essentials",
+        overallCompletion: 55,
+        chaptersCompleted: 3,
+        totalChapters: 6,
+        chapters: [
+          { chapterName: "Nouns & Pronouns", completionPercentage: 100, timeSpent: "32 min", lastAccessed: "2026-01-02" },
+          { chapterName: "Verbs & Tenses", completionPercentage: 100, timeSpent: "38 min", lastAccessed: "2026-01-04" },
+          { chapterName: "Adjectives", completionPercentage: 65, timeSpent: "22 min", lastAccessed: "2026-01-08" },
+          { chapterName: "Adverbs", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+          { chapterName: "Prepositions", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+          { chapterName: "Sentence Structure", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+        ]
+      },
+      {
+        subject: "Science",
+        bookTitle: "Science Explorer",
+        overallCompletion: 45,
+        chaptersCompleted: 2,
+        totalChapters: 5,
+        chapters: [
+          { chapterName: "Living Things", completionPercentage: 100, timeSpent: "48 min", lastAccessed: "2026-01-03" },
+          { chapterName: "Plants & Animals", completionPercentage: 100, timeSpent: "42 min", lastAccessed: "2026-01-06" },
+          { chapterName: "Human Body", completionPercentage: 25, timeSpent: "15 min", lastAccessed: "2026-01-09" },
+          { chapterName: "Matter & Materials", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+          { chapterName: "Energy & Forces", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+        ]
+      },
+      {
+        subject: "Hindi",
+        bookTitle: "हिंदी प्रारंभ",
+        overallCompletion: 70,
+        chaptersCompleted: 3,
+        totalChapters: 5,
+        chapters: [
+          { chapterName: "वर्णमाला", completionPercentage: 100, timeSpent: "28 min", lastAccessed: "2026-01-01" },
+          { chapterName: "संज्ञा", completionPercentage: 100, timeSpent: "32 min", lastAccessed: "2026-01-04" },
+          { chapterName: "सर्वनाम", completionPercentage: 100, timeSpent: "25 min", lastAccessed: "2026-01-07" },
+          { chapterName: "क्रिया", completionPercentage: 50, timeSpent: "12 min", lastAccessed: "2026-01-09" },
+          { chapterName: "विशेषण", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+        ]
+      }
+    ]
+  },
+  { 
+    id: "14", 
+    studentName: "Nisha Rao", 
+    class: "Grade 5", 
+    section: "A", 
+    lastAccessed: "2026-01-11",
+    subjects: [
+      {
+        subject: "Science",
+        bookTitle: "Science Explorer",
+        overallCompletion: 92,
+        chaptersCompleted: 4,
+        totalChapters: 5,
+        chapters: [
+          { chapterName: "Living Things", completionPercentage: 100, timeSpent: "60 min", lastAccessed: "2026-01-02" },
+          { chapterName: "Plants & Animals", completionPercentage: 100, timeSpent: "55 min", lastAccessed: "2026-01-04" },
+          { chapterName: "Human Body", completionPercentage: 100, timeSpent: "68 min", lastAccessed: "2026-01-06" },
+          { chapterName: "Matter & Materials", completionPercentage: 100, timeSpent: "58 min", lastAccessed: "2026-01-09" },
+          { chapterName: "Energy & Forces", completionPercentage: 60, timeSpent: "25 min", lastAccessed: "2026-01-11" },
+        ]
+      },
+      {
+        subject: "Mathematics",
+        bookTitle: "Fun with Numbers",
+        overallCompletion: 82,
+        chaptersCompleted: 6,
+        totalChapters: 8,
+        chapters: [
+          { chapterName: "Numbers & Counting", completionPercentage: 100, timeSpent: "42 min", lastAccessed: "2026-01-01" },
+          { chapterName: "Addition Basics", completionPercentage: 100, timeSpent: "48 min", lastAccessed: "2026-01-03" },
+          { chapterName: "Subtraction Fun", completionPercentage: 100, timeSpent: "35 min", lastAccessed: "2026-01-04" },
+          { chapterName: "Multiplication Magic", completionPercentage: 100, timeSpent: "55 min", lastAccessed: "2026-01-06" },
+          { chapterName: "Division Intro", completionPercentage: 100, timeSpent: "50 min", lastAccessed: "2026-01-08" },
+          { chapterName: "Fractions", completionPercentage: 100, timeSpent: "45 min", lastAccessed: "2026-01-10" },
+          { chapterName: "Decimals", completionPercentage: 55, timeSpent: "22 min", lastAccessed: "2026-01-11" },
+          { chapterName: "Word Problems", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+        ]
+      },
+      {
+        subject: "English",
+        bookTitle: "English Grammar Essentials",
+        overallCompletion: 78,
+        chaptersCompleted: 4,
+        totalChapters: 6,
+        chapters: [
+          { chapterName: "Nouns & Pronouns", completionPercentage: 100, timeSpent: "38 min", lastAccessed: "2026-01-02" },
+          { chapterName: "Verbs & Tenses", completionPercentage: 100, timeSpent: "45 min", lastAccessed: "2026-01-05" },
+          { chapterName: "Adjectives", completionPercentage: 100, timeSpent: "35 min", lastAccessed: "2026-01-07" },
+          { chapterName: "Adverbs", completionPercentage: 100, timeSpent: "40 min", lastAccessed: "2026-01-10" },
+          { chapterName: "Prepositions", completionPercentage: 35, timeSpent: "15 min", lastAccessed: "2026-01-11" },
+          { chapterName: "Sentence Structure", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+        ]
+      },
+      {
+        subject: "Hindi",
+        bookTitle: "हिंदी व्याकरण",
+        overallCompletion: 65,
+        chaptersCompleted: 3,
+        totalChapters: 5,
+        chapters: [
+          { chapterName: "वर्णमाला", completionPercentage: 100, timeSpent: "32 min", lastAccessed: "2026-01-01" },
+          { chapterName: "संज्ञा", completionPercentage: 100, timeSpent: "38 min", lastAccessed: "2026-01-04" },
+          { chapterName: "सर्वनाम", completionPercentage: 100, timeSpent: "30 min", lastAccessed: "2026-01-07" },
+          { chapterName: "क्रिया", completionPercentage: 25, timeSpent: "10 min", lastAccessed: "2026-01-10" },
+          { chapterName: "विशेषण", completionPercentage: 0, timeSpent: "0 min", lastAccessed: "-" },
+        ]
+      }
+    ]
   }
 ];
 
